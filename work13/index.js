@@ -2,6 +2,8 @@
 const wrap = document.getElementById("js-wrap");
 const ul = document.getElementById("js-list");
 const submit = document.getElementById("js-submit");
+const modal_button = document.getElementById("js-modal-display");
+const modal = document.getElementById("js-modal");
 const url = "http://myjson.dit.upm.es/api/bins/ajy3";
 
 function getData() {
@@ -60,4 +62,13 @@ function loading() {
 submit.addEventListener("click", () => {
   loading();
   displayView();
+  modal.style.display = "none";
+  modal_button.style.display = "block";
+  wrap.style.display = "block";
+});
+
+modal_button.addEventListener("click", () => {
+  modal.style.display = "block";
+  modal_button.style.display = "none";
+  wrap.style.display = "none";
 });
