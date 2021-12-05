@@ -18,15 +18,16 @@
 
     <div id="js-modal" class="modal">
       <div id="js-modalContainer" class="modal__container">
-        <form action="" method="get">
+        <form action="" method="get" name="form">
           <label for="js-numberBox">数字</label>
           <input id="js-numberBox" type="number" name="number" value="" />
 
           <label for="js-nameBox">名前</label>
           <input id="js-nameBox" type="text" name="name" value="" />
+
+          <button id="js-submitBtn" type="submit">送信する</button>
+          <input id="js-closedBtn" type="button" value="閉じる" />
         </form>
-        <button id="js-submitBtn" type="submit">送信する</button>
-        <input id="js-closedBtn" type="button" value="閉じる" />
       </div>
     </div>
     <script src="./index.js"></script>
