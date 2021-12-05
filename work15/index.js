@@ -1,11 +1,13 @@
 "use strict";
+const load = document.getElementById("js-loading");
 const wrap = document.getElementById("js-wrap");
 const submit = document.getElementById("js-submitBtn");
 const closedBtn = document.getElementById("js-closedBtn");
-const modal_button = document.getElementById("js-modalDisplay");
+const modalBtn = document.getElementById("js-modalDisplay");
 const modal = document.getElementById("js-modal");
 const url = "http://myjson.dit.upm.es/api/bins/ajy3";
 let number = 0;
+let name = "";
 
 function getData() {
   const result = new Promise((resolve, reject) => {
@@ -56,7 +58,6 @@ function createElement(imgArray) {
 }
 
 function loading() {
-  const load = document.getElementById("js-loading");
   const loadImg = document.createElement("img");
 
   load.appendChild(loadImg);
@@ -67,26 +68,28 @@ function loading() {
 }
 
 submit.addEventListener("click", () => {
-  const number_box = document.getElementById("js-numberBox");
+  const numberBox = document.getElementById("js-numberBox");
+  const nameBox = document.getElementById("js-nameBox");
 
-  number = number_box.value;
+  number = numberBox.value;
+  name = nameBox.value;
 
-  modal.style.display = "none";
-  modal_button.style.display = "block";
+  name = modal.style.display = "none";
+  modalBtn.style.display = "block";
   wrap.style.display = "block";
 
   loading();
   displayView();
 });
 
-modal_button.addEventListener("click", () => {
+modalBtn.addEventListener("click", () => {
   modal.style.display = "block";
-  modal_button.style.display = "none";
+  modalBtn.style.display = "none";
   wrap.style.display = "none";
 });
 
 closedBtn.addEventListener("click", () => {
   modal.style.display = "none";
-  modal_button.style.display = "block";
+  modalBtn.style.display = "block";
   wrap.style.display = "block";
 });
