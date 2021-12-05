@@ -25,7 +25,7 @@ async function displayView() {
   try {
     console.log(number);
     const arrayData = await getData();
-    createElement(arrayData);
+    domCreateElement(arrayData);
   } catch (e) {
     wrap.textContent = e.message;
   } finally {
@@ -37,7 +37,7 @@ function hideLoading() {
   load.style.display = "none";
 }
 
-function createElement(imgArray) {
+function domCreateElement(imgArray) {
   const ul = document.getElementById("js-list");
   const fragment = document.createDocumentFragment();
 
@@ -74,7 +74,7 @@ submit.addEventListener("click", () => {
   number = numberBox.value;
   name = nameBox.value;
 
-  name = modal.style.display = "none";
+  modal.style.display = "none";
   modalBtn.style.display = "block";
   wrap.style.display = "block";
 
