@@ -9,22 +9,24 @@
   </head>
 
   <body>
-    <button id="js-modal-display" type="submit">モーダル表示</button>
+    <div id="js-loading" class="loading"></div>
+    <button id="js-modalDisplay" type="submit">モーダル表示</button>
 
     <div class="wrap" id="js-wrap">
       <ul class="list" id="js-list"></ul>
     </div>
 
     <div id="js-modal" class="modal">
-      <div class="modal__container">
+      <div id="js-modalContainer" class="modal__container">
         <form action="" method="get">
-          <label for="js-number-box">数字</label>
+          <label for="js-numberBox">数字</label>
           <input type="number" name="number" id="js-number-box" value="" />
 
-          <label for="js-name-box">名前</label>
+          <label for="js-nameBox">名前</label>
           <input type="text" name="name" id="js-name-box" value="" />
         </form>
-        <button id="js-submit" type="submit">送信する</button>
+        <button id="js-submitBtn" type="submit">送信する</button>
+        <input id="js-closedBtn" type="button" value="閉じる" />
       </div>
     </div>
     <script src="./index.js"></script>

@@ -1,10 +1,9 @@
 "use strict";
 const wrap = document.getElementById("js-wrap");
-const ul = document.getElementById("js-list");
-const submit = document.getElementById("js-submit");
-const modal_button = document.getElementById("js-modal-display");
+const submit = document.getElementById("js-submitBtn");
+const closedBtn = document.getElementById("js-closedBtn");
+const modal_button = document.getElementById("js-modalDisplay");
 const modal = document.getElementById("js-modal");
-const number_box = document.getElementById("js-number-box");
 const url = "http://myjson.dit.upm.es/api/bins/ajy3";
 let number = 0;
 
@@ -33,10 +32,11 @@ async function displayView() {
 }
 
 function hideLoading() {
-  ul.style.backgroundImage = "none";
+  load.style.display = "none";
 }
 
 function createElement(imgArray) {
+  const ul = document.getElementById("js-list");
   const fragment = document.createDocumentFragment();
 
   Object.keys(imgArray).forEach((key) => {
@@ -56,17 +56,25 @@ function createElement(imgArray) {
 }
 
 function loading() {
-  ul.style.backgroundImage = "url(./img/loading-circle.gif)";
-  ul.style.backgroundRepeat = "no-repeat";
-  ul.style.height = "100px";
+  const load = document.getElementById("js-loading");
+  const loadImg = document.createElement("img");
+
+  load.appendChild(loadImg);
+  load.style.display = "block";
+  load.style.backgroundImage = "url(./img/loading-circle.gif)";
+  load.style.backgroundRepeat = "no-repeat";
+  load.style.height = "100px";
 }
 
 submit.addEventListener("click", () => {
+  const number_box = document.getElementById("js-numberBox");
+
+  number = number_box.value;
+
   modal.style.display = "none";
   modal_button.style.display = "block";
   wrap.style.display = "block";
 
-  number = number_box.value;
   loading();
   displayView();
 });
@@ -75,4 +83,10 @@ modal_button.addEventListener("click", () => {
   modal.style.display = "block";
   modal_button.style.display = "none";
   wrap.style.display = "none";
+});
+
+closedBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+  modal_button.style.display = "block";
+  wrap.style.display = "block";
 });
