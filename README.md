@@ -6,8 +6,7 @@
 
 ### 課題 16 JSON data
 
-    {
-
+{
 data:[
 {
 "field":news,
@@ -16,14 +15,14 @@ data:[
 {
 "title":"阪神淡路 26 年 変わらぬ想い",
 "new":"new",
-"comment":none,
+"comment":0,
 },
 {
 "title":"バス落下免れ震災語る運転手",
 "new":none,
 "comment":"212",
 },
-{
+　　　　　　　　　　　　　　{
 "title": "G サミット 2 年ぶり対面開催へ"
 "new":none,
 "comment":"433"
@@ -34,7 +33,8 @@ data:[
 "comment":"513"
 }
 ]
-},
+
+    },
 
      {
         "field":"economy",
