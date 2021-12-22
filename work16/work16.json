@@ -1,0 +1,135 @@
+{
+  "data": [
+    {
+      "field": "news",
+      "img": "./img/news_img.jpg",
+      "contents": [
+        {
+          "title": "阪神淡路26年 変わらぬ想い",
+          "new": "new",
+          "comment": 0
+        },
+        {
+          "title": "バス落下免れ震災語る運転手",
+          "new": "none",
+          "comment": 212
+        },
+        {
+          "title": "Gサミット2年ぶり対面開催へ",
+          "new": "none",
+          "comment": 433
+        },
+        {
+          "title": "有料住宅普及進まぬEU",
+          "new": "new",
+          "comment": 513
+        }
+      ]
+    },
+
+    {
+      "field": "economy",
+      "img": "./img/economy_img.jpg",
+      "contents": [
+        {
+          "title": "記事タイトル1",
+          "new": "new",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル2",
+          "new": "new",
+          "comments": 3821
+        },
+        {
+          "title": "記事タイトル3",
+          "new": "none",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル4",
+          "new": "none",
+          "comments": 200
+        }
+      ]
+    },
+    {
+      "field": "entertainment",
+      "img": "./img/entertainment_img.jpg",
+      "contents": [
+        {
+          "title": "記事タイトル1",
+          "new": "new",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル2",
+          "new": "new",
+          "comments": 3821
+        },
+        {
+          "title": "記事タイトル3",
+          "new": "none",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル4",
+          "new": "none",
+          "comments": 200
+        }
+      ]
+    },
+    {
+      "field": "sports",
+      "img": "./img/sports_img.jpg",
+      "contents": [
+        {
+          "title": "記事タイトル1",
+          "new": "new",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル2",
+          "new": "new",
+          "comments": 3821
+        },
+        {
+          "title": "記事タイトル3",
+          "new": "none",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル4",
+          "new": "none",
+          "comments": 200
+        }
+      ]
+    },
+    {
+      "field": "domestic",
+      "img": "./img/domestic_img.jpg",
+      "contents": [
+        {
+          "title": "記事タイトル1",
+          "new": "new",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル2",
+          "new": "new",
+          "comments": 3821
+        },
+        {
+          "title": "記事タイトル3",
+          "new": "none",
+          "comments": 431
+        },
+        {
+          "title": "記事タイトル4",
+          "new": "none",
+          "comments": 200
+        }
+      ]
+    }
+  ]
+}
