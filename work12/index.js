@@ -17,7 +17,6 @@ function getData() {
 }
 
 async function displayView() {
-  console.log("hoge1");
   try {
     const arrayData = await getData();
     createElement(arrayData);

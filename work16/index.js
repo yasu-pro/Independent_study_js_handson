@@ -2,7 +2,7 @@
 const tabs = document.getElementById("tabs");
 const fragment = document.createDocumentFragment();
 
-function getNewsData() {
+function getData() {
   const promiseNewsData = new Promise((resolve, reject) => {
     resolve(
       (async function () {
@@ -16,12 +16,12 @@ function getNewsData() {
   return promiseNewsData;
 }
 
-async function hoge() {
+async function getJSON() {
   const newsDataJSON = await getNewsData();
   console.log(newsDataJSON.data[0].field);
 }
 
-hoge();
+getJSON();
 // console.log(newsDataJSON.length);
 // console.log(JSON.parse(newsDataJSON));
 // console.log(newsDataJSON.data["img"]);

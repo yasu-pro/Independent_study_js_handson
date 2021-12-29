@@ -1,21 +1,21 @@
 "use strict";
-const wrap = document.getElementById("js-wrap")
+const wrap = document.getElementById("js-wrap");
 const ul = document.getElementById("js-list");
-const url = "http://myjson.dit.upm.es/api/bins/ajy3"
+const url = "http://myjson.dit.upm.es/api/bins/ajy3";
 
 function getData() {
   const result = new Promise((resolve, reject) => {
     resolve(
-      async function () {
+      (async function () {
         const response = (await fetch(url)).json();
-        return response
-      }()
-    )
-  })
+        return response;
+      })()
+    );
+  });
   return result;
 }
 
-async function displayView() {
+async function getJSON() {
   try {
     const arrayData = await getData();
     createElement(arrayData);
@@ -30,24 +30,21 @@ function hideLoading() {
   ul.style.backgroundImage = "none";
 }
 
-function createElement(imgArray) {
+function createElement({data}) {
   const fragment = document.createDocumentFragment();
 
-  Object.keys(imgArray).forEach(key => {
-
-    imgArray[key].forEach(keyIndex => {
-
+  {data}.forEach((value) => {
       const li = document.createElement("li");
       const a = document.createElement("a");
       const img = document.createElement("img");
 
-      a.href = keyIndex.a;
-      a.textContent = keyIndex.text;
-      img.src = keyIndex.img;
-      img.alt = keyIndex.alt;
+      a.href = value.a;
+      a.textContent = value.text;
+      img.src = value.img;
+      img.alt = value.alt;
       fragment.appendChild(li).appendChild(a).prepend(img);
-    });
-  })
+  });
+
   ul.appendChild(fragment);
 }
 
@@ -57,6 +54,5 @@ function loading() {
   ul.style.height = "100px";
 }
 
-
 loading();
-displayView();
+getJSON();
