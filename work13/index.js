@@ -94,6 +94,11 @@ function loading() {
 function renderButtonElement() {
   const button_wrap = document.createElement("div");
   const buttonTag = document.createElement("button");
+  const modal_button = document.createElement("button");
+
+  modal_button.id = "js--modal-button";
+  modal_button.type = "submit";
+  modal_button.textContent = "モーダル";
 
   button_wrap.id = "js-button-wrap";
 
@@ -101,6 +106,7 @@ function renderButtonElement() {
   buttonTag.type = "submit";
   buttonTag.textContent = "クリック";
 
+  wrap.after(modal_button);
   wrap.after(button_wrap);
   button_wrap.appendChild(buttonTag);
 
@@ -113,6 +119,14 @@ const init = async () => {
   renderListElement(data);
 };
 
+function renderModal() {
+  const modal_wrap = document.createElement("div");
+  modal_wrap.id = "js-modal-wrap";
+  // modal_wrap.display = "none";
+  modal_wrap.style.backgroundColor = #C0C0C0;
+  wrap.after(modal_wrap);
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   const button = document.getElementById("js-button");
   button.addEventListener("click", () => {
@@ -121,4 +135,5 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+renderModal();
 renderButtonElement();
