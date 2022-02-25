@@ -92,22 +92,27 @@ function loading() {
 }
 
 function renderButtonElement() {
+  const modal_wrap = document.getElementById("js-modal-wrap");
   const button_wrap = document.createElement("div");
   const buttonTag = document.createElement("button");
   const modal_button = document.createElement("button");
 
-  modal_button.id = "js--modal-button";
+  modal_button.id = "js-modal-button";
   modal_button.type = "submit";
   modal_button.textContent = "モーダル";
 
   button_wrap.id = "js-button-wrap";
+  button_wrap.style.display = "flex";
+  button_wrap.style.justifyContent = "center";
+  button_wrap.style.alignItems = "center";
+  button_wrap.style.height = "100%";
 
   buttonTag.id = "js-button";
   buttonTag.type = "submit";
   buttonTag.textContent = "クリック";
 
   wrap.after(modal_button);
-  wrap.after(button_wrap);
+  modal_wrap.appendChild(button_wrap);
   button_wrap.appendChild(buttonTag);
 
   return buttonTag;
@@ -120,18 +125,44 @@ const init = async () => {
 };
 
 function renderModal() {
+  const modal = document.createElement("div");
   const modal_wrap = document.createElement("div");
+
+  modal.id = "js-modal";
   modal_wrap.id = "js-modal-wrap";
-  // modal_wrap.display = "none";
-  modal_wrap.style.backgroundColor = #C0C0C0;
-  wrap.after(modal_wrap);
+
+  modal.style.display = "none";
+  modal.style.backgroundColor = "#C0C0C0";
+  modal.style.position = "fixed";
+  modal.style.width = "100vw";
+  modal.style.height = "100%";
+
+  modal_wrap.style.position = "absolute";
+  modal_wrap.style.backgroundColor = "#fff";
+  modal_wrap.style.left = "50%";
+  modal_wrap.style.top = "50%";
+  modal_wrap.style.transform =
+    "translateX(" + -50 + "%) translateY(" + -50 + "%)";
+  modal_wrap.style.width = "500px";
+  modal_wrap.style.height = "300px";
+
+  wrap.after(modal);
+  modal.appendChild(modal_wrap);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   const button = document.getElementById("js-button");
+  const modalElement = document.getElementById("js-modal");
+  const modal_button = document.getElementById("js-modal-button");
+
   button.addEventListener("click", () => {
     init();
     button.remove();
+  });
+
+  modal_button.addEventListener("click", () => {
+    modal_button.style.display = "none";
+    modalElement.style.display = "block";
   });
 });
 
