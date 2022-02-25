@@ -1,52 +1,87 @@
 "use strict";
 const wrap = document.getElementById("js-wrap");
 const ul = document.getElementById("js-list");
-const submit = document.getElementById("js-submit");
-const url = "http://myjson.dit.upm.es/api/bins/ajy3";
+// const button_wrap = document.getElementById("js-button-wrap");
 
-function getData() {
-  const result = new Promise((resolve, reject) => {
-    resolve(
-      (async function () {
-        const response = (await fetch(url)).json();
-        return response;
-      })()
-    );
-  });
-  return result;
+// const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
+// const url = "https://myjson.dit.upm.es/api/bins/bu5z";
+// const url = "https://myjson.dit.upm.es/api/bins/2hj3";
+// 下記は、myjson繋がらない時の固定値
+const url = {
+  data: [
+    {
+      a: "bookmark",
+      img: "img/1.png",
+      alt: "画像１",
+      text: "ブックマーク",
+    },
+    {
+      a: "message",
+      img: "img/2.png",
+      alt: "画像２",
+      text: "メッセージ",
+    },
+  ],
+};
+
+// async function getData() {
+//   try {
+//     const response = await fetch(url);
+//     if (response.ok) {
+//       const json = await response.json();
+//       return json;
+//     } else {
+//       throw new Error(`Server request failed:${response.statusText}`);
+//     }
+//   } catch (e) {
+//     console.error(e)
+//   }
+// }
+
+// 下記は、固定値をそのままpromiseの返り値とする
+async function getData() {
+  return url;
 }
 
-async function displayView() {
+async function getListData() {
+  let listData;
   try {
-    const arrayData = await getData();
-    createElement(arrayData);
+    listData = await getData();
   } catch (e) {
-    wrap.textContent = e.message;
+    wrap.textContent = `エラー内容:${e.message}`;
   } finally {
     hideLoading();
   }
+  if (listData.data.length === 0) {
+    wrap.textContent = "data is empty";
+    return;
+  }
+  return listData;
 }
 
 function hideLoading() {
   ul.style.backgroundImage = "none";
+  ul.style.height = "auto";
 }
 
-function createElement(imgArray) {
+function renderListElement({ data }) {
   const fragment = document.createDocumentFragment();
 
-  Object.keys(imgArray).forEach((key) => {
-    imgArray[key].forEach((keyIndex) => {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      const img = document.createElement("img");
+  data.forEach((value) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    const img = document.createElement("img");
 
-      a.href = keyIndex.a;
-      a.textContent = keyIndex.text;
-      img.src = keyIndex.img;
-      img.alt = keyIndex.alt;
-      fragment.appendChild(li).appendChild(a).prepend(img);
-    });
+    a.href = value.a;
+    a.textContent = value.text;
+    img.src = value.img;
+    img.alt = value.alt;
+    img.style.width = "30px";
+    img.style.verticalAlign = "middle";
+
+    fragment.appendChild(li).appendChild(a).prepend(img);
   });
+
   ul.appendChild(fragment);
 }
 
@@ -56,7 +91,34 @@ function loading() {
   ul.style.height = "100px";
 }
 
-submit.addEventListener("click", () => {
+function renderButtonElement() {
+  const button_wrap = document.createElement("div");
+  const buttonTag = document.createElement("button");
+
+  button_wrap.id = "js-button-wrap";
+
+  buttonTag.id = "js-button";
+  buttonTag.type = "submit";
+  buttonTag.textContent = "クリック";
+
+  wrap.after(button_wrap);
+  button_wrap.appendChild(buttonTag);
+
+  return buttonTag;
+}
+
+const init = async () => {
   loading();
-  displayView();
+  const data = await getListData();
+  renderListElement(data);
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  const button = document.getElementById("js-button");
+  button.addEventListener("click", () => {
+    init();
+    button.remove();
+  });
 });
+
+renderButtonElement();

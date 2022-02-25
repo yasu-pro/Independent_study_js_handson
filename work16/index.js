@@ -1,44 +1,54 @@
 "use strict";
+const body = document.getElementsByTagName("body");
 const tabs = document.getElementById("tabs");
 const fragment = document.createDocumentFragment();
 
-function getData() {
-  const promiseNewsData = new Promise((resolve, reject) => {
-    resolve(
-      (async function () {
-        const result = (
-          await fetch("http://myjson.dit.upm.es/api/bins/c2fh")
-        ).json();
-        return result;
-      })()
-    );
-  });
-  return promiseNewsData;
+async function getData() {
+  try {
+    const response = (
+      await fetch("http://myjson.dit.upm.es/api/bins/dnzp")
+    ).json();
+    return response;
+  } catch (error) {
+    tabs.display = "none";
+    body.textContent = error;
+  }
 }
 
 async function getJSON() {
-  const newsDataJSON = await getNewsData();
-  console.log(newsDataJSON.data[0].field);
+  const { data } = await getData();
+  return data;
 }
 
-getJSON();
-// console.log(newsDataJSON.length);
-// console.log(JSON.parse(newsDataJSON));
-// console.log(newsDataJSON.data["img"]);
+getJSON().then((value) => {
+  console.log(value);
+  value.forEach((element) => {
+    console.log(element);
+    createListTag(element);
+    // console.log(createListTag(element));
+  });
+});
 
-// for (let i in newsDataJSON) {
-//   if (newsDataJSON.hasOwnProperty(i)) {
-//     let element = newsDataJSON[i].field;
-//     console.log(element);
-//   }
-// }
+// ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
+// トピックの画像を表示する
+// 作ったListタグの直下にコンテンツの分だけListタグを作る
+//
 
-// 取得したjsondata分だけタブを生成
-//ul>li(tab)>li()記事
-
-for (let i = 0; i < 5; i++) {
+function createListTag(array) {
+  console.log(array);
   const tab = document.createElement("li");
-  fragment.appendChild(tab);
+  const button = document.createElement("button");
+  const field = array.field;
+
   tab.className = "tab";
+  button.textContent = field;
+
+  tab.appendChild(button);
+  fragment.appendChild(tab);
+  tabs.appendChild(fragment);
 }
-tabs.appendChild(fragment);
+
+//   const tab = document.createElement("li");
+//   fragment.appendChild(tab);
+//   tab.className = "tab";
+// tabs.appendChild(fragment);

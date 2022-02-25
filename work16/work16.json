@@ -1,7 +1,7 @@
 {
   "data": [
     {
-      "field": "news",
+      "field": "ニュース",
       "img": "./img/news_img.jpg",
       "contents": [
         {
@@ -26,9 +26,8 @@
         }
       ]
     },
-
     {
-      "field": "economy",
+      "field": "経済",
       "img": "./img/economy_img.jpg",
       "contents": [
         {
@@ -54,7 +53,7 @@
       ]
     },
     {
-      "field": "entertainment",
+      "field": "エンタメ",
       "img": "./img/entertainment_img.jpg",
       "contents": [
         {
@@ -80,7 +79,7 @@
       ]
     },
     {
-      "field": "sports",
+      "field": "スポーツ",
       "img": "./img/sports_img.jpg",
       "contents": [
         {
@@ -106,7 +105,7 @@
       ]
     },
     {
-      "field": "domestic",
+      "field": "国内",
       "img": "./img/domestic_img.jpg",
       "contents": [
         {
