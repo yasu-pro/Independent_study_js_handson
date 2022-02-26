@@ -102,10 +102,6 @@ function renderButtonElement() {
   modal_button.textContent = "モーダル";
 
   button_wrap.id = "js-button-wrap";
-  button_wrap.style.display = "flex";
-  button_wrap.style.justifyContent = "center";
-  button_wrap.style.alignItems = "center";
-  button_wrap.style.height = "100%";
 
   buttonTag.id = "js-button";
   buttonTag.type = "submit";
@@ -130,21 +126,6 @@ function renderModal() {
 
   modal.id = "js-modal";
   modal_wrap.id = "js-modal-wrap";
-
-  modal.style.display = "none";
-  modal.style.backgroundColor = "#C0C0C0";
-  modal.style.position = "fixed";
-  modal.style.width = "100vw";
-  modal.style.height = "100%";
-
-  modal_wrap.style.position = "absolute";
-  modal_wrap.style.backgroundColor = "#fff";
-  modal_wrap.style.left = "50%";
-  modal_wrap.style.top = "50%";
-  modal_wrap.style.transform =
-    "translateX(" + -50 + "%) translateY(" + -50 + "%)";
-  modal_wrap.style.width = "500px";
-  modal_wrap.style.height = "300px";
 
   wrap.after(modal);
   modal.appendChild(modal_wrap);
