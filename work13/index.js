@@ -156,6 +156,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const modal_button = document.getElementById("js-modal-button");
 
   button.addEventListener("click", () => {
+    modalElement.remove();
+    modal_button.remove();
     init();
     button.remove();
   });
