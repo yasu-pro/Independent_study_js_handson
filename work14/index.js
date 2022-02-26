@@ -59,6 +59,12 @@ async function getListData() {
   return listData;
 }
 
+const init = async () => {
+  loading();
+  const data = await getListData();
+  renderListElement(data);
+};
+
 function hideLoading() {
   ul.style.backgroundImage = "none";
   ul.style.height = "auto";
@@ -113,12 +119,6 @@ function renderButtonElement() {
 
   return buttonTag;
 }
-
-const init = async () => {
-  loading();
-  const data = await getListData();
-  renderListElement(data);
-};
 
 function renderModal() {
   const modal = document.createElement("div");
