@@ -34,7 +34,7 @@ const url = {
 //       throw new Error(`Server request failed:${response.statusText}`);
 //     }
 //   } catch (e) {
-//     console.error(e)
+//     console.error(e);
 //   }
 // }
 
@@ -58,6 +58,12 @@ async function getListData() {
   }
   return listData;
 }
+
+const init = async () => {
+  loading();
+  const data = await getListData();
+  renderListElement(data);
+};
 
 function hideLoading() {
   ul.style.backgroundImage = "none";
@@ -91,15 +97,10 @@ function loading() {
   ul.style.height = "100px";
 }
 
-function renderButtonElement() {
+function renderButton() {
   const modal_wrap = document.getElementById("js-modal-wrap");
   const button_wrap = document.createElement("div");
   const buttonTag = document.createElement("button");
-  const modal_button = document.createElement("button");
-
-  modal_button.id = "js-modal-button";
-  modal_button.type = "submit";
-  modal_button.textContent = "モーダル";
 
   button_wrap.id = "js-button-wrap";
 
@@ -107,47 +108,49 @@ function renderButtonElement() {
   buttonTag.type = "submit";
   buttonTag.textContent = "クリック";
 
-  wrap.after(modal_button);
   modal_wrap.appendChild(button_wrap);
   button_wrap.appendChild(buttonTag);
-
-  return buttonTag;
 }
 
-const init = async () => {
-  loading();
-  const data = await getListData();
-  renderListElement(data);
-};
+function renderModalButton() {
+  const modal_button = document.createElement("button");
+  modal_button.id = "js-modal-button";
+  modal_button.type = "submit";
+  modal_button.textContent = "モーダル";
 
-function renderModal() {
+  wrap.after(modal_button);
+}
+
+function renderModalContent() {
   const modal = document.createElement("div");
-  const modal_wrap = document.createElement("div");
+  const div = document.createElement("div");
 
   modal.id = "js-modal";
-  modal_wrap.id = "js-modal-wrap";
+  div.id = "js-modal-wrap";
 
   wrap.after(modal);
-  modal.appendChild(modal_wrap);
+  modal.appendChild(div);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const button = document.getElementById("js-button");
-  const modalElement = document.getElementById("js-modal");
   const modal_button = document.getElementById("js-modal-button");
-
-  button.addEventListener("click", () => {
-    modalElement.remove();
-    modal_button.remove();
-    init();
-    button.remove();
-  });
 
   modal_button.addEventListener("click", () => {
     modal_button.style.display = "none";
-    modalElement.style.display = "block";
+    renderModalContent();
+    renderButton();
+  });
+
+  document.addEventListener("click", (e) => {
+    const modalElement = document.getElementById("js-modal");
+    const requestButton = document.getElementById("js-button");
+    if (e.target && e.target.id === "js-button") {
+      modalElement.remove();
+      modal_button.remove();
+      init();
+      requestButton.remove();
+    }
   });
 });
 
-renderModal();
-renderButtonElement();
+renderModalButton();
