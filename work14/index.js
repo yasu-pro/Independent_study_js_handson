@@ -1,6 +1,7 @@
 "use strict";
 const wrap = document.getElementById("js-wrap");
 const ul = document.getElementById("js-list");
+let inputNumVal = 0;
 // const button_wrap = document.getElementById("js-button-wrap");
 
 // const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
@@ -134,10 +135,12 @@ function renderModalContent() {
 
 function renderInput() {
   const input = document.createElement("input");
-  input.classList.add("input_number");
+  const modal_wrap = document.getElementById("js-modal-wrap");
+  const button_wrap = document.getElementById("js-button-wrap");
+  input.id = "input_number";
   input.type = "number";
 
-  return input;
+  modal_wrap.insertBefore(input, button_wrap);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -147,12 +150,15 @@ window.addEventListener("DOMContentLoaded", () => {
     modal_button.style.display = "none";
     renderModalContent();
     renderButton();
+    renderInput();
   });
 
   document.addEventListener("click", (e) => {
     const modalElement = document.getElementById("js-modal");
     const requestButton = document.getElementById("js-button");
+    const input_number = document.getElementById("input_number");
     if (e.target && e.target.id === "js-button") {
+      inputNumVal = input_number.value;
       modalElement.remove();
       modal_button.remove();
       init();
