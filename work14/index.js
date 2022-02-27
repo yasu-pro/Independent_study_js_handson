@@ -132,6 +132,14 @@ function renderModalContent() {
   modal.appendChild(div);
 }
 
+function renderInput() {
+  const input = document.createElement("input");
+  input.classList.add("input_number");
+  input.type = "number";
+
+  return input;
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   const modal_button = document.getElementById("js-modal-button");
 
