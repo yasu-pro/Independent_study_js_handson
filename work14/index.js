@@ -1,6 +1,6 @@
 "use strict";
-const wrap = document.getElementById("js-wrap");
-const ul = document.getElementById("js-list");
+const wrap = document.getElementById("js_wrap");
+const ul = document.getElementById("js_list");
 let inputNumVal = 0;
 
 // const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
@@ -99,13 +99,13 @@ function loading() {
 }
 
 function renderBtn() {
-  const modal_wrap = document.getElementById("js-modal-wrap");
+  const modal_wrap = document.getElementById("js_modal_wrap");
   const button_wrap = document.createElement("div");
   const buttonTag = document.createElement("button");
 
-  button_wrap.id = "js-button-wrap";
+  button_wrap.id = "js_button_wrap";
 
-  buttonTag.id = "js-button";
+  buttonTag.id = "js_button";
   buttonTag.type = "submit";
   buttonTag.textContent = "クリック";
 
@@ -115,7 +115,7 @@ function renderBtn() {
 
 function renderModalBtn() {
   const modal_button = document.createElement("button");
-  modal_button.id = "js-modal-button";
+  modal_button.id = "js_modal_button";
   modal_button.type = "submit";
   modal_button.textContent = "モーダル";
 
@@ -126,8 +126,8 @@ function renderModalContent() {
   const modal = document.createElement("div");
   const div = document.createElement("div");
 
-  modal.id = "js-modal";
-  div.id = "js-modal-wrap";
+  modal.id = "js_modal";
+  div.id = "js_modal_wrap";
 
   wrap.after(modal);
   modal.appendChild(div);
@@ -135,8 +135,8 @@ function renderModalContent() {
 
 function renderInput() {
   const input = document.createElement("input");
-  const modal_wrap = document.getElementById("js-modal-wrap");
-  const button_wrap = document.getElementById("js-button-wrap");
+  const modal_wrap = document.getElementById("js_modal_wrap");
+  const button_wrap = document.getElementById("js_button_wrap");
   input.id = "input_number";
   input.type = "number";
 
@@ -144,7 +144,7 @@ function renderInput() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const modal_button = document.getElementById("js-modal-button");
+  const modal_button = document.getElementById("js_modal_button");
 
   modal_button.addEventListener("click", () => {
     modal_button.style.display = "none";
@@ -154,10 +154,10 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("click", (e) => {
-    const modalElement = document.getElementById("js-modal");
-    const request_btn = document.getElementById("js-button");
+    const modalElement = document.getElementById("js_modal");
+    const request_btn = document.getElementById("js_button");
     const input_number = document.getElementById("input_number");
-    if (e.target && e.target.id === "js-button") {
+    if (e.target && e.target.id === "js_button") {
       inputNumVal = input_number.value;
       init();
       modalElement.remove();

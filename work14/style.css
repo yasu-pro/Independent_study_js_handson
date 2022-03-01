@@ -1,11 +1,11 @@
-#js-modal {
+#js_modal {
   background-color: #c0c0c0;
   position: fixed;
   width: 100vw;
   height: 100%;
 }
 
-#js-modal-wrap {
+#js_modal_wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,7 +19,7 @@
   background-color: #fff;
 }
 
-#js-button-wrap {
+#js_button_wrap {
   display: flex;
   justify-content: center;
   align-items: center;
