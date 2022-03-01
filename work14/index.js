@@ -4,9 +4,9 @@ const ul = document.getElementById("js-list");
 let inputNumVal = 0;
 // const button_wrap = document.getElementById("js-button-wrap");
 
-const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
+// const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
 // const url = "https://myjson.dit.upm.es/api/bins/fhzj";
-// const url = "https://myjson.dit.upm.es/api/bins/86vb";
+const url = "https://myjson.dit.upm.es/api/bins/86vb";
 // 下記は、myjson繋がらない時の固定値
 // const url = {
 //   data: [
@@ -64,6 +64,7 @@ const init = async () => {
   loading();
   const data = await getListData();
   renderListElement(data);
+  console.log(inputNumVal);
 };
 
 function hideLoading() {
@@ -159,9 +160,9 @@ window.addEventListener("DOMContentLoaded", () => {
     const input_number = document.getElementById("input_number");
     if (e.target && e.target.id === "js-button") {
       inputNumVal = input_number.value;
+      init();
       modalElement.remove();
       modal_button.remove();
-      init();
       requestButton.remove();
     }
   });
