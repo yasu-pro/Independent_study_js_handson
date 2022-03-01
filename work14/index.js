@@ -2,7 +2,6 @@
 const wrap = document.getElementById("js-wrap");
 const ul = document.getElementById("js-list");
 let inputNumVal = 0;
-// const button_wrap = document.getElementById("js-button-wrap");
 
 // const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
 // const url = "https://myjson.dit.upm.es/api/bins/fhzj";
@@ -99,7 +98,7 @@ function loading() {
   ul.style.height = "100px";
 }
 
-function renderButton() {
+function renderBtn() {
   const modal_wrap = document.getElementById("js-modal-wrap");
   const button_wrap = document.createElement("div");
   const buttonTag = document.createElement("button");
@@ -114,7 +113,7 @@ function renderButton() {
   button_wrap.appendChild(buttonTag);
 }
 
-function renderModalButton() {
+function renderModalBtn() {
   const modal_button = document.createElement("button");
   modal_button.id = "js-modal-button";
   modal_button.type = "submit";
@@ -150,22 +149,22 @@ window.addEventListener("DOMContentLoaded", () => {
   modal_button.addEventListener("click", () => {
     modal_button.style.display = "none";
     renderModalContent();
-    renderButton();
+    renderBtn();
     renderInput();
   });
 
   document.addEventListener("click", (e) => {
     const modalElement = document.getElementById("js-modal");
-    const requestButton = document.getElementById("js-button");
+    const request_btn = document.getElementById("js-button");
     const input_number = document.getElementById("input_number");
     if (e.target && e.target.id === "js-button") {
       inputNumVal = input_number.value;
       init();
       modalElement.remove();
       modal_button.remove();
-      requestButton.remove();
+      request_btn.remove();
     }
   });
 });
 
-renderModalButton();
+renderModalBtn();
