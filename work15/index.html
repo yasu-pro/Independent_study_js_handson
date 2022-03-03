@@ -9,27 +9,50 @@
   </head>
 
   <body>
-    <div id="js-loading" class="loading"></div>
-    <button id="js-modalDisplay" type="submit">モーダル表示</button>
-
-    <div class="wrap" id="js-wrap">
-      <ul class="list" id="js-list"></ul>
+    <div class="wrap" id="js_wrap">
+      <ul class="list" id="js_list"></ul>
     </div>
 
-    <div id="js-modal" class="modal">
-      <div id="js-modalContainer" class="modal__container">
-        <form action="#" method="get" name="form">
-          <label for="js-numberBox">数字</label>
-          <input id="js-numberBox" type="number" name="number" value="" />
+    <div id="js_modal">
+      <form action="#" method="get" name="form">
+        <table>
+          <tbody>
+            <tr>
+              <th></th>
+              <td><div class="err_msg_num"></div></td>
+            </tr>
 
-          <label for="js-nameBox">名前</label>
-          <input id="js-nameBox" type="text" name="name" value="" />
+            <tr>
+              <th>
+                <label for="js_numBox">数字</label>
+              </th>
+              <td>
+                <input id="js_numBox" type="number" name="num" value="" />
+              </td>
+            </tr>
 
-          <button id="js-submitBtn" type="submit">送信する</button>
-          <input id="js-closedBtn" type="button" value="閉じる" />
-        </form>
-      </div>
+            <tr>
+              <th></th>
+              <td><div class="err_msg_name"></div></td>
+            </tr>
+            <tr>
+              <th>
+                <label for="js_nameBox">名前</label>
+              </th>
+              <td>
+                <input id="js_nameBox" type="text" name="name" value="" />
+              </td>
+            </tr>
+
+            <tr>
+              <th></th>
+              <td><button id="js_submitBtn" type="submit">送信</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
     </div>
+
     <script src="./index.js"></script>
   </body>
 </html>
