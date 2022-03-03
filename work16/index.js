@@ -2,26 +2,35 @@
 const body = document.getElementsByTagName("body");
 const tabs = document.getElementById("tabs");
 const fragment = document.createDocumentFragment();
+const url = "http://myjson.dit.upm.es/api/bins/dnzp";
 
 async function getData() {
   try {
-    const response = (
-      await fetch("http://myjson.dit.upm.es/api/bins/dnzp")
-    ).json();
-    return response;
-  } catch (error) {
-    tabs.display = "none";
-    body.textContent = error;
+    const response = await fetch(url);
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      throw new Error(`Server request failed:${response.statusText}`);
+    }
+  } catch (e) {
+    console.error(e);
   }
 }
 
-async function getJSON() {
-  const { data } = await getData();
-  return data;
+async function getListData() {
+  try {
+    const { data } = await getData();
+    console.log(data);
+    return data;
+  } catch (e) {
+    tabs.textContent = `エラー内容:${e.message}`;
+  } finally {
+    // hideLoading();
+  }
 }
 
-getJSON().then((value) => {
-  console.log(value);
+getListData().then((value) => {
   value.forEach((element) => {
     console.log(element);
     createListTag(element);
@@ -33,6 +42,10 @@ getJSON().then((value) => {
 // トピックの画像を表示する
 // 作ったListタグの直下にコンテンツの分だけListタグを作る
 //
+
+// async function init() {
+
+// }
 
 function createListTag(array) {
   console.log(array);
