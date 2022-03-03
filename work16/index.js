@@ -1,6 +1,6 @@
 "use strict";
 const body = document.getElementsByTagName("body");
-const tabs = document.getElementById("tabs");
+const tabs = document.getElementById("js_tabs");
 const fragment = document.createDocumentFragment();
 const url = "http://myjson.dit.upm.es/api/bins/dnzp";
 
@@ -29,15 +29,14 @@ async function getListData() {
     // hideLoading();
   }
 }
-
-getListData().then((value) => {
-  value.forEach((element) => {
-    console.log(element);
-    createListTag(element);
-    // console.log(createListTag(element));
+function init() {
+  getListData().then((value) => {
+    value.forEach((element) => {
+      createTag(element);
+      // console.log(createListTag(element));
+    });
   });
-});
-
+}
 // ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
 // トピックの画像を表示する
 // 作ったListタグの直下にコンテンツの分だけListタグを作る
@@ -47,7 +46,7 @@ getListData().then((value) => {
 
 // }
 
-function createListTag(array) {
+function createTag(array) {
   console.log(array);
   const tab = document.createElement("li");
   const button = document.createElement("button");
@@ -65,3 +64,5 @@ function createListTag(array) {
 //   fragment.appendChild(tab);
 //   tab.className = "tab";
 // tabs.appendChild(fragment);
+
+init();

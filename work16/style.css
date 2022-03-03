@@ -1,8 +1,18 @@
-li {
+* {
   list-style-type: none;
 }
 
-li button {
+.tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.tab {
+  text-decoration: none;
+}
+
+.tab button {
   color: red;
 }
 /*# sourceMappingURL=style.css.map */

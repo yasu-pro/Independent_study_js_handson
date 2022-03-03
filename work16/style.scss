@@ -1,4 +1,10 @@
-li {
+* {
+  list-style-type: none;
+}
+.tabs {
+  display: flex;
+}
+.tab {
   text-decoration: none;
   button {
     color: red;
