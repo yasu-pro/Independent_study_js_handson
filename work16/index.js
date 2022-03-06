@@ -29,6 +29,7 @@ async function getListData() {
     // hideLoading();
   }
 }
+
 function init() {
   getListData().then((value) => {
     value.forEach((element) => {
@@ -48,21 +49,17 @@ function init() {
 
 function createTag(array) {
   console.log(array);
-  const tab = document.createElement("li");
-  const button = document.createElement("button");
+  const tabElement = document.createElement("li");
+  const button = document.createElement("a");
   const field = array.field;
 
-  tab.className = "tab";
+  tabElement.className = "tab";
+  button.href = "#";
   button.textContent = field;
 
-  tab.appendChild(button);
-  fragment.appendChild(tab);
+  tabElement.appendChild(button);
+  fragment.appendChild(tabElement);
   tabs.appendChild(fragment);
 }
-
-//   const tab = document.createElement("li");
-//   fragment.appendChild(tab);
-//   tab.className = "tab";
-// tabs.appendChild(fragment);
 
 init();
