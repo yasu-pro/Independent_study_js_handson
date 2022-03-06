@@ -30,12 +30,11 @@ async function getListData() {
   }
 }
 
-function init() {
-  getListData().then((value) => {
-    value.forEach((element) => {
-      createTag(element);
-      // console.log(createListTag(element));
-    });
+async function init() {
+  const data = await getListData();
+  data.forEach((element) => {
+    createTag(element);
+    // console.log(createListTag(element));
   });
 }
 // ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
