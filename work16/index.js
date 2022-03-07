@@ -34,11 +34,22 @@ async function init() {
   loading();
   const data = await getListData();
   renderTheCreatedTag(data);
+  tabClickEvent();
 }
 // ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
 // トピックの画像を表示する
 // 作ったListタグの直下にコンテンツの分だけListタグを作る
 //
+
+function tabClickEvent() {
+  const tabNodeList = document.querySelectorAll(".tab");
+  console.log(tabNodeList);
+  tabNodeList.forEach((tabElement, index) => {
+    tabElement.addEventListener("click", (target) => {
+      console.log("hoge" + target + index);
+    });
+  });
+}
 
 function loading() {
   const loadDivElement = document.createElement("div");
