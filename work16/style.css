@@ -2,6 +2,11 @@
   list-style-type: none;
 }
 
+.load {
+  width: 100px;
+  height: 100px;
+}
+
 .tabs {
   display: -webkit-box;
   display: -ms-flexbox;

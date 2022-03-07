@@ -1,5 +1,5 @@
 "use strict";
-const body = document.getElementsByTagName("body");
+const body = document.querySelector("body");
 const tabs = document.getElementById("js_tabs");
 const fragment = document.createDocumentFragment();
 const url = "http://myjson.dit.upm.es/api/bins/dnzp";
@@ -26,15 +26,15 @@ async function getListData() {
   } catch (e) {
     tabs.textContent = `エラー内容:${e.message}`;
   } finally {
-    // hideLoading();
+    hideLoading();
   }
 }
 
 async function init() {
+  loading();
   const data = await getListData();
   data.forEach((element) => {
     createTag(element);
-    // console.log(createListTag(element));
   });
 }
 // ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
@@ -46,8 +46,22 @@ async function init() {
 
 // }
 
+function loading() {
+  const loadDivElement = document.createElement("div");
+  const loadImgElement = document.createElement("img");
+  loadDivElement.id = "load_wrap";
+  loadImgElement.src = "./img/loading-circle.gif";
+
+  body.prepend(loadDivElement);
+  loadDivElement.appendChild(loadImgElement);
+}
+
+function hideLoading() {
+  const loadWrap = document.getElementById("load_wrap");
+  loadWrap.remove();
+}
+
 function createTag(array) {
-  console.log(array);
   const tabElement = document.createElement("li");
   const button = document.createElement("a");
   const field = array.field;
