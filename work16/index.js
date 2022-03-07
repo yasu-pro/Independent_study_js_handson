@@ -2,7 +2,7 @@
 const body = document.querySelector("body");
 const tabs = document.getElementById("js_tabs");
 const fragment = document.createDocumentFragment();
-const url = "http://myjson.dit.upm.es/api/bins/dnzp";
+const url = "http://myjson.dit.upm.es/api/bins/c3j7";
 
 async function getData() {
   try {
@@ -34,21 +34,45 @@ async function init() {
   loading();
   const data = await getListData();
   renderTheCreatedTag(data);
-  tabClickEvent();
+  tabClickEvent(data);
 }
 // ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
 // トピックの画像を表示する
 // 作ったListタグの直下にコンテンツの分だけListタグを作る
 //
 
-function tabClickEvent() {
+function tabClickEvent(data) {
+  let pastIndex;
   const tabNodeList = document.querySelectorAll(".tab");
-  console.log(tabNodeList);
+
   tabNodeList.forEach((tabElement, index) => {
     tabElement.addEventListener("click", (target) => {
-      console.log("hoge" + target + index);
+      renderContent(data, index, pastIndex);
+      pastIndex = index;
     });
   });
+}
+
+function renderContent(data, index, pastIndex) {
+  const clikcedContentDivElement = document.createElement("div");
+  const pastClickedContentDivElement = document.querySelector(
+    `${"div.content_wrap" + pastIndex}`
+  );
+  clikcedContentDivElement.classList.toggle("content_wrap" + index);
+
+  if (pastClickedContentDivElement) {
+    pastClickedContentDivElement.remove();
+  }
+
+  const { contents } = data[index];
+  console.log(contents);
+  tabDetailsNews(contents);
+
+  body.insertBefore(clikcedContentDivElement, tabs.nextSibling);
+}
+
+function tabDetailsNews() {
+  const tabDetailsNewsUlElement = document.createElement("ul");
 }
 
 function loading() {

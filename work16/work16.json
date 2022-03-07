@@ -31,22 +31,22 @@
       "img": "./img/economy_img.jpg",
       "contents": [
         {
-          "title": "記事タイトル1",
+          "title": "経済記事タイトル1",
           "new": "new",
           "comments": 431
         },
         {
-          "title": "記事タイトル2",
+          "title": "経済記事タイトル2",
           "new": "new",
           "comments": 3821
         },
         {
-          "title": "記事タイトル3",
+          "title": "経済記事タイトル3",
           "new": "none",
           "comments": 431
         },
         {
-          "title": "記事タイトル4",
+          "title": "経済記事タイトル4",
           "new": "none",
           "comments": 200
         }
@@ -57,22 +57,22 @@
       "img": "./img/entertainment_img.jpg",
       "contents": [
         {
-          "title": "記事タイトル1",
+          "title": "エンタメ記事タイトル1",
           "new": "new",
           "comments": 431
         },
         {
-          "title": "記事タイトル2",
+          "title": "エンタメ記事タイトル2",
           "new": "new",
           "comments": 3821
         },
         {
-          "title": "記事タイトル3",
+          "title": "エンタメ記事タイトル3",
           "new": "none",
           "comments": 431
         },
         {
-          "title": "記事タイトル4",
+          "title": "エンタメ記事タイトル4",
           "new": "none",
           "comments": 200
         }
@@ -83,22 +83,22 @@
       "img": "./img/sports_img.jpg",
       "contents": [
         {
-          "title": "記事タイトル1",
+          "title": "スポーツ記事タイトル1",
           "new": "new",
           "comments": 431
         },
         {
-          "title": "記事タイトル2",
+          "title": "スポーツ記事タイトル2",
           "new": "new",
           "comments": 3821
         },
         {
-          "title": "記事タイトル3",
+          "title": "スポーツ記事タイトル3",
           "new": "none",
           "comments": 431
         },
         {
-          "title": "記事タイトル4",
+          "title": "スポーツ記事タイトル4",
           "new": "none",
           "comments": 200
         }
@@ -109,22 +109,22 @@
       "img": "./img/domestic_img.jpg",
       "contents": [
         {
-          "title": "記事タイトル1",
+          "title": "国内記事タイトル1",
           "new": "new",
           "comments": 431
         },
         {
-          "title": "記事タイトル2",
+          "title": "国内記事タイトル2",
           "new": "new",
           "comments": 3821
         },
         {
-          "title": "記事タイトル3",
+          "title": "国内記事タイトル3",
           "new": "none",
           "comments": 431
         },
         {
-          "title": "記事タイトル4",
+          "title": "国内記事タイトル4",
           "new": "none",
           "comments": 200
         }
