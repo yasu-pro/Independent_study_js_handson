@@ -33,18 +33,12 @@ async function getListData() {
 async function init() {
   loading();
   const data = await getListData();
-  data.forEach((element) => {
-    createTag(element);
-  });
+  renderTheCreatedTag(data);
 }
 // ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
 // トピックの画像を表示する
 // 作ったListタグの直下にコンテンツの分だけListタグを作る
 //
-
-// async function init() {
-
-// }
 
 function loading() {
   const loadDivElement = document.createElement("div");
@@ -61,17 +55,20 @@ function hideLoading() {
   loadWrap.remove();
 }
 
-function createTag(array) {
-  const tabElement = document.createElement("li");
-  const button = document.createElement("a");
-  const field = array.field;
+function renderTheCreatedTag(data) {
+  data.forEach((element) => {
+    const tabElement = document.createElement("li");
+    const button = document.createElement("a");
+    const field = element.field;
 
-  tabElement.className = "tab";
-  button.href = "#";
-  button.textContent = field;
+    tabElement.className = "tab";
+    button.href = "#";
+    button.textContent = field;
 
-  tabElement.appendChild(button);
-  fragment.appendChild(tabElement);
+    tabElement.appendChild(button);
+    fragment.appendChild(tabElement);
+  });
+
   tabs.appendChild(fragment);
 }
 
