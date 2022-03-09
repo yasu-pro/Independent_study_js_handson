@@ -15,3 +15,14 @@
     color: red;
   }
 }
+div[class*="content_wrap"] {
+  li {
+    position: relative;
+    display: block;
+    &:before {
+      content: "・";
+      position: absolute;
+      left: -15px;
+    }
+  }
+}
