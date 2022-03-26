@@ -13,14 +13,25 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  background-color: #e6ecfe;
+  width: 50%;
 }
 
 .tab {
   text-decoration: none;
 }
 
+.tab.select {
+  background-color: #fff;
+}
+
+.tab.select a {
+  color: #000;
+  font-weight: 700;
+}
+
 .tab a {
-  color: red;
+  color: #1d3994;
 }
 
 div[class*="content_wrap"] li {

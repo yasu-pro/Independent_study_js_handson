@@ -139,26 +139,25 @@ const jsonData = {
   ],
 };
 
-// async function getData() {
-//   try {
-//     const response = await fetch(url);
-//     if (response.ok) {
-//       const json = await response.json();
-//       return json;
-//     } else {
-//       throw new Error(`Server request failed:${response.statusText}`);
-//     }
-//   } catch (e) {
-//     console.error(e);
-//   }
-// }
-
 async function getData() {
-  const response = await jsonData;
-  return jsonData;
+  try {
+    // const response = await fetch(url);
+    // if (response.ok) {
+    //   const json = await response.json();
+    //   return json;
+    // } else {
+    //   console.error(`${response.status}:${response.statusText}`);
+    // }
+    // 下記は、固定値をそのままpromiseの返り値とする
+    const json = jsonData;
+    return json;
+  } catch (e) {
+    throw new Error(e);
+  }
 }
 
-async function getListData() {
+async function init() {
+  loading();
   try {
     const { data } = await getData();
     return data;
@@ -167,10 +166,6 @@ async function getListData() {
   } finally {
     hideLoading();
   }
-}
-
-async function init() {
-  loading();
   const data = await getListData();
   renderTheCreatedTag(data);
   tabClickEvent(data);

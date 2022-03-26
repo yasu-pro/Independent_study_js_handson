@@ -8,11 +8,20 @@
 }
 .tabs {
   display: flex;
+  background-color: #e6ecfe;
+  width: 50%;
 }
 .tab {
   text-decoration: none;
+  &.select {
+    background-color: #fff;
+    a {
+      color: #000;
+      font-weight: 700;
+    }
+  }
   a {
-    color: red;
+    color: #1d3994;
   }
 }
 div[class*="content_wrap"] {
