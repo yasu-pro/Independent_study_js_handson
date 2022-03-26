@@ -1,7 +1,6 @@
 "use strict";
 const body = document.querySelector("body");
 const tabs = document.getElementById("js_tabs");
-const fragment = document.createDocumentFragment();
 const url = "https://myjson.dit.upm.es/api/bins/c3j7";
 
 const jsonData = {
@@ -150,46 +149,45 @@ async function getData() {
     // }
     // 下記は、固定値をそのままpromiseの返り値とする
     const json = jsonData;
-    return json;
+    return json.data;
   } catch (e) {
     throw new Error(e);
   }
 }
 
 async function init() {
-  loading();
+  renderLoading();
+  let listData;
   try {
-    const { data } = await getData();
-    return data;
+    listData = await getData();
   } catch (e) {
     tabs.textContent = `エラー内容:${e.message}`;
   } finally {
     hideLoading();
   }
-  const data = await getListData();
-  renderTheCreatedTag(data);
-  tabClickEvent(data);
+  renderTheCreatedTag(listData);
+  tabClickEvent(listData);
 }
 // ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
 // トピックの画像を表示する
 // 作ったListタグの直下にコンテンツの分だけListタグを作る
 //
 
-function tabClickEvent(data) {
+function tabClickEvent(listData) {
   let pastIndex;
   const tabNodeList = document.querySelectorAll(".tab");
 
   tabNodeList.forEach((tabElement, index) => {
     tabElement.addEventListener("click", (target) => {
-      renderContent(data, index, pastIndex);
+      renderContent(listData, index, pastIndex);
       pastIndex = index;
     });
   });
 }
 
-function renderContent(data, index, pastIndex) {
+function renderContent(listData, index, pastIndex) {
   let contentWrap;
-  const { contents } = data[index];
+  const { contents } = listData[index];
   const createDiv = document.createElement("div");
   const pastClickedContentDivElement = document.querySelector(
     `${"div.content_wrap" + pastIndex}`
@@ -220,7 +218,7 @@ function tabDetailsNews(contents) {
   return tabDetailsNewsUlElement;
 }
 
-function loading() {
+function renderLoading() {
   const loadDivElement = document.createElement("div");
   const loadImgElement = document.createElement("img");
   loadDivElement.id = "load_wrap";
@@ -235,8 +233,10 @@ function hideLoading() {
   loadWrap.remove();
 }
 
-function renderTheCreatedTag(data) {
-  data.forEach((element) => {
+function renderTheCreatedTag(listData) {
+  console.log(listData);
+  const fragment = document.createDocumentFragment();
+  listData.forEach((element) => {
     const tabElement = document.createElement("li");
     const button = document.createElement("a");
     const field = element.field;
