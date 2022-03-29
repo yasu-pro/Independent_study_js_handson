@@ -229,8 +229,7 @@ function renderLoading() {
 }
 
 function hideLoading() {
-  const loadWrap = document.getElementById("load_wrap");
-  loadWrap.remove();
+  document.getElementById("load_wrap").remove();
 }
 
 function renderTheCreatedTag(listData) {
