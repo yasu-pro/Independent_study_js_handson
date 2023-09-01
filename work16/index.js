@@ -1,254 +1,114 @@
 "use strict";
 const body = document.querySelector("body");
-const tabs = document.getElementById("js_tabs");
-const url = "https://myjson.dit.upm.es/api/bins/c3j7";
+const ulElemTabs = document.getElementById("js_tabs");
+const apiURL = "http://localhost:3000/data";
 
-const jsonData = {
-  data: [
-    {
-      field: "ニュース",
-      img: "./img/news_img.jpg",
-      contents: [
-        {
-          title: "阪神淡路26年 変わらぬ想い",
-          new: "new",
-          comment: 0,
-        },
-        {
-          title: "バス落下免れ震災語る運転手",
-          new: "none",
-          comment: 212,
-        },
-        {
-          title: "Gサミット2年ぶり対面開催へ",
-          new: "none",
-          comment: 433,
-        },
-        {
-          title: "有料住宅普及進まぬEU",
-          new: "new",
-          comment: 513,
-        },
-      ],
-    },
-    {
-      field: "経済",
-      img: "./img/economy_img.jpg",
-      contents: [
-        {
-          title: "経済記事タイトル1",
-          new: "new",
-          comments: 431,
-        },
-        {
-          title: "経済記事タイトル2",
-          new: "new",
-          comments: 3821,
-        },
-        {
-          title: "経済記事タイトル3",
-          new: "none",
-          comments: 431,
-        },
-        {
-          title: "経済記事タイトル4",
-          new: "none",
-          comments: 200,
-        },
-      ],
-    },
-    {
-      field: "エンタメ",
-      img: "./img/entertainment_img.jpg",
-      contents: [
-        {
-          title: "エンタメ記事タイトル1",
-          new: "new",
-          comments: 431,
-        },
-        {
-          title: "エンタメ記事タイトル2",
-          new: "new",
-          comments: 3821,
-        },
-        {
-          title: "エンタメ記事タイトル3",
-          new: "none",
-          comments: 431,
-        },
-        {
-          title: "エンタメ記事タイトル4",
-          new: "none",
-          comments: 200,
-        },
-      ],
-    },
-    {
-      field: "スポーツ",
-      img: "./img/sports_img.jpg",
-      contents: [
-        {
-          title: "スポーツ記事タイトル1",
-          new: "new",
-          comments: 431,
-        },
-        {
-          title: "スポーツ記事タイトル2",
-          new: "new",
-          comments: 3821,
-        },
-        {
-          title: "スポーツ記事タイトル3",
-          new: "none",
-          comments: 431,
-        },
-        {
-          title: "スポーツ記事タイトル4",
-          new: "none",
-          comments: 200,
-        },
-      ],
-    },
-    {
-      field: "国内",
-      img: "./img/domestic_img.jpg",
-      contents: [
-        {
-          title: "国内記事タイトル1",
-          new: "new",
-          comments: 431,
-        },
-        {
-          title: "国内記事タイトル2",
-          new: "new",
-          comments: 3821,
-        },
-        {
-          title: "国内記事タイトル3",
-          new: "none",
-          comments: 431,
-        },
-        {
-          title: "国内記事タイトル4",
-          new: "none",
-          comments: 200,
-        },
-      ],
-    },
-  ],
-};
-
-async function getData() {
+const getData = async() => {
   try {
-    // const response = await fetch(url);
-    // if (response.ok) {
-    //   const json = await response.json();
-    //   return json;
-    // } else {
-    //   console.error(`${response.status}:${response.statusText}`);
-    // }
-    // 下記は、固定値をそのままpromiseの返り値とする
-    const json = jsonData;
-    return json.data;
+    const response = await fetch(apiURL);
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      const error = new Error(`${response.status}:${response.statusText}`)
+      error.response = response;
+      throw error;
+    }
   } catch (e) {
     throw new Error(e);
   }
 }
 
-async function init() {
-  renderLoading();
-  let listData;
-  try {
-    listData = await getData();
-  } catch (e) {
-    tabs.textContent = `エラー内容:${e.message}`;
-  } finally {
-    hideLoading();
-  }
-  renderTheCreatedTag(listData);
-  tabClickEvent(listData);
-}
-// ulの直下に記事の分だけlistタグを作り、fieldの値を取得してタブにする
-// トピックの画像を表示する
-// 作ったListタグの直下にコンテンツの分だけListタグを作る
-//
-
-function tabClickEvent(listData) {
-  let pastIndex;
-  const tabNodeList = document.querySelectorAll(".tab");
-
-  tabNodeList.forEach((tabElement, index) => {
-    tabElement.addEventListener("click", (target) => {
-      renderContent(listData, index, pastIndex);
-      pastIndex = index;
-    });
-  });
-}
-
-function renderContent(listData, index, pastIndex) {
-  let contentWrap;
-  const { contents } = listData[index];
-  const createDiv = document.createElement("div");
-  const pastClickedContentDivElement = document.querySelector(
-    `${"div.content_wrap" + pastIndex}`
-  );
-  createDiv.classList.add(`${"content_wrap" + index}`);
-
-  if (pastClickedContentDivElement) {
-    pastClickedContentDivElement.remove();
-  }
-
-  body.insertBefore(createDiv, tabs.nextSibling);
-  contentWrap = document.querySelector(`${".content_wrap" + index}`);
-
-  tabDetailsNews(contents);
-  contentWrap.appendChild(tabDetailsNews(contents));
-}
-
-function tabDetailsNews(contents) {
-  const tabDetailsNewsUlElement = document.createElement("ul");
+const createCategoryTab = async () => {
+  const listData = await getData();
   const fragment = document.createDocumentFragment();
-  contents.forEach((element) => {
-    const tabDetailsNewsLiElement = document.createElement("li");
 
-    tabDetailsNewsLiElement.textContent = `${element.title}`;
-    fragment.appendChild(tabDetailsNewsLiElement);
-  });
-  tabDetailsNewsUlElement.appendChild(fragment);
-  return tabDetailsNewsUlElement;
+  listData.forEach((categoryData)=> {
+    const liElem = document.createElement("li");
+    liElem.classList=`tab ${categoryData.category}`
+
+    const aElem = document.createElement("a");
+    liElem.appendChild(aElem);
+
+    let categoryTitle ="";
+
+    switch (categoryData.category) {
+      case "news":
+        categoryTitle = "ニュース";
+        break;
+
+      case "economy":
+        categoryTitle = "経済";
+        break;
+
+      case "entertainment":
+        categoryTitle = "エンタメ";
+        break;
+
+      case "sports":
+        categoryTitle = "スポーツ";
+        break;
+
+      case "domestic":
+        categoryTitle = "国内";
+        break;
+
+      default:
+        break;
+    }
+
+    aElem.innerText = categoryTitle;
+    fragment.appendChild(liElem);
+  })
+
+  ulElemTabs.appendChild(fragment);
+  ulElemTabs.classList = "tabTopics"
+  return ulElemTabs;
 }
 
-function renderLoading() {
-  const loadDivElement = document.createElement("div");
-  const loadImgElement = document.createElement("img");
-  loadDivElement.id = "load_wrap";
-  loadImgElement.src = "./img/loading-circle.gif";
+const createTabPanel = () => {
+  const sectionElem = document.createElement("section");
+  const divElemTabPanelWrap = document.createElement("div");
+  divElemTabPanelWrap.classList = "tabPanelWrap"
+  const divElemMainNewsContent = document.createElement("div");
+  divElemMainNewsContent.classList = "mainNewsContent"
 
-  body.prepend(loadDivElement);
-  loadDivElement.appendChild(loadImgElement);
+  sectionElem.appendChild(divElemTabPanelWrap);
+  divElemTabPanelWrap.appendChild(divElemMainNewsContent);
+
+  return sectionElem;
 }
 
-function hideLoading() {
-  document.getElementById("load_wrap").remove();
+const createArticle = () => {
+  const articleElem = document.createElement("article");
+  return articleElem
 }
 
-function renderTheCreatedTag(listData) {
-  console.log(listData);
-  const fragment = document.createDocumentFragment();
-  listData.forEach((element) => {
-    const tabElement = document.createElement("li");
-    const button = document.createElement("a");
-    const field = element.field;
+const renderElem = async() => {
+  const articleElem = createArticle();
+  const divElemTabToics = await createCategoryTab();
+  const sectionElem = createTabPanel();
 
-    tabElement.className = "tab";
-    button.href = "#";
-    button.textContent = field;
-
-    tabElement.appendChild(button);
-    fragment.appendChild(tabElement);
-  });
-
-  tabs.appendChild(fragment);
+  articleElem.appendChild(divElemTabToics);
+  articleElem.appendChild(sectionElem);
+  body.insertBefore(articleElem, body.firstChild);
 }
 
-init();
+
+renderElem();
+
+
+const lazyLoad = () => {
+  const div = document.createElement('div');
+  div.classList='load'
+  const img = document.createElement('img');
+  img.src = "./img/loading-circle.gif"
+
+  div.appendChild(img);
+  document.body.appendChild(div);
+}
+
+
+
+
+
