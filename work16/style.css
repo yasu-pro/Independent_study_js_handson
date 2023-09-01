@@ -9,39 +9,29 @@
   background-repeat: no-repeat;
 }
 
-.tabs {
-  display: -webkit-box;
-  display: -ms-flexbox;
+.tabTopics {
   display: flex;
   background-color: #e6ecfe;
   width: 50%;
 }
 
-.tab {
-  text-decoration: none;
-}
-
-.tab.select {
-  background-color: #fff;
-}
-
-.tab.select a {
-  color: #000;
-  font-weight: 700;
-}
-
 .tab a {
+  font-weight: 700;
   color: #1d3994;
 }
+.tab a:hover {
+  cursor: pointer;
+}
 
-div[class*="content_wrap"] li {
+div[class*=content_wrap] {
+  display: flex;
+}
+div[class*=content_wrap] li {
   position: relative;
   display: block;
 }
-
-div[class*="content_wrap"] li:before {
+div[class*=content_wrap] li:before {
   content: "・";
   position: absolute;
   left: -15px;
-}
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

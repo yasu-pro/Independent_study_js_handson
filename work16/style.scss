@@ -6,25 +6,22 @@
   height: 100px;
   background-repeat: no-repeat;
 }
-.tabs {
+.tabTopics {
   display: flex;
   background-color: #e6ecfe;
   width: 50%;
 }
 .tab {
-  text-decoration: none;
-  &.select {
-    background-color: #fff;
-    a {
-      color: #000;
-      font-weight: 700;
-    }
-  }
   a {
+    font-weight: 700;
     color: #1d3994;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 div[class*="content_wrap"] {
+  display: flex;
   li {
     position: relative;
     display: block;
