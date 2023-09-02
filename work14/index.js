@@ -1,57 +1,94 @@
 "use strict";
-const wrap = document.getElementById("js-wrap");
-const ul = document.getElementById("js-list");
-const submit = document.getElementById("js-submit");
-const modal_button = document.getElementById("js-modal-display");
-const modal = document.getElementById("js-modal");
-const number_box = document.getElementById("js-number-box");
-const url = "http://myjson.dit.upm.es/api/bins/ajy3";
-let number = 0;
+const wrap = document.getElementById("js_wrap");
+const ul = document.getElementById("js_list");
+let inputNumVal = 0;
 
-function getData() {
-  const result = new Promise((resolve, reject) => {
-    resolve(
-      (async function () {
-        const response = (await fetch(url)).json();
-        return response;
-      })()
-    );
-  });
-  return result;
-}
+// const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
+// const url = "https://myjson.dit.upm.es/api/bins/fhzj";
+const url = "https://myjson.dit.upm.es/api/bins/86vb";
+// 下記は、myjson繋がらない時の固定値
+// const url = {
+//   data: [
+//     {
+//       a: "bookmark",
+//       img: "img/1.png",
+//       alt: "画像１",
+//       text: "ブックマーク",
+//     },
+//     {
+//       a: "message",
+//       img: "img/2.png",
+//       alt: "画像２",
+//       text: "メッセージ",
+//     },
+//   ],
+// };
 
-async function displayView() {
+async function getData() {
   try {
-    console.log(number);
-    const arrayData = await getData();
-    createElement(arrayData);
+    const response = await fetch(url);
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      throw new Error(`Server request failed:${response.statusText}`);
+    }
   } catch (e) {
-    wrap.textContent = e.message;
-  } finally {
-    hideLoading();
+    console.error(e);
   }
 }
 
-function hideLoading() {
-  ul.style.backgroundImage = "none";
+// 下記は、固定値をそのままpromiseの返り値とする
+// async function getData() {
+//   return url;
+// }
+
+async function getListData() {
+  let listData;
+  try {
+    listData = await getData();
+  } catch (e) {
+    wrap.textContent = `エラー内容:${e.message}`;
+  } finally {
+    hideLoading();
+  }
+  if (listData.data.length === 0) {
+    wrap.textContent = "data is empty";
+    return;
+  }
+  return listData;
 }
 
-function createElement(imgArray) {
+const init = async () => {
+  loading();
+  const data = await getListData();
+  renderListElement(data);
+  console.log(inputNumVal);
+};
+
+function hideLoading() {
+  ul.style.backgroundImage = "none";
+  ul.style.height = "auto";
+}
+
+function renderListElement({ data }) {
   const fragment = document.createDocumentFragment();
 
-  Object.keys(imgArray).forEach((key) => {
-    imgArray[key].forEach((keyIndex) => {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      const img = document.createElement("img");
+  data.forEach((value) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    const img = document.createElement("img");
 
-      a.href = keyIndex.a;
-      a.textContent = keyIndex.text;
-      img.src = keyIndex.img;
-      img.alt = keyIndex.alt;
-      fragment.appendChild(li).appendChild(a).prepend(img);
-    });
+    a.href = value.a;
+    a.textContent = value.text;
+    img.src = value.img;
+    img.alt = value.alt;
+    img.style.width = "30px";
+    img.style.verticalAlign = "middle";
+
+    fragment.appendChild(li).appendChild(a).prepend(img);
   });
+
   ul.appendChild(fragment);
 }
 
@@ -61,18 +98,73 @@ function loading() {
   ul.style.height = "100px";
 }
 
-submit.addEventListener("click", () => {
-  modal.style.display = "none";
-  modal_button.style.display = "block";
-  wrap.style.display = "block";
+function renderBtn() {
+  const modal_wrap = document.getElementById("js_modal_wrap");
+  const button_wrap = document.createElement("div");
+  const buttonTag = document.createElement("button");
 
-  number = number_box.value;
-  loading();
-  displayView();
+  button_wrap.id = "js_button_wrap";
+
+  buttonTag.id = "js_button";
+  buttonTag.type = "submit";
+  buttonTag.textContent = "クリック";
+
+  modal_wrap.appendChild(button_wrap);
+  button_wrap.appendChild(buttonTag);
+}
+
+function renderModalBtn() {
+  const modal_button = document.createElement("button");
+  modal_button.id = "js_modal_button";
+  modal_button.type = "submit";
+  modal_button.textContent = "モーダル";
+
+  wrap.after(modal_button);
+}
+
+function renderModalContent() {
+  const modal = document.createElement("div");
+  const div = document.createElement("div");
+
+  modal.id = "js_modal";
+  div.id = "js_modal_wrap";
+
+  wrap.after(modal);
+  modal.appendChild(div);
+}
+
+function renderInput() {
+  const input = document.createElement("input");
+  const modal_wrap = document.getElementById("js_modal_wrap");
+  const button_wrap = document.getElementById("js_button_wrap");
+  input.id = "input_number";
+  input.type = "number";
+
+  modal_wrap.insertBefore(input, button_wrap);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const modal_button = document.getElementById("js_modal_button");
+
+  modal_button.addEventListener("click", () => {
+    modal_button.style.display = "none";
+    renderModalContent();
+    renderBtn();
+    renderInput();
+  });
+
+  document.addEventListener("click", (e) => {
+    const modalElement = document.getElementById("js_modal");
+    const request_btn = document.getElementById("js_button");
+    const input_number = document.getElementById("input_number");
+    if (e.target && e.target.id === "js_button") {
+      inputNumVal = input_number.value;
+      init();
+      modalElement.remove();
+      modal_button.remove();
+      request_btn.remove();
+    }
+  });
 });
 
-modal_button.addEventListener("click", () => {
-  modal.style.display = "block";
-  modal_button.style.display = "none";
-  wrap.style.display = "none";
-});
+renderModalBtn();

@@ -1,95 +1,151 @@
 "use strict";
-const load = document.getElementById("js-loading");
-const wrap = document.getElementById("js-wrap");
-const submit = document.getElementById("js-submitBtn");
-const closedBtn = document.getElementById("js-closedBtn");
-const modalBtn = document.getElementById("js-modalDisplay");
-const modal = document.getElementById("js-modal");
-const url = "http://myjson.dit.upm.es/api/bins/ajy3";
-let number = 0;
-let name = "";
+const wrap = document.getElementById("js_wrap");
+const ul = document.getElementById("js_list");
+const modal = document.getElementById("js_modal");
+const submit_btn = document.getElementById("js_submitBtn");
+const input_num = document.getElementById("js_numBox");
+const input_name = document.getElementById("js_nameBox");
 
-function getData() {
-  const result = new Promise((resolve, reject) => {
-    resolve(
-      (async function () {
-        const response = (await fetch(url)).json();
-        return response;
-      })()
-    );
-  });
-  return result;
-}
+let inputNumVal = 0;
+let inputNameVal = 0;
+// const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
+// const url = "https://myjson.dit.upm.es/api/bins/fhzj";
+const url = "https://myjson.dit.upm.es/api/bins/86vb";
+// 下記は、myjson繋がらない時の固定値
+// const url = {
+//   data: [
+//     {
+//       a: "bookmark",
+//       img: "img/1.png",
+//       alt: "画像１",
+//       text: "ブックマーク",
+//     },
+//     {
+//       a: "message",
+//       img: "img/2.png",
+//       alt: "画像２",
+//       text: "メッセージ",
+//     },
+//   ],
+// };
 
-async function displayView() {
+async function getData() {
   try {
-    console.log(number);
-    const arrayData = await getData();
-    domCreateElement(arrayData);
+    const response = await fetch(url);
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      throw new Error(`Server request failed:${response.statusText}`);
+    }
   } catch (e) {
-    wrap.textContent = e.message;
-  } finally {
-    hideLoading();
+    console.error(e);
   }
 }
 
-function hideLoading() {
-  load.style.display = "none";
+// 下記は、固定値をそのままpromiseの返り値とする
+// async function getData() {
+//   return url;
+// }
+
+async function getListData() {
+  let listData;
+  try {
+    listData = await getData();
+  } catch (e) {
+    wrap.textContent = `エラー内容:${e.message}`;
+  } finally {
+    hideLoading();
+  }
+  if (listData.data.length === 0) {
+    wrap.textContent = "data is empty";
+    return;
+  }
+  return listData;
 }
 
-function domCreateElement(imgArray) {
-  const ul = document.getElementById("js-list");
+const init = async () => {
+  loading();
+  const data = await getListData();
+  renderListElement(data);
+  console.log(inputNumVal);
+  console.log(inputNameVal);
+};
+
+function hideLoading() {
+  ul.style.backgroundImage = "none";
+  ul.style.height = "auto";
+}
+
+function renderListElement({ data }) {
   const fragment = document.createDocumentFragment();
 
-  Object.keys(imgArray).forEach((key) => {
-    imgArray[key].forEach((keyIndex) => {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      const img = document.createElement("img");
+  data.forEach((value) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    const img = document.createElement("img");
 
-      a.href = keyIndex.a;
-      a.textContent = keyIndex.text;
-      img.src = keyIndex.img;
-      img.alt = keyIndex.alt;
-      fragment.appendChild(li).appendChild(a).prepend(img);
-    });
+    a.href = value.a;
+    a.textContent = value.text;
+    img.src = value.img;
+    img.alt = value.alt;
+    img.style.width = "30px";
+    img.style.verticalAlign = "middle";
+
+    fragment.appendChild(li).appendChild(a).prepend(img);
   });
+
   ul.appendChild(fragment);
 }
 
 function loading() {
-  const loadImg = document.createElement("img");
-
-  load.appendChild(loadImg);
-  load.style.display = "block";
-  load.style.backgroundImage = "url(./img/loading-circle.gif)";
-  load.style.backgroundRepeat = "no-repeat";
-  load.style.height = "100px";
+  ul.style.backgroundImage = "url(./img/loading-circle.gif)";
+  ul.style.backgroundRepeat = "no-repeat";
+  ul.style.height = "100px";
 }
 
-submit.addEventListener("click", () => {
-  const numberBox = document.getElementById("js-numberBox");
-  const nameBox = document.getElementById("js-nameBox");
+function renderModalBtn() {
+  const modal_btn_element = document.createElement("button");
+  modal_btn_element.id = "js_modal_btn";
+  modal_btn_element.type = "submit";
+  modal_btn_element.textContent = "モーダル";
 
-  number = numberBox.value;
-  name = nameBox.value;
+  wrap.after(modal_btn_element);
+}
 
-  modal.style.display = "none";
-  modalBtn.style.display = "block";
-  wrap.style.display = "block";
+window.addEventListener("DOMContentLoaded", () => {
+  const modal_btn = document.getElementById("js_modal_btn");
+  const errMsgNum = document.querySelector(".err_msg_num");
+  const errMsgName = document.querySelector(".err_msg_name");
 
-  loading();
-  displayView();
+  modal_btn.addEventListener("click", () => {
+    modal.style.display = "block";
+    modal_btn.remove();
+  });
+
+  submit_btn.addEventListener("click", (e) => {
+    if (!input_num.value) {
+      errMsgNum.classList.add("form_invalid");
+      errMsgNum.textContent = "入力されていません";
+      input_num.classList.add("input_invalid");
+    }
+    if (!input_name.value) {
+      errMsgName.classList.add("form_invalid");
+      errMsgName.textContent = "入力されていません";
+      input_name.classList.add("input_invalid");
+    } else {
+      errMsgNum.textContent = "";
+      errMsgNum.classList.remove("input-invalid");
+      errMsgName.textContent = "";
+      errMsgName.classList.remove("input-invalid");
+
+      inputNumVal = input_num.value;
+      inputNameVal = input_name.value;
+      modal.remove();
+      submit_btn.remove();
+      init();
+    }
+  });
 });
 
-modalBtn.addEventListener("click", () => {
-  modal.style.display = "block";
-  modalBtn.style.display = "none";
-  wrap.style.display = "none";
-});
-
-closedBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-  modalBtn.style.display = "block";
-  wrap.style.display = "block";
-});
+renderModalBtn();
