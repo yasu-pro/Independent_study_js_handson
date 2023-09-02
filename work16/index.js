@@ -5,9 +5,11 @@ const apiURL = "http://localhost:3000/data";
 
 const getData = async() => {
   try {
+    lazyLoad();
     const response = await fetch(apiURL);
     if (response.ok) {
       const json = await response.json();
+      deleteLazyLoad();
       return json;
     } else {
       const error = new Error(`${response.status}:${response.statusText}`)
@@ -19,8 +21,12 @@ const getData = async() => {
   }
 }
 
-const createCategoryTab = async () => {
-  const listData = await getData();
+const deleteLazyLoad = () => {
+  const loadElem = document.querySelector(".load");
+  loadElem.remove();
+}
+
+const createCategoryTab = async (listData) => {
   const fragment = document.createDocumentFragment();
 
   listData.forEach((categoryData)=> {
@@ -66,15 +72,15 @@ const createCategoryTab = async () => {
   return ulElemTabs;
 }
 
-const createTabPanel = () => {
+const createTabPanel = async(listData) => {
   const sectionElem = document.createElement("section");
   const divElemTabPanelWrap = document.createElement("div");
   divElemTabPanelWrap.classList = "tabPanelWrap"
-  const divElemMainNewsContent = document.createElement("div");
-  divElemMainNewsContent.classList = "mainNewsContent"
 
+  const newsContentNode = await displayInitialNews(listData);
+
+  divElemTabPanelWrap.appendChild(newsContentNode);
   sectionElem.appendChild(divElemTabPanelWrap);
-  divElemTabPanelWrap.appendChild(divElemMainNewsContent);
 
   return sectionElem;
 }
@@ -84,19 +90,132 @@ const createArticle = () => {
   return articleElem
 }
 
-const renderElem = async() => {
+const getNewsDisplayStatus = (listData) => {
+  const displayCategoryAllNews = listData.filter(newsDisplay => {
+    return newsDisplay.isFirstDisplay === true;
+  })
+
+  return displayCategoryAllNews;
+}
+
+// ニュースデータを表示する関数
+const displayNews = (newsData) => {
+  const ulElem = document.createElement("ul");
+  ulElem.classList = "newsList";
+  const fragment = document.createDocumentFragment();
+  const divElemMainNewsContent = document.createElement("div");
+  divElemMainNewsContent.classList = "mainNewsContent";
+
+  console.log(newsData);
+
+  newsData.forEach((newsItem) => {
+    newsItem.contents.forEach((news) => {
+      const liElem = document.createElement("li");
+
+      const aElemAritcleLink = document.createElement("a");
+      const h1Elem = document.createElement("h1");
+
+      const spanElemComentIcon = document.createElement("span");
+      spanElemComentIcon.classList = "commentIcon";
+      const aElemComentLink = document.createElement("a");
+
+      h1Elem.innerText = news.title;
+
+      const commentTotal = news.comments;
+      aElemComentLink.innerHTML = `
+        <i class="fas fa-regular fa-comment"></i>
+        <span class="commentIconNum">${commentTotal}</span>`;
+
+      liElem.appendChild(aElemAritcleLink);
+      aElemAritcleLink.appendChild(h1Elem);
+      if (news.isNew) {
+        const spanElemNewIcon = document.createElement("span");
+        spanElemNewIcon.classList = "newIcon";
+        spanElemNewIcon.innerHTML = "New";
+        aElemAritcleLink.appendChild(spanElemNewIcon);
+      }
+      liElem.appendChild(spanElemComentIcon);
+      spanElemComentIcon.appendChild(aElemComentLink);
+      fragment.appendChild(liElem);
+    });
+  });
+
+  ulElem.appendChild(fragment);
+  divElemMainNewsContent.appendChild(ulElem);
+
+  return divElemMainNewsContent;
+};
+
+const renderElem = async(listData) => {
   const articleElem = createArticle();
-  const divElemTabToics = await createCategoryTab();
-  const sectionElem = createTabPanel();
+  const divElemTabToics = await createCategoryTab(listData);
+  const sectionElem = await createTabPanel(listData);
 
   articleElem.appendChild(divElemTabToics);
   articleElem.appendChild(sectionElem);
   body.insertBefore(articleElem, body.firstChild);
 }
 
+// ページ読み込み時に初期カテゴリーのニュースデータを表示するための関数
+const displayInitialNews = async (listData) => {
+  const displayCategoryAllNews = await getNewsDisplayStatus(listData);
+  const newsContent = displayNews(displayCategoryAllNews);
 
-renderElem();
+  console.log(newsContent);
+  return newsContent;
+};
 
+// カテゴリー名を整形する関数
+const formatCategoryName = (className) => {
+  const categoryName = className.replace("tab", "").trim();
+  return categoryName;
+}
+
+const toggleNewsData = async(listData, className) => {
+  const clickedCategory = formatCategoryName(className);
+
+  const changeNewsData = listData.filter(newsCategoy => {
+    return newsCategoy.category === clickedCategory;
+  })
+
+  return changeNewsData;
+}
+
+const changeNewsDisplay = (changeNewsData) => {
+  const divElemMainNewsContent = document.querySelector('.mainNewsContent');
+  const divElemTabPanelWrap = document.querySelector('.tabPanelWrap');
+  // ul 要素の子要素を削除（古いニュースをクリア）
+  divElemMainNewsContent.remove();
+
+  const changeNewsElem = displayNews(changeNewsData);
+
+  divElemTabPanelWrap.appendChild(changeNewsElem);
+}
+
+document.addEventListener("DOMContentLoaded", async() => {
+  const listData = await getData();
+  renderElem(listData);
+
+  // リストアイテムをクリックしたときの処理
+  ulElemTabs.addEventListener("click", async(event) => {
+    // クリックされた要素がリストアイテム（<li>要素またはその子要素）であるかを確認
+    const listItem = event.target.closest("li");
+    if (listItem) {
+      // クリックされたリストアイテムのクラス名を取得
+      const clickListElemClassName = listItem.className;
+
+      const changeNewsData = await toggleNewsData(listData, clickListElemClassName);
+
+      // 取得したニュースデータを表示するための処理を実行
+      toggleNewsDisplay(changeNewsData);
+    }
+  });
+});
+
+// ニュースデータの表示・非表示を切り替える関数
+const toggleNewsDisplay = async(className) => {
+  changeNewsDisplay(className);
+}
 
 const lazyLoad = () => {
   const div = document.createElement('div');
