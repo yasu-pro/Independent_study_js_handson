@@ -1,8 +1,13 @@
 "use strict";
 const wrap = document.getElementById("js_wrap");
 const ul = document.getElementById("js_list");
-let inputNumVal = 0;
+const modal = document.getElementById("js_modal");
+const submit_btn = document.getElementById("js_submitBtn");
+const input_num = document.getElementById("js_numBox");
+const input_name = document.getElementById("js_nameBox");
 
+let inputNumVal = 0;
+let inputNameVal = 0;
 // const url = "https://myjson.dit.upm.es/api/bins/ほげほげajy3";
 // const url = "https://myjson.dit.upm.es/api/bins/fhzj";
 const url = "https://myjson.dit.upm.es/api/bins/86vb";
@@ -64,6 +69,7 @@ const init = async () => {
   const data = await getListData();
   renderListElement(data);
   console.log(inputNumVal);
+  console.log(inputNameVal);
 };
 
 function hideLoading() {
@@ -98,71 +104,46 @@ function loading() {
   ul.style.height = "100px";
 }
 
-function renderBtn() {
-  const modal_wrap = document.getElementById("js_modal_wrap");
-  const button_wrap = document.createElement("div");
-  const buttonTag = document.createElement("button");
-
-  button_wrap.id = "js_button_wrap";
-
-  buttonTag.id = "js_button";
-  buttonTag.type = "submit";
-  buttonTag.textContent = "クリック";
-
-  modal_wrap.appendChild(button_wrap);
-  button_wrap.appendChild(buttonTag);
-}
-
 function renderModalBtn() {
-  const modal_button = document.createElement("button");
-  modal_button.id = "js_modal_button";
-  modal_button.type = "submit";
-  modal_button.textContent = "モーダル";
+  const modal_btn_element = document.createElement("button");
+  modal_btn_element.id = "js_modal_btn";
+  modal_btn_element.type = "submit";
+  modal_btn_element.textContent = "モーダル";
 
-  wrap.after(modal_button);
-}
-
-function renderModalContent() {
-  const modal = document.createElement("div");
-  const div = document.createElement("div");
-
-  modal.id = "js_modal";
-  div.id = "js_modal_wrap";
-
-  wrap.after(modal);
-  modal.appendChild(div);
-}
-
-function renderInput() {
-  const input = document.createElement("input");
-  const modal_wrap = document.getElementById("js_modal_wrap");
-  const button_wrap = document.getElementById("js_button_wrap");
-  input.id = "input_number";
-  input.type = "number";
-
-  modal_wrap.insertBefore(input, button_wrap);
+  wrap.after(modal_btn_element);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const modal_button = document.getElementById("js_modal_button");
+  const modal_btn = document.getElementById("js_modal_btn");
+  const errMsgNum = document.querySelector(".err_msg_num");
+  const errMsgName = document.querySelector(".err_msg_name");
 
-  modal_button.addEventListener("click", () => {
-    modal_button.style.display = "none";
-    renderModalContent();
-    renderBtn();
-    renderInput();
+  modal_btn.addEventListener("click", () => {
+    modal.style.display = "block";
+    modal_btn.remove();
   });
 
-  document.addEventListener("click", (e) => {
-    const modalElement = document.getElementById("js_modal");
-    const request_btn = document.getElementById("js_button");
-    const input_number = document.getElementById("input_number");
-    if (e.target && e.target.id === "js_button") {
-      inputNumVal = input_number.value;
+  submit_btn.addEventListener("click", (e) => {
+    if (!input_num.value) {
+      errMsgNum.classList.add("form_invalid");
+      errMsgNum.textContent = "入力されていません";
+      input_num.classList.add("input_invalid");
+    }
+    if (!input_name.value) {
+      errMsgName.classList.add("form_invalid");
+      errMsgName.textContent = "入力されていません";
+      input_name.classList.add("input_invalid");
+    } else {
+      errMsgNum.textContent = "";
+      errMsgNum.classList.remove("input-invalid");
+      errMsgName.textContent = "";
+      errMsgName.classList.remove("input-invalid");
+
+      inputNumVal = input_num.value;
+      inputNameVal = input_name.value;
+      modal.remove();
+      submit_btn.remove();
       init();
-      modalElement.remove();
-      modal_button.remove();
-      request_btn.remove();
     }
   });
 });
