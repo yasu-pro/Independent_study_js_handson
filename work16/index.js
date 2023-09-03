@@ -106,42 +106,56 @@ const displayNews = (newsData) => {
   const divElemMainNewsContent = document.createElement("div");
   divElemMainNewsContent.classList = "mainNewsContent";
 
-  console.log(newsData);
-
   newsData.forEach((newsItem) => {
+    // 各カテゴリーの画像表示
+    const divElemCategoryImg = document.createElement("div");
+    divElemCategoryImg.classList = "categoryImg"
+    const imgElem = document.createElement("img");
+    const categoryImage = newsItem.img;
+    imgElem.src = categoryImage
+
+    divElemCategoryImg.appendChild(imgElem);
+
+
+    // ニュース記事の要素作成
     newsItem.contents.forEach((news) => {
       const liElem = document.createElement("li");
 
       const aElemAritcleLink = document.createElement("a");
       const h1Elem = document.createElement("h1");
 
-      const spanElemComentIcon = document.createElement("span");
-      spanElemComentIcon.classList = "commentIcon";
-      const aElemComentLink = document.createElement("a");
-
       h1Elem.innerText = news.title;
-
-      const commentTotal = news.comments;
-      aElemComentLink.innerHTML = `
-        <i class="fas fa-regular fa-comment"></i>
-        <span class="commentIconNum">${commentTotal}</span>`;
 
       liElem.appendChild(aElemAritcleLink);
       aElemAritcleLink.appendChild(h1Elem);
+
+      if (news.comments !== 0) {
+        const spanElemComentIcon = document.createElement("span");
+        spanElemComentIcon.classList = "commentIcon";
+        const aElemComentLink = document.createElement("a");
+
+        const commentTotal = news.comments;
+        aElemComentLink.innerHTML = `
+          <i class="fas fa-regular fa-comment"></i>
+          <span class="commentIconNum">${commentTotal}</span>`;
+
+        spanElemComentIcon.appendChild(aElemComentLink);
+        liElem.appendChild(spanElemComentIcon);
+      }
+
       if (news.isNew) {
         const spanElemNewIcon = document.createElement("span");
         spanElemNewIcon.classList = "newIcon";
         spanElemNewIcon.innerHTML = "New";
         aElemAritcleLink.appendChild(spanElemNewIcon);
       }
-      liElem.appendChild(spanElemComentIcon);
-      spanElemComentIcon.appendChild(aElemComentLink);
       fragment.appendChild(liElem);
     });
+    divElemMainNewsContent.appendChild(divElemCategoryImg);
   });
 
   ulElem.appendChild(fragment);
-  divElemMainNewsContent.appendChild(ulElem);
+  divElemMainNewsContent.insertBefore(ulElem, divElemMainNewsContent.firstChild);
 
   return divElemMainNewsContent;
 };
@@ -161,7 +175,6 @@ const displayInitialNews = async (listData) => {
   const displayCategoryAllNews = await getNewsDisplayStatus(listData);
   const newsContent = displayNews(displayCategoryAllNews);
 
-  console.log(newsContent);
   return newsContent;
 };
 
