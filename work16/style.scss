@@ -8,9 +8,13 @@ a {
   }
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .load {
   width: 100px;
-  height: 100px;
   background-repeat: no-repeat;
 }
 .tabTopics {
@@ -37,7 +41,16 @@ div[class*="content_wrap"] {
   }
 }
 
+article {
+  width: 700px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 100px;
+}
+
 .mainNewsContent {
+  display: flex;
+  justify-content: space-between;
   .newsList {
     li {
       display: flex;
@@ -47,7 +60,15 @@ div[class*="content_wrap"] {
         align-items: center;
       }
     }
-    
+  }
+
+  .categoryImg {
+    width: 230px;
+    height: 130px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 

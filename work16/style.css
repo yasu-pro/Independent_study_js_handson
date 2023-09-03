@@ -7,9 +7,13 @@ a:hover {
   cursor: pointer;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .load {
   width: 100px;
-  height: 100px;
   background-repeat: no-repeat;
 }
 
@@ -37,6 +41,17 @@ div[class*=content_wrap] li:before {
   left: -15px;
 }
 
+article {
+  width: 700px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 100px;
+}
+
+.mainNewsContent {
+  display: flex;
+  justify-content: space-between;
+}
 .mainNewsContent .newsList li {
   display: flex;
   align-items: center;
@@ -44,6 +59,14 @@ div[class*=content_wrap] li:before {
 .mainNewsContent .newsList li a {
   display: flex;
   align-items: center;
+}
+.mainNewsContent .categoryImg {
+  width: 230px;
+  height: 130px;
+}
+.mainNewsContent .categoryImg img {
+  width: 100%;
+  height: 100%;
 }
 
 .newIcon {
