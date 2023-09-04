@@ -2,6 +2,9 @@
 // DOM
 const body = document.querySelector("body");
 const ulElemTabs = document.getElementById("js_tabs");
+const errorMessageElem = document.createElement("div");
+errorMessageElem.id = "error-message";
+body.appendChild(errorMessageElem);
 const apiURL = "http://localhost:3000/data";
 
 
@@ -20,6 +23,9 @@ const getData = async() => {
       throw error;
     }
   } catch (e) {
+    deleteLazyLoad();
+    errorMessageElem.textContent = `エラーが発生しました: ${e.message}`;
+    console.error("エラーが発生しました:", e.message);
     throw new Error(e);
   }
 };
@@ -252,6 +258,7 @@ const toggleClassSelect = (ulElemTabs, listItem) => {
 document.addEventListener("DOMContentLoaded", async() => {
   const listData = await getData();
   renderElem(listData);
+  console.log(listData);
 
   ulElemTabs.addEventListener("click", async(event) => {
     // クリックされた要素がリストアイテム（<li>要素またはその子要素）であるかを確認
