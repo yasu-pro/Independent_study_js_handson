@@ -1,0 +1,17 @@
+* {
+  list-style-type: none;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.load {
+  width: 100px;
+  background-repeat: no-repeat;
+}/*# sourceMappingURL=style.css.map */
