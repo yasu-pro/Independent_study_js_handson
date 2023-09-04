@@ -1,8 +1,11 @@
 "use strict";
+// DOM
 const body = document.querySelector("body");
 const ulElemTabs = document.getElementById("js_tabs");
 const apiURL = "http://localhost:3000/data";
 
+
+// 関数
 const getData = async() => {
   try {
     lazyLoad();
@@ -21,9 +24,15 @@ const getData = async() => {
   }
 }
 
-const deleteLazyLoad = () => {
-  const loadElem = document.querySelector(".load");
-  loadElem.remove();
+const toggleNewsDisplay = async(changeNewsData) => {
+  const divElemMainNewsContent = document.querySelector('.mainNewsContent');
+  const divElemTabPanelWrap = document.querySelector('.tabPanelWrap');
+
+  divElemMainNewsContent.remove();
+
+  const changeNewsElem = displayNews(changeNewsData);
+
+  divElemTabPanelWrap.appendChild(changeNewsElem);
 }
 
 const createCategoryTab = async (listData) => {
@@ -85,9 +94,41 @@ const createTabPanel = async(listData) => {
   return sectionElem;
 }
 
+const renderElem = async(listData) => {
+  const articleElem = createArticle();
+  const divElemTabToics = await createCategoryTab(listData);
+  const sectionElem = await createTabPanel(listData);
+
+  articleElem.appendChild(divElemTabToics);
+  articleElem.appendChild(sectionElem);
+  body.insertBefore(articleElem, body.firstChild);
+}
+
+const displayInitialNews = async (listData) => {
+  const displayCategoryAllNews = await getNewsDisplayStatus(listData);
+  const newsContent = displayNews(displayCategoryAllNews);
+
+  return newsContent;
+};
+
+const selectCategoryNewsData = async(listData, className) => {
+  const clickedCategory = formatCategoryName(className);
+
+  const changeNewsData = listData.filter(newsCategoy => {
+    return newsCategoy.category === clickedCategory;
+  })
+
+  return changeNewsData;
+}
+
 const createArticle = () => {
   const articleElem = document.createElement("article");
   return articleElem
+}
+
+const deleteLazyLoad = () => {
+  const loadElem = document.querySelector(".load");
+  loadElem.remove();
 }
 
 const getNewsDisplayStatus = (listData) => {
@@ -98,7 +139,6 @@ const getNewsDisplayStatus = (listData) => {
   return displayCategoryAllNews;
 }
 
-// ニュースデータを表示する関数
 const displayNews = (newsData) => {
   const ulElem = document.createElement("ul");
   ulElem.classList = "newsList";
@@ -160,74 +200,9 @@ const displayNews = (newsData) => {
   return divElemMainNewsContent;
 };
 
-const renderElem = async(listData) => {
-  const articleElem = createArticle();
-  const divElemTabToics = await createCategoryTab(listData);
-  const sectionElem = await createTabPanel(listData);
-
-  articleElem.appendChild(divElemTabToics);
-  articleElem.appendChild(sectionElem);
-  body.insertBefore(articleElem, body.firstChild);
-}
-
-// ページ読み込み時に初期カテゴリーのニュースデータを表示するための関数
-const displayInitialNews = async (listData) => {
-  const displayCategoryAllNews = await getNewsDisplayStatus(listData);
-  const newsContent = displayNews(displayCategoryAllNews);
-
-  return newsContent;
-};
-
-// カテゴリー名を整形する関数
 const formatCategoryName = (className) => {
   const categoryName = className.replace("tab", "").trim();
   return categoryName;
-}
-
-const toggleNewsData = async(listData, className) => {
-  const clickedCategory = formatCategoryName(className);
-
-  const changeNewsData = listData.filter(newsCategoy => {
-    return newsCategoy.category === clickedCategory;
-  })
-
-  return changeNewsData;
-}
-
-const changeNewsDisplay = (changeNewsData) => {
-  const divElemMainNewsContent = document.querySelector('.mainNewsContent');
-  const divElemTabPanelWrap = document.querySelector('.tabPanelWrap');
-  // ul 要素の子要素を削除（古いニュースをクリア）
-  divElemMainNewsContent.remove();
-
-  const changeNewsElem = displayNews(changeNewsData);
-
-  divElemTabPanelWrap.appendChild(changeNewsElem);
-}
-
-document.addEventListener("DOMContentLoaded", async() => {
-  const listData = await getData();
-  renderElem(listData);
-
-  // リストアイテムをクリックしたときの処理
-  ulElemTabs.addEventListener("click", async(event) => {
-    // クリックされた要素がリストアイテム（<li>要素またはその子要素）であるかを確認
-    const listItem = event.target.closest("li");
-    if (listItem) {
-      // クリックされたリストアイテムのクラス名を取得
-      const clickListElemClassName = listItem.className;
-
-      const changeNewsData = await toggleNewsData(listData, clickListElemClassName);
-
-      // 取得したニュースデータを表示するための処理を実行
-      toggleNewsDisplay(changeNewsData);
-    }
-  });
-});
-
-// ニュースデータの表示・非表示を切り替える関数
-const toggleNewsDisplay = async(className) => {
-  changeNewsDisplay(className);
 }
 
 const lazyLoad = () => {
@@ -241,6 +216,20 @@ const lazyLoad = () => {
 }
 
 
+// イベント
+document.addEventListener("DOMContentLoaded", async() => {
+  const listData = await getData();
+  renderElem(listData);
 
+  ulElemTabs.addEventListener("click", async(event) => {
+    // クリックされた要素がリストアイテム（<li>要素またはその子要素）であるかを確認
+    const listItem = event.target.closest("li");
+    if (listItem) {
+      const clickListElemClassName = listItem.className;
 
+      const changeNewsData = await selectCategoryNewsData(listData, clickListElemClassName);
 
+      toggleNewsDisplay(changeNewsData);
+    }
+  });
+});
