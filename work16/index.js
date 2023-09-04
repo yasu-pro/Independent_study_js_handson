@@ -180,6 +180,7 @@ const displayNews = (newsData) => {
       const liElem = document.createElement("li");
 
       const aElemAritcleLink = document.createElement("a");
+      aElemAritcleLink.classList = "articleLink"
       const h1Elem = document.createElement("h1");
 
       h1Elem.innerText = news.title;
