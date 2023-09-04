@@ -22,25 +22,21 @@ const getData = async() => {
   } catch (e) {
     throw new Error(e);
   }
-}
-
-const toggleNewsDisplay = async(changeNewsData) => {
-  const divElemMainNewsContent = document.querySelector('.mainNewsContent');
-  const divElemTabPanelWrap = document.querySelector('.tabPanelWrap');
-
-  divElemMainNewsContent.remove();
-
-  const changeNewsElem = displayNews(changeNewsData);
-
-  divElemTabPanelWrap.appendChild(changeNewsElem);
-}
+};
 
 const createCategoryTab = async (listData) => {
   const fragment = document.createDocumentFragment();
+  const divElemTabTopicsWrap = document.createElement('div')
+  divElemTabTopicsWrap.classList = "tabTopicsWrap";
 
   listData.forEach((categoryData)=> {
     const liElem = document.createElement("li");
-    liElem.classList=`tab ${categoryData.category}`
+
+    if (categoryData.isFirstDisplay) {
+      liElem.classList=`tab ${categoryData.category} select`
+    } else {
+      liElem.classList=`tab ${categoryData.category}`
+    }
 
     const aElem = document.createElement("a");
     liElem.appendChild(aElem);
@@ -78,8 +74,9 @@ const createCategoryTab = async (listData) => {
 
   ulElemTabs.appendChild(fragment);
   ulElemTabs.classList = "tabTopics"
-  return ulElemTabs;
-}
+  divElemTabTopicsWrap.appendChild(ulElemTabs)
+  return divElemTabTopicsWrap;
+};
 
 const createTabPanel = async(listData) => {
   const sectionElem = document.createElement("section");
@@ -92,7 +89,14 @@ const createTabPanel = async(listData) => {
   sectionElem.appendChild(divElemTabPanelWrap);
 
   return sectionElem;
-}
+};
+
+const displayInitialNews = async (listData) => {
+  const displayCategoryAllNews = await getNewsDisplayStatus(listData);
+  const newsContent = displayNews(displayCategoryAllNews);
+
+  return newsContent;
+};
 
 const renderElem = async(listData) => {
   const articleElem = createArticle();
@@ -102,13 +106,17 @@ const renderElem = async(listData) => {
   articleElem.appendChild(divElemTabToics);
   articleElem.appendChild(sectionElem);
   body.insertBefore(articleElem, body.firstChild);
-}
+};
 
-const displayInitialNews = async (listData) => {
-  const displayCategoryAllNews = await getNewsDisplayStatus(listData);
-  const newsContent = displayNews(displayCategoryAllNews);
+const toggleNewsDisplay = async(changeNewsData) => {
+  const divElemMainNewsContent = document.querySelector('.mainNewsContent');
+  const divElemTabPanelWrap = document.querySelector('.tabPanelWrap');
 
-  return newsContent;
+  divElemMainNewsContent.remove();
+
+  const changeNewsElem = displayNews(changeNewsData);
+
+  divElemTabPanelWrap.appendChild(changeNewsElem);
 };
 
 const selectCategoryNewsData = async(listData, className) => {
@@ -119,17 +127,27 @@ const selectCategoryNewsData = async(listData, className) => {
   })
 
   return changeNewsData;
-}
+};
 
-const createArticle = () => {
-  const articleElem = document.createElement("article");
-  return articleElem
-}
+const lazyLoad = () => {
+  const div = document.createElement('div');
+  div.classList='load'
+  const img = document.createElement('img');
+  img.src = "./img/loading-circle.gif"
+
+  div.appendChild(img);
+  document.body.appendChild(div);
+};
 
 const deleteLazyLoad = () => {
   const loadElem = document.querySelector(".load");
   loadElem.remove();
-}
+};
+
+const createArticle = () => {
+  const articleElem = document.createElement("article");
+  return articleElem
+};
 
 const getNewsDisplayStatus = (listData) => {
   const displayCategoryAllNews = listData.filter(newsDisplay => {
@@ -137,7 +155,7 @@ const getNewsDisplayStatus = (listData) => {
   })
 
   return displayCategoryAllNews;
-}
+};
 
 const displayNews = (newsData) => {
   const ulElem = document.createElement("ul");
@@ -201,20 +219,33 @@ const displayNews = (newsData) => {
 };
 
 const formatCategoryName = (className) => {
-  const categoryName = className.replace("tab", "").trim();
+  const deleteClassSelect = className.replace("select", "");
+  const categoryName = deleteClassSelect.replace("tab", "").trim();
   return categoryName;
-}
+};
 
-const lazyLoad = () => {
-  const div = document.createElement('div');
-  div.classList='load'
-  const img = document.createElement('img');
-  img.src = "./img/loading-circle.gif"
+const removeClassSelect = (ulElemTabs) => {
+  const selectedListItem = ulElemTabs.querySelector("li.select");
 
-  div.appendChild(img);
-  document.body.appendChild(div);
-}
+  if (selectedListItem) {
+    selectedListItem.classList.remove("select");
+  }
+};
 
+const addClassSelect = (listItem) => {
+  const existingClasses = listItem.className;
+
+  const hasSelectClass = existingClasses.includes("select");
+
+  if (!hasSelectClass) {
+    listItem.classList.add("select");
+  }
+};
+
+const toggleClassSelect = (ulElemTabs, listItem) => {
+    removeClassSelect(ulElemTabs);
+    addClassSelect(listItem)
+};
 
 // イベント
 document.addEventListener("DOMContentLoaded", async() => {
@@ -229,6 +260,7 @@ document.addEventListener("DOMContentLoaded", async() => {
 
       const changeNewsData = await selectCategoryNewsData(listData, clickListElemClassName);
 
+      toggleClassSelect(ulElemTabs, listItem);
       toggleNewsDisplay(changeNewsData);
     }
   });
