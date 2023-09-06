@@ -16,24 +16,27 @@ img {
   background-repeat: no-repeat;
 }
 
-.slider {
+.sliderWrap {
   position: relative;
   width: 600px;
   height: 350px;
   margin-left: auto;
   margin-right: auto;
 }
-.slider .nextPrevBtnWrap .nextBtn, .slider .nextPrevBtnWrap .prevBtn {
+.sliderWrap .nextPrevBtnWrap .nextBtn, .sliderWrap .nextPrevBtnWrap .prevBtn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
 }
-.slider .nextPrevBtnWrap .nextBtn {
+.sliderWrap .nextPrevBtnWrap .nextBtnIcon, .sliderWrap .nextPrevBtnWrap .prevBtnIcon {
+  pointer-events: none;
+}
+.sliderWrap .nextPrevBtnWrap .nextBtn {
   right: -10%;
   padding: 0.5rem;
 }
-.slider .nextPrevBtnWrap .prevBtn {
+.sliderWrap .nextPrevBtnWrap .prevBtn {
   left: -10%;
   padding: 0.5rem;
 }
@@ -47,4 +50,11 @@ img {
 .sliderList .sliderLists img {
   width: 600px;
   height: 350px;
+}
+
+.navList {
+  position: absolute;
+  left: 50%;
+  bottom: -2.5rem;
+  transform: translateX(-50%);
 }/*# sourceMappingURL=style.css.map */
