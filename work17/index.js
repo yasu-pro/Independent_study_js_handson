@@ -1,8 +1,10 @@
 "use strict";
+
 // DOM
 const body = document.querySelector("body");
 const slider = document.getElementById("slider");
 
+// API
 const apiURL = "http://localhost:3000/data"
 
 // 関数
