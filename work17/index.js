@@ -8,10 +8,12 @@ const slider = document.getElementById("slider");
 const apiURL = "http://localhost:3000/data"
 
 // 関数
+let errorDisplayed = false;
 const getData = async () => {
     const res = await fetch(apiURL);
 
     try {
+        createLoading();
         if (res.ok) {
             const json = await res.json();
             return json;
@@ -21,12 +23,22 @@ const getData = async () => {
             throw error;
         }
     } catch (error) {
-        displayError(error);
+        if (!errorDisplayed) {
+            displayError(error);
+            errorDisplayed = true;
+        }
+    } finally {
+        removeLoading();
     }
 }
 
 const renderSlider = async () => {
     const sliderData = await getData();
+
+    // エラーが発生した場合、処理を中断する
+    if (!sliderData) {
+        return;
+    }
 
     const sliderElement = createSliderElement(sliderData);
     slider.appendChild(sliderElement);
@@ -38,6 +50,21 @@ const renderSlider = async () => {
     sliderElement.appendChild(navList);
 
     disableNextPrevBtn(sliderData);
+};
+
+const createLoading = () => {
+    const div = document.createElement('div');
+    div.classList='load'
+    const img = document.createElement('img');
+    img.src = "./img/loading-circle.gif"
+
+    div.appendChild(img);
+    document.body.appendChild(div);
+};
+
+const removeLoading = () => {
+    const loadElem = document.querySelector(".load");
+    loadElem.remove();
 };
 
 const createNavList = (sliderData) => {
@@ -234,6 +261,11 @@ renderSlider();
 // イベント
 document.addEventListener("DOMContentLoaded", async () => {
     const sliderData = await getData();
+       // エラーが発生した場合、処理を中断する
+    if (!sliderData) {
+        // エラーが発生した場合、処理を中断する
+        return;
+    }
     await nextPrevBtnClickEvent(sliderData);
 });
 
