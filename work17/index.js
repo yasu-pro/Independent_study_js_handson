@@ -1,297 +1,219 @@
-"use strict";
-
 // DOM
-const body = document.querySelector("body");
-const slider = document.getElementById("slider");
+const sliderWrap = document.getElementById('js-slider');
+const sliderList = document.getElementById('js-slider-list');
 
 // API
-const apiURL = "http://localhost:3000/data"
+const apiURL = 'http://localhost:3000/data';
 
 // 関数
-let errorDisplayed = false;
-const getData = async () => {
-    const res = await fetch(apiURL);
-
-    try {
-        createLoading();
-        if (res.ok) {
-            const json = await res.json();
-            return json;
-        } else {
-            const error = new Error(`${res.status}:${res.statusText}`)
-            error.response = res;
-            throw error;
-        }
-    } catch (error) {
-        if (!errorDisplayed) {
-            displayError(error);
-            errorDisplayed = true;
-        }
-    } finally {
-        removeLoading();
-    }
-}
-
-const renderSlider = async () => {
-    const sliderData = await getData();
-
-    // エラーが発生した場合、処理を中断する
-    if (!sliderData) {
-        return;
-    }
-
-    const sliderElement = createSliderElement(sliderData);
-    slider.appendChild(sliderElement);
-
-    const navList = createNavList(sliderData);
-    const nextPrevBtnWrap = createNextPrevBtnWrap(sliderData);
-
-    sliderElement.appendChild(nextPrevBtnWrap);
-    sliderElement.appendChild(navList);
-
-    disableNextPrevBtn(sliderData);
-};
-
 const createLoading = () => {
-    const div = document.createElement('div');
-    div.classList='load'
-    const img = document.createElement('img');
-    img.src = "./img/loading-circle.gif"
+  const loading = document.createElement('img');
+  loading.id = 'js-loading';
+  loading.classList = 'load';
+  loading.src = './img/loading-circle.gif';
 
-    div.appendChild(img);
-    document.body.appendChild(div);
+  return loading;
 };
 
 const removeLoading = () => {
-    const loadElem = document.querySelector(".load");
-    loadElem.remove();
+  document.getElementById('js-loading').remove();
 };
 
-const createNavList = (sliderData) => {
-    const navList = document.createElement("div");
-    navList.classList = "navList";
+const createErrorMessage = (error) => {
+  const errorMessage = document.createElement('p');
+  errorMessage.classList = 'errorMessage';
 
-    const focusElem = document.querySelector(".focus");
-    const displayImageNum = getTargetClassNum(focusElem);
+  errorMessage.textContent = error;
 
-    navList.innerHTML = `<span class="displayNum" >${displayImageNum}</span> / <span class="totalNum" >${sliderData.length}</span>`
-
-    return navList;
-
+  return errorMessage;
 };
 
-const disableNextPrevBtn = (sliderData) => {
-    const focusElem = document.querySelector(".focus");
-    const prevBtn = document.querySelector(".prevBtn");
-    const nextBtn = document.querySelector(".nextBtn");
-
-     // .focus クラスを持つ要素が見つからない場合、何もしない
-    if (!focusElem) {
-        return;
-    }
-
-    const currentImageIndex = getTargetClassNum(focusElem);
-
-    if (currentImageIndex === 1) {
-        prevBtn.setAttribute("disabled", "true");
-        nextBtn.removeAttribute("disabled");
-    }
-    else if (currentImageIndex === sliderData.length) {
-        nextBtn.setAttribute("disabled", "true");
-        prevBtn.removeAttribute("disabled");
-    }
-    else {
-        prevBtn.removeAttribute("disabled");
-        nextBtn.removeAttribute("disabled");
-    }
+const fetchHandling = async (response) => {
+  if (response.ok) {
+    return response.json();
+  }
+  throw new Error(`${response.status}:${response.statusText}`);
 };
 
-const displayError = (error) => {
-    const errorMessageElem = document.createElement("div");
-    errorMessageElem.id = "error-message";
-    errorMessageElem.textContent = `エラーが発生しました: ${error.message}`;
-    body.appendChild(errorMessageElem);
-}
+const getJsonOrError = async (url) => {
+  const response = await fetch(url);
+  const json = await fetchHandling(response);
 
-const createSliderList = (allSliderData) => {
-    const ulElemSliderList = document.createElement("ul");
-    ulElemSliderList.classList = "sliderList"
-    const fragment = document.createDocumentFragment();
-
-    allSliderData.forEach((sliderData, index) => {
-        const liElemSliderLists = document.createElement("li");
-
-        liElemSliderLists.classList = `sliderLists sliderLists_${sliderData.order}`;
-
-        if (index === 0) {
-            liElemSliderLists.classList.add("focus");
-        } else if (index === 1) {
-            liElemSliderLists.classList.add("next");
-        } else if (index === allSliderData.length - 1) {
-            liElemSliderLists.classList.add("prev");
-        }
-
-        liElemSliderLists.style.zIndex = -index;
-
-        const img = document.createElement("img");
-        img.src = sliderData.url;
-
-        liElemSliderLists.appendChild(img);
-        fragment.appendChild(liElemSliderLists);
-    });
-    ulElemSliderList.appendChild(fragment);
-
-    return ulElemSliderList;
+  return json;
 };
 
-const createSliderElement = (sliderData) => {
-    const sliderElement = document.createElement("div");
-    sliderElement.classList = "sliderWrap";
-
-    const sliderList =  createSliderList(sliderData);
-    sliderElement.appendChild(sliderList);
-
-    return sliderElement;
-};
-
-const createButton = (className, innerHTML) => {
-    const button = document.createElement("button");
-    button.classList = className;
-
-    const span = document.createElement("span");
-    span.classList = `${className}Icon`;
-    span.innerHTML = innerHTML;
-
-    button.appendChild(span);
-
-    return button;
-};
-
-const createNextPrevBtnWrap = () => {
-    const btnWrap = document.createElement("div");
-    btnWrap.classList = "nextPrevBtnWrap";
-
-    const nextBtn = createButton("nextBtn", "▶︎");
-    const prevBtn = createButton("prevBtn", "◀︎");
-
-    btnWrap.appendChild(nextBtn);
-    btnWrap.appendChild(prevBtn);
-
-    return btnWrap;
-};
-
-const getTargetClassNum = (targetElem) => {
-    let number = null;
-    const classNames = targetElem.className.split(" ");
-
-    for (const className of classNames) {
-        if (className.startsWith("sliderLists_")) {
-            const match = className.match(/\d+/);
-            if (match) {
-                number = parseInt(match[0], 10);
-                break;
-            }
-        }
-    }
-    return number;
-};
-
-const searchCurrentImageIndex = (nextOrPrev) => {
-    let currentImageIndex = 0;
-    const allSliderListsElem = document.getElementsByClassName("sliderLists")
-    const allSliderListsArray = Array.from(allSliderListsElem);
-
-    allSliderListsArray.find((sliderlist) => {
-        if (sliderlist.className.includes("next") && nextOrPrev === "nextBtn") {
-            const targetElem = sliderlist;
-            currentImageIndex = getTargetClassNum(targetElem) - 1;
-
-            return true;
-        } else if (sliderlist.className.includes("prev") && nextOrPrev === "prevBtn") {
-            const targetElem = sliderlist;
-            currentImageIndex = getTargetClassNum(targetElem) - 1;
-
-            return true;
-        }
-    });
-
-    return currentImageIndex;
-}
-
-const changeSliderData = (currentSliderData, startingImageIndex) => {
-    const newData = [...currentSliderData.slice(startingImageIndex), ...currentSliderData.slice(0, startingImageIndex)];
-    return newData;
-};
-
-const deleteCurrentSliderList = () => {
-    const elementsToRemove = document.querySelectorAll(".sliderLists");
-    elementsToRemove.forEach(element => {
-        element.remove();
-    });
-};
-
-const reCreateSliderList = (newSliderListItemsArray) => {
-    const targetSliderListElem = document.querySelector(".sliderList")
-    targetSliderListElem.appendChild(newSliderListItemsArray);
-};
-
-const removeDisabled = () => {
-    const prevBtnElem = document.querySelector(".prevBtn");
-    const nextBtnElem = document.querySelector(".nextBtn");
-    if (prevBtnElem.hasAttribute("disabled")) {
-        prevBtnElem.removeAttribute("disabled");
-    }
-
-    if (nextBtnElem.hasAttribute("disabled")) {
-        nextBtnElem.removeAttribute("disabled");
-    }
-};
-
-const changeNavListDisplay = () => {
-    const displayElem = document.querySelector(".focus");
-    const changeDisplayNum = getTargetClassNum(displayElem);
-
-    const targetElem = document.querySelector(".displayNum");
-
-    targetElem.innerHTML = `<span class="displayNum" >${changeDisplayNum}</span>`
-};
-
-renderSlider();
-
-// イベント
-document.addEventListener("DOMContentLoaded", async () => {
-    const sliderData = await getData();
-       // エラーが発生した場合、処理を中断する
-    if (!sliderData) {
-        // エラーが発生した場合、処理を中断する
-        return;
-    }
-    await nextPrevBtnClickEvent(sliderData);
+const getSlideImgData = async () => new Promise((resolve) => {
+  setTimeout(() => {
+    resolve(getJsonOrError(apiURL));
+  }, 3000);
 });
 
-const handleButtonClick = (sliderData, NextOrPrevClassName) => {
-    const displayImageIndex = searchCurrentImageIndex(NextOrPrevClassName);
-    const newSliderData = changeSliderData(sliderData, displayImageIndex);
-    const newSliderListItemsArray = createSliderList(newSliderData);
+const tryGetSlideImgData = async () => {
+  sliderWrap.appendChild(createLoading());
 
-    deleteCurrentSliderList();
-    reCreateSliderList(newSliderListItemsArray);
-    changeNavListDisplay();
-    disableNextPrevBtn(sliderData);
+  try {
+    const sliderImgData = await getSlideImgData();
+    if (sliderImgData.length === 0) {
+      throw new Error('データがありません');
+    }
+    return sliderImgData;
+  } catch (error) {
+    sliderWrap.appendChild(createErrorMessage());
+    throw error;
+  } finally {
+    removeLoading();
+  }
 };
 
-const nextPrevBtnClickEvent = (sliderData) => {
-    const parentElem = document.querySelector(".nextPrevBtnWrap");
+const createElementWithClassName = (tag, className) => {
+  const element = document.createElement(tag);
+  element.classList = className;
 
-    parentElem.addEventListener("click", (event) => {
-        const clickedElem = event.target;
-        const clickedClassName = clickedElem.className;
+  return element;
+};
 
-        if (clickedClassName === "nextBtn") {
-            handleButtonClick(sliderData, clickedClassName);
-        } else if (clickedClassName === "prevBtn") {
-            handleButtonClick(sliderData, clickedClassName);
-        };
+const createSliderItem = ({ url }) => {
+  const sliderItem = document.createElement('li');
+  const sliderImg = document.createElement('img');
+  sliderImg.src = url;
+  sliderItem.classList = 'sldierItem';
+  sliderItem.appendChild(sliderImg);
+
+  return sliderItem;
+};
+
+const initSliderItem = (imgSources) => {
+  const fragment = document.createDocumentFragment();
+
+  imgSources.forEach((imgSource, index) => {
+    const sliderItem = createSliderItem(imgSource);
+
+    // First, the class "is-display" is added by default.
+    if (index === 0) {
+      sliderItem.classList.add('is-display');
+    }
+
+    fragment.appendChild(sliderItem);
+  });
+  sliderList.appendChild(fragment);
+
+  return sliderList;
+};
+
+const findOrderOfDisplayedItem = () => {
+  const sliderItemArray = document.querySelectorAll('.sldierItem');
+  const targetElem = [...sliderItemArray].findIndex((element) => element.classList.contains('is-display'));
+  return targetElem + 1;
+};
+
+const createConterOfSlider = (data) => {
+  const counterWrapper = createElementWithClassName('div', 'counterWrap');
+  const orderOfDisplayedItem = createElementWithClassName(
+    'span',
+    'currentNum',
+  );
+  const totalSlideItem = createElementWithClassName('span', 'totalNum');
+
+  totalSlideItem.textContent = data.length;
+  orderOfDisplayedItem.textContent = findOrderOfDisplayedItem();
+
+  counterWrapper
+    .appendChild(orderOfDisplayedItem)
+    .insertAdjacentHTML('afterend', '/');
+  counterWrapper.appendChild(totalSlideItem);
+
+  return counterWrapper;
+};
+
+const switchImage = (direction) => {
+  let targetElement;
+  const displayingItem = document.querySelector('.is-display');
+
+  displayingItem.classList.remove('is-display');
+  if (direction === 'next') {
+    targetElement = displayingItem.nextElementSibling;
+  } else if (direction === 'prev') {
+    targetElement = displayingItem.previousElementSibling;
+  }
+  targetElement.classList.add('is-display');
+};
+
+const changeCounterOfSlider = () => {
+  document.querySelector('.currentNum').textContent = findOrderOfDisplayedItem();
+};
+
+const toggleDisabledBtn = (target) => {
+  const firstSlideItem = sliderList.firstElementChild;
+  const lastSlideItem = sliderList.lastElementChild;
+
+  if (
+    firstSlideItem.classList.contains('is-display') || lastSlideItem.classList.contains('is-display')
+  ) {
+    target.setAttribute('disabled', true);
+  } else {
+    const disabledElement = document.querySelector('[disabled]');
+    if (disabledElement) {
+      disabledElement.removeAttribute('disabled');
+    }
+  }
+};
+
+const handleNextPrevBtnClicked = () => {
+  const arrowButtons = document.querySelectorAll('.arrowBtn');
+  arrowButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const clickedElement = event.currentTarget;
+
+      if (clickedElement.classList.contains('--nextBtn')) {
+        switchImage('next');
+      } else if (clickedElement.classList.contains('--prevBtn')) {
+        switchImage('prev');
+        // handleNextButtonClick();
+      }
+      changeCounterOfSlider();
+      toggleDisabledBtn(clickedElement);
     });
+  });
 };
 
+const createNextPrevButton = () => {
+  const nextPrevBtnWrap = createElementWithClassName(
+    'div',
+    'nextPrevBtnWrap',
+  );
+  const nextBtn = createElementWithClassName('button', 'arrowBtn --nextBtn');
+  nextBtn.id = 'js-nextBtn';
+  const prevBtn = createElementWithClassName('button', 'arrowBtn --prevBtn');
+  prevBtn.id = 'js-prevBtn';
+
+  nextBtn.textContent = '▶︎';
+  prevBtn.textContent = '◀︎';
+
+  // First, give disabled to prevBtn by default.
+  if (prevBtn.classList.contains('--prevBtn')) {
+    prevBtn.setAttribute('disabled', true);
+  }
+
+  nextPrevBtnWrap.appendChild(nextBtn);
+  nextPrevBtnWrap.appendChild(prevBtn);
+
+  return nextPrevBtnWrap;
+};
+
+const initNextPrevBtn = () => {
+  const nextPrevBtn = createNextPrevButton();
+  sliderWrap.appendChild(nextPrevBtn);
+  handleNextPrevBtnClicked();
+};
+
+const init = async () => {
+  const imgData = await tryGetSlideImgData();
+
+  if (imgData) {
+    initSliderItem(imgData);
+    initNextPrevBtn();
+    sliderWrap.appendChild(createConterOfSlider(imgData));
+  }
+};
+
+init();
