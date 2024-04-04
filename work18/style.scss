@@ -75,5 +75,21 @@ img {
 
 .counterWrap {
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: .5rem;
+}
+
+.indicatorList {
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+
+    .indicatorItem {
+        cursor: pointer;
+        color: rgb(0, 0, 0);
+        opacity: .5;
+        &.select {
+            opacity: 1;
+            pointer-events: none;
+        }
+    }
 }

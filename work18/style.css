@@ -70,5 +70,20 @@ img {
 
 .counterWrap {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.indicatorList {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+.indicatorList .indicatorItem {
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  opacity: 0.5;
+}
+.indicatorList .indicatorItem.select {
+  opacity: 1;
+  pointer-events: none;
 }/*# sourceMappingURL=style.css.map */
