@@ -70,35 +70,39 @@ const createNextPrevBtn = () => {
     slider.appendChild(div);
 };
 
+const clickEventNextBtn = () => {
+    const currentSlide = document.querySelector('[data-view="on"]');
+    const nextSlide = currentSlide.nextElementSibling;
+
+    prevBtn.disabled = false;
+    currentSlide.dataset.view = 'off';
+    nextSlide.dataset.view = 'on';
+
+    if (nextSlide.getAttribute('data-number') === 'last') {
+        nextBtn.disabled = true;
+    }
+};
+
+const clickEventPrevBtn = () => {
+    const currentSlide = document.querySelector('[data-view="on"]');
+    const prevSlide = currentSlide.previousElementSibling;
+
+    nextBtn.disabled = false;
+    currentSlide.dataset.view = 'off';
+    prevSlide.dataset.view = 'on';
+
+    if (prevSlide.getAttribute('data-number') === 'first') {
+        prevBtn.disabled = true;
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
 
-    nextBtn.addEventListener('click', (event) => {
-        const currentSlide = document.querySelector('[data-view="on"]');
-        const nextSlide = currentSlide.nextElementSibling;
+    nextBtn.addEventListener('click', clickEventNextBtn);
 
-        prevBtn.disabled = false;
-        currentSlide.dataset.view = 'off';
-        nextSlide.dataset.view = 'on';
-
-        if (nextSlide.getAttribute('data-number') === 'last') {
-            nextBtn.disabled = true;
-        }
-    });
-
-    prevBtn.addEventListener('click', (event) => {
-        const currentSlide = document.querySelector('[data-view="on"]');
-        const prevSlide = currentSlide.previousElementSibling;
-
-        nextBtn.disabled = false;
-        currentSlide.dataset.view = 'off';
-        prevSlide.dataset.view = 'on';
-
-        if (prevSlide.getAttribute('data-number') === 'first') {
-            prevBtn.disabled = true;
-        }
-    });
+    prevBtn.addEventListener('click', clickEventPrevBtn);
 });
 
 displaySlideImage();
