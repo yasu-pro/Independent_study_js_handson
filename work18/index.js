@@ -13,11 +13,18 @@ const getSlideImage = async () => {
     return slideData;
 };
 
-const addImage = (slide) => {
+const addImage = (slide, index, array) => {
     // 画像追加
     const lists = document.createElement('li');
     const img = document.createElement('img');
 
+    lists.dataset.view = 'off';
+    if (index === 0) {
+        lists.dataset.view = 'on';
+        lists.dataset.number = 'first';
+    } else if (index + 1 === array.length) {
+        lists.dataset.number = 'last';
+    }
     lists.id = slide.id;
     img.src = slide.src;
     lists.style.zIndex = `-${slide.order}`;
@@ -26,10 +33,20 @@ const addImage = (slide) => {
     sliderList.appendChild(lists);
 };
 
+const initializePrevBtnState = () => {
+    const firstSlide = document.querySelector('[data-number="first"]');
+    const prevBtn = document.getElementById('prevBtn');
+    if (firstSlide) {
+        prevBtn.disabled = true;
+    }
+};
+
 const displaySlideImage = async () => {
     const slideData = await getSlideImage();
 
     slideData.forEach(addImage);
+
+    initializePrevBtnState();
 };
 
 const createNextPrevBtn = () => {
@@ -55,6 +72,36 @@ const createNextPrevBtn = () => {
 document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
+
+    nextBtn.addEventListener('click', (event) => {
+        const currentSlide = document.querySelector('[data-view="on"]');
+        const nextSlide = currentSlide.nextElementSibling;
+
+        prevBtn.disabled = false;
+        currentSlide.dataset.view = 'off';
+        nextSlide.dataset.view = 'on';
+
+        if (nextSlide.getAttribute('data-number') === 'last') {
+            nextBtn.disabled = true;
+        }
+        console.log(nextSlide.dataset);
+    });
+
+    prevBtn.addEventListener('click', (event) => {
+        const currentSlide = document.querySelector('[data-view="on"]');
+        const prevSlide = currentSlide.previousElementSibling;
+
+        nextBtn.disabled = false;
+        currentSlide.dataset.view = 'off';
+        prevSlide.dataset.view = 'on';
+
+        if (
+            prevSlide.getAttribute('data-number') === 'first' ||
+            currentSlide.getAttribute('data-number') === 'first'
+        ) {
+            prevBtn.disabled = true;
+        }
+    });
 
     console.log(nextBtn, prevBtn);
 });
