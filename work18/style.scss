@@ -62,31 +62,30 @@ img {
         width: 100%;
         height: 100%;
         overflow: hidden;
-        z-index: -1;
         img {
             width: 100%;
             height: 100%;
         }
-        &.is-display {
-            z-index: 1;
+        &[data-view='on'] {
+            z-index: 1 !important;
         }
     }
 }
 
 .counterWrap {
     text-align: center;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
 }
 
 .indicatorList {
     display: flex;
     justify-content: center;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
 
     .indicatorItem {
         cursor: pointer;
         color: rgb(0, 0, 0);
-        opacity: .5;
+        opacity: 0.5;
         &.select {
             opacity: 1;
             pointer-events: none;
