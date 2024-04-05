@@ -34,6 +34,7 @@ const addImage = (slide, index, array) => {
 };
 
 const initializePrevBtnState = () => {
+    // 読み込み時prevボタンをdisabled
     const firstSlide = document.querySelector('[data-number="first"]');
     const prevBtn = document.getElementById('prevBtn');
     if (firstSlide) {
@@ -84,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextSlide.getAttribute('data-number') === 'last') {
             nextBtn.disabled = true;
         }
-        console.log(nextSlide.dataset);
     });
 
     prevBtn.addEventListener('click', (event) => {
@@ -95,15 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSlide.dataset.view = 'off';
         prevSlide.dataset.view = 'on';
 
-        if (
-            prevSlide.getAttribute('data-number') === 'first' ||
-            currentSlide.getAttribute('data-number') === 'first'
-        ) {
+        if (prevSlide.getAttribute('data-number') === 'first') {
             prevBtn.disabled = true;
         }
     });
-
-    console.log(nextBtn, prevBtn);
 });
 
 displaySlideImage();
