@@ -39,6 +39,9 @@ img {
   right: -10%;
   padding: 0.5rem;
 }
+.sliderWrap .nextPrevBtnWrap .--nextBtn:disabled {
+  pointer-events: none;
+}
 .sliderWrap .nextPrevBtnWrap .--prevBtn {
   left: -10%;
   padding: 0.5rem;
@@ -82,7 +85,7 @@ img {
   color: rgb(0, 0, 0);
   opacity: 0.5;
 }
-.indicatorList .indicatorItem.select {
+.indicatorList .indicatorItem[data-select=select] {
   opacity: 1;
   pointer-events: none;
 }/*# sourceMappingURL=style.css.map */

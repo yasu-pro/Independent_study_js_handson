@@ -40,11 +40,13 @@ img {
         .--nextBtn {
             right: -10%;
             padding: 0.5rem;
+            &:disabled {
+                pointer-events: none;
+            }
         }
         .--prevBtn {
             left: -10%;
             padding: 0.5rem;
-
             &:disabled {
                 pointer-events: none;
             }
@@ -86,7 +88,7 @@ img {
         cursor: pointer;
         color: rgb(0, 0, 0);
         opacity: 0.5;
-        &.select {
+        &[data-select='select'] {
             opacity: 1;
             pointer-events: none;
         }

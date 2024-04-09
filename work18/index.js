@@ -6,31 +6,11 @@ const sliderList = document.getElementById('js-slider-list');
 const apiURL = 'http://localhost:3000/data';
 
 // 関数
-const getSlideImage = async () => {
+const getSlideData = async () => {
     const res = await fetch('http://localhost:3000/data');
     const slideData = await res.json();
 
     return slideData;
-};
-
-const addImage = (slide, index, array) => {
-    // 画像追加
-    const lists = document.createElement('li');
-    const img = document.createElement('img');
-
-    lists.dataset.view = 'off';
-    if (index === 0) {
-        lists.dataset.view = 'on';
-        lists.dataset.number = 'first';
-    } else if (index + 1 === array.length) {
-        lists.dataset.number = 'last';
-    }
-    lists.id = slide.id;
-    img.src = slide.src;
-    lists.style.zIndex = `-${slide.order}`;
-
-    lists.appendChild(img);
-    sliderList.appendChild(lists);
 };
 
 const initializePrevBtnState = () => {
@@ -42,12 +22,109 @@ const initializePrevBtnState = () => {
     }
 };
 
-const displaySlideImage = async () => {
-    const slideData = await getSlideImage();
+const createDotIndicatorList = () => {
+    const list = document.createElement('ul');
+    list.id = 'js-indicator';
+    list.className = 'indicatorList';
 
-    slideData.forEach(addImage);
+    return list;
+};
+
+const initializeDisplay = async () => {
+    const slideData = await getSlideData();
+
+    const fragment = document.createDocumentFragment();
+
+    const dotIndicatorList = createDotIndicatorList();
+    slider.appendChild(dotIndicatorList);
+
+    slideData.forEach((slide, index, array) => {
+        // 画像追加
+        const lists = document.createElement('li');
+        const img = document.createElement('img');
+
+        lists.dataset.view = 'off';
+        if (index === 0) {
+            lists.dataset.view = 'on';
+            lists.dataset.number = 'first';
+        } else if (index + 1 === array.length) {
+            lists.dataset.number = 'last';
+        }
+        lists.dataset.slideOrder = slide.order;
+        lists.id = slide.id;
+        img.src = slide.src;
+        lists.style.zIndex = `-${slide.order}`;
+
+        lists.appendChild(img);
+        sliderList.appendChild(lists);
+    });
+
+    slideData.forEach((slide, index) => {
+        // インディケーター追加
+        const list = document.getElementById('js-indicator');
+        const item = document.createElement('li');
+
+        item.textContent = '■';
+
+        item.className = 'indicatorItem';
+        item.dataset.indicatorOrder = slide.order;
+
+        if (index === 0) {
+            item.dataset.select = 'select';
+        }
+
+        fragment.appendChild(item);
+
+        list.appendChild(fragment);
+    });
 
     initializePrevBtnState();
+
+    // DOM要素が生成された後に、イベントリスナーを設定する
+    const arrayIndicatorItem = document.querySelectorAll('.indicatorItem');
+    const arraySlideOrderItem = document.querySelectorAll('[data-slide-order]');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    arrayIndicatorItem.forEach((indicatorItem, index, array) => {
+        indicatorItem.addEventListener('click', (event) => {
+            const clickedIndicatorItem = event.target;
+            const indicatorOrder = clickedIndicatorItem.getAttribute(
+                'data-indicator-order'
+            );
+
+            // ボタンのdisabled属性を設定
+            if (index === 0) {
+                prevBtn.disabled = true;
+                nextBtn.disabled = false;
+            } else if (index === array.length - 1) {
+                nextBtn.disabled = true;
+                prevBtn.disabled = false;
+            } else {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+            }
+
+            // クリックされる前のdata属性を変更・削除
+            const beforeSlideView = document.querySelector('[data-view="on"]');
+            const beforeIndicatorSelect =
+                document.querySelector('[data-select]');
+
+            beforeSlideView.dataset.view = 'off';
+            beforeIndicatorSelect.removeAttribute('data-select');
+
+            arraySlideOrderItem.forEach((slideOrderItem) => {
+                // インディケーターの表示変更
+                const slideOrder =
+                    slideOrderItem.getAttribute('data-slide-order');
+
+                if (slideOrder === indicatorOrder) {
+                    clickedIndicatorItem.dataset.select = 'select';
+                    slideOrderItem.dataset.view = 'on';
+                }
+            });
+        });
+    });
 };
 
 const createNextPrevBtn = () => {
@@ -71,12 +148,16 @@ const createNextPrevBtn = () => {
 };
 
 const clickEventNextBtn = () => {
-    const currentSlide = document.querySelector('[data-view="on"]');
-    const nextSlide = currentSlide.nextElementSibling;
+    const beforeSlide = document.querySelector('[data-view="on"]');
+    const nextSlide = beforeSlide.nextElementSibling;
+    const beforeIndicator = document.querySelector('[data-select="select"]');
+    const nextIndicator = beforeIndicator.nextElementSibling;
 
     prevBtn.disabled = false;
-    currentSlide.dataset.view = 'off';
+    beforeSlide.dataset.view = 'off';
     nextSlide.dataset.view = 'on';
+    beforeIndicator.removeAttribute('data-select');
+    nextIndicator.dataset.select = 'select';
 
     if (nextSlide.getAttribute('data-number') === 'last') {
         nextBtn.disabled = true;
@@ -84,12 +165,16 @@ const clickEventNextBtn = () => {
 };
 
 const clickEventPrevBtn = () => {
-    const currentSlide = document.querySelector('[data-view="on"]');
-    const prevSlide = currentSlide.previousElementSibling;
+    const beforeSlide = document.querySelector('[data-view="on"]');
+    const prevSlide = beforeSlide.previousElementSibling;
+    const beforeIndicator = document.querySelector('[data-select="select"]');
+    const prevIndicator = beforeIndicator.previousElementSibling;
 
     nextBtn.disabled = false;
-    currentSlide.dataset.view = 'off';
+    beforeSlide.dataset.view = 'off';
     prevSlide.dataset.view = 'on';
+    beforeIndicator.removeAttribute('data-select');
+    prevIndicator.dataset.select = 'select';
 
     if (prevSlide.getAttribute('data-number') === 'first') {
         prevBtn.disabled = true;
@@ -101,9 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
 
     nextBtn.addEventListener('click', clickEventNextBtn);
-
     prevBtn.addEventListener('click', clickEventPrevBtn);
 });
 
-displaySlideImage();
+initializeDisplay();
 createNextPrevBtn();
