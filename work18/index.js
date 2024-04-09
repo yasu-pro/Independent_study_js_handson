@@ -155,8 +155,19 @@ const initializeDisplay = async () => {
                     slideOrderItem.dataset.view = 'on';
                 }
             });
+
+            changePageNum();
         });
     });
+};
+
+const changePageNum = () => {
+    // ページ番号変更
+    const currentPageNum = document.getElementById('js-currentPageNum');
+    const slideView = document.querySelector('[data-view="on"]');
+    const slideOrder = slideView.getAttribute('data-slide-order');
+
+    currentPageNum.textContent = slideOrder;
 };
 
 const createNextPrevBtn = () => {
@@ -194,6 +205,8 @@ const clickEventNextBtn = () => {
     if (nextSlide.getAttribute('data-number') === 'last') {
         nextBtn.disabled = true;
     }
+
+    changePageNum();
 };
 
 const clickEventPrevBtn = () => {
@@ -211,6 +224,8 @@ const clickEventPrevBtn = () => {
     if (prevSlide.getAttribute('data-number') === 'first') {
         prevBtn.disabled = true;
     }
+
+    changePageNum();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
