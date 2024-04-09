@@ -38,6 +38,29 @@ const createPageNumberWrap = () => {
     return pageNumWrap;
 };
 
+const addPageNum = (totalSlides) => {
+    // ページ番号追加
+    const pageNumWrapElem = document.getElementById('js-pageNumberWrap');
+    const currentPageNum = document.createElement('span');
+    const totalPageNum = document.createElement('span');
+    const pageDivider = document.createElement('span');
+
+    currentPageNum.className = 'currentPageNum';
+    currentPageNum.id = 'js-currentPageNum';
+    totalPageNum.className = 'totalPageNum';
+    totalPageNum.id = 'js-totalPageNum';
+
+    currentPageNum.textContent = 1;
+    totalPageNum.textContent = totalSlides;
+
+    pageDivider.classList.add('pageDivider');
+    pageDivider.textContent = ' / ';
+
+    pageNumWrapElem.appendChild(currentPageNum);
+    pageNumWrapElem.appendChild(pageDivider);
+    pageNumWrapElem.appendChild(totalPageNum);
+};
+
 const initializeDisplay = async () => {
     const slideData = await getSlideData();
 
@@ -89,26 +112,7 @@ const initializeDisplay = async () => {
         list.appendChild(fragment);
     });
 
-    // ページ番号追加
-    const pageNumWrapElem = document.getElementById('js-pageNumberWrap');
-    const currentPageNum = document.createElement('span');
-    const totalPageNum = document.createElement('span');
-    const pageDivider = document.createElement('span');
-
-    currentPageNum.className = 'currentPageNum';
-    currentPageNum.id = 'js-currentPageNum';
-    totalPageNum.className = 'totalPageNum';
-    totalPageNum.id = 'js-totalPageNum';
-
-    currentPageNum.textContent = 1;
-    totalPageNum.textContent = slideData.length;
-
-    pageDivider.classList.add('pageDivider');
-    pageDivider.textContent = ' / ';
-
-    pageNumWrapElem.appendChild(currentPageNum);
-    pageNumWrapElem.appendChild(pageDivider);
-    pageNumWrapElem.appendChild(totalPageNum);
+    addPageNum(slideData.length);
 
     initializePrevBtnState();
 
