@@ -194,38 +194,33 @@ const createNextPrevBtn = () => {
     slider.appendChild(div);
 };
 
-const clickEventNextBtn = () => {
+const clickEventBtn = (buttonType) => {
     const beforeSlide = document.querySelector('[data-view="on"]');
-    const nextSlide = beforeSlide.nextElementSibling;
     const beforeIndicator = document.querySelector('[data-select="select"]');
-    const nextIndicator = beforeIndicator.nextElementSibling;
+
+    let changeSlide;
+    let changeIndicator;
+
+    if (buttonType === 'next') {
+        changeSlide = beforeSlide.nextElementSibling;
+        changeIndicator = beforeIndicator.nextElementSibling;
+        nextBtn.disabled = false;
+    } else if (buttonType === 'prev') {
+        changeSlide = beforeSlide.previousElementSibling;
+        changeIndicator = beforeIndicator.previousElementSibling;
+    }
 
     prevBtn.disabled = false;
     beforeSlide.dataset.view = 'off';
-    nextSlide.dataset.view = 'on';
+    changeSlide.dataset.view = 'on';
     beforeIndicator.removeAttribute('data-select');
-    nextIndicator.dataset.select = 'select';
+    changeIndicator.dataset.select = 'select';
 
-    if (nextSlide.getAttribute('data-number') === 'last') {
+    if (changeSlide.getAttribute('data-number') === 'last') {
         nextBtn.disabled = true;
     }
 
-    changePageNum();
-};
-
-const clickEventPrevBtn = () => {
-    const beforeSlide = document.querySelector('[data-view="on"]');
-    const prevSlide = beforeSlide.previousElementSibling;
-    const beforeIndicator = document.querySelector('[data-select="select"]');
-    const prevIndicator = beforeIndicator.previousElementSibling;
-
-    nextBtn.disabled = false;
-    beforeSlide.dataset.view = 'off';
-    prevSlide.dataset.view = 'on';
-    beforeIndicator.removeAttribute('data-select');
-    prevIndicator.dataset.select = 'select';
-
-    if (prevSlide.getAttribute('data-number') === 'first') {
+    if (changeSlide.getAttribute('data-number') === 'first') {
         prevBtn.disabled = true;
     }
 
@@ -236,8 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
 
-    nextBtn.addEventListener('click', clickEventNextBtn);
-    prevBtn.addEventListener('click', clickEventPrevBtn);
+    nextBtn.addEventListener('click', () => clickEventBtn('next'));
+    prevBtn.addEventListener('click', () => clickEventBtn('prev'));
 });
 
 initializeDisplay();
