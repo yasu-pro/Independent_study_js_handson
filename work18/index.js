@@ -23,6 +23,15 @@ const removeLoading = () => {
     load.remove();
 };
 
+const createErrorMessage = (error) => {
+    const errorMessage = document.createElement('p');
+    errorMessage.classList = 'errorMessage';
+
+    errorMessage.textContent = error;
+
+    return errorMessage;
+};
+
 const getSlideData = async () => {
     try {
         loading();
@@ -32,10 +41,12 @@ const getSlideData = async () => {
             throw new Error(res.statusText);
         }
         const slideData = await res.json();
-        removeLoading();
         return slideData;
     } catch (error) {
+        slider.appendChild(createErrorMessage(error));
         console.error('Error:', error);
+    } finally {
+        removeLoading();
     }
 };
 
