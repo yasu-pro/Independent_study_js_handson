@@ -34,8 +34,6 @@ const createErrorMessage = (error) => {
 
 const getSlideData = async () => {
     try {
-        loading();
-
         const res = await fetch(apiURL);
         if (!res.ok) {
             throw new Error(res.statusText);
@@ -45,8 +43,6 @@ const getSlideData = async () => {
     } catch (error) {
         slider.appendChild(createErrorMessage(error));
         console.error('Error:', error);
-    } finally {
-        removeLoading();
     }
 };
 
@@ -157,9 +153,7 @@ const indicatorEvent = () => {
     });
 };
 
-const initializeDisplay = async () => {
-    const slideData = await getSlideData();
-
+const initializeDisplay = async (slideData) => {
     const fragment = document.createDocumentFragment();
 
     const dotIndicatorList = createDotIndicatorList();
@@ -209,11 +203,6 @@ const initializeDisplay = async () => {
     });
 
     addPageNum(slideData.length);
-
-    initializePrevBtnState();
-
-    // DOM要素が生成された後に、イベントリスナーを設定する
-    indicatorEvent();
 };
 
 const changePageNum = () => {
@@ -278,13 +267,24 @@ const clickEventBtn = (buttonType) => {
     changePageNum();
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+const setupButtonListeners = () => {
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
 
     nextBtn.addEventListener('click', () => clickEventBtn('next'));
     prevBtn.addEventListener('click', () => clickEventBtn('prev'));
-});
+};
 
-initializeDisplay();
-createNextPrevBtn();
+const initializeApp = async () => {
+    loading();
+
+    const slideData = await getSlideData();
+    initializeDisplay(slideData);
+    removeLoading();
+    createNextPrevBtn();
+    initializePrevBtnState();
+    indicatorEvent();
+    setupButtonListeners();
+};
+
+initializeApp();
