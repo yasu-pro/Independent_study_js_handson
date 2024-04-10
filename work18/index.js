@@ -259,9 +259,9 @@ const clickEventBtn = (buttonType) => {
     } else if (buttonType === 'prev') {
         changeSlide = beforeSlide.previousElementSibling;
         changeIndicator = beforeIndicator.previousElementSibling;
+        prevBtn.disabled = false;
     }
 
-    prevBtn.disabled = false;
     beforeSlide.dataset.view = 'off';
     changeSlide.dataset.view = 'on';
     beforeIndicator.removeAttribute('data-select');
