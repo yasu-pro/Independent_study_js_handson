@@ -78,33 +78,35 @@ const updateButtonDisabledState = (index, array) => {
     }
 };
 
-const clickEventIndicator = (index, array, event) => {
-    const arraySlideOrderItem = document.querySelectorAll('[data-slide-order]');
-
-    const clickedIndicatorItem = event.target;
-    const indicatorOrder = clickedIndicatorItem.getAttribute(
-        'data-indicator-order'
-    );
-
-    updateButtonDisabledState(index, array);
-
+const updateSlideIndicatorElementState = () => {
     // クリックされる前のdata属性を変更・削除
     const beforeSlideView = document.querySelector('[data-view="on"]');
     const beforeIndicatorSelect = document.querySelector('[data-select]');
 
     beforeSlideView.dataset.view = 'off';
     beforeIndicatorSelect.removeAttribute('data-select');
+};
 
-    arraySlideOrderItem.forEach((slideOrderItem) => {
-        // インディケーターの表示変更
-        const slideOrder = slideOrderItem.getAttribute('data-slide-order');
+const changeIndicatorDisplay = (clickedIndicatorItem) => (slideOrderItem) => {
+    // インディケーターの表示変更
+    const indicatorOrder = clickedIndicatorItem.getAttribute(
+        'data-indicator-order'
+    );
+    const slideOrder = slideOrderItem.getAttribute('data-slide-order');
 
-        if (slideOrder === indicatorOrder) {
-            clickedIndicatorItem.dataset.select = 'select';
-            slideOrderItem.dataset.view = 'on';
-        }
-    });
+    if (slideOrder === indicatorOrder) {
+        clickedIndicatorItem.dataset.select = 'select';
+        slideOrderItem.dataset.view = 'on';
+    }
+};
 
+const clickEventIndicator = (index, array, event) => {
+    const arraySlideOrderItem = document.querySelectorAll('[data-slide-order]');
+    const clickedIndicatorItem = event.target;
+
+    updateButtonDisabledState(index, array);
+    updateSlideIndicatorElementState();
+    arraySlideOrderItem.forEach(changeIndicatorDisplay(clickedIndicatorItem));
     changePageNum();
 };
 
