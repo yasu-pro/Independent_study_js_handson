@@ -244,11 +244,9 @@ const clickEventBtn = (buttonType) => {
     if (buttonType === 'next') {
         changeSlide = beforeSlide.nextElementSibling;
         changeIndicator = beforeIndicator.nextElementSibling;
-        nextBtn.disabled = false;
     } else if (buttonType === 'prev') {
         changeSlide = beforeSlide.previousElementSibling;
         changeIndicator = beforeIndicator.previousElementSibling;
-        prevBtn.disabled = false;
     }
 
     beforeSlide.dataset.view = 'off';
@@ -258,10 +256,11 @@ const clickEventBtn = (buttonType) => {
 
     if (changeSlide.getAttribute('data-number') === 'last') {
         nextBtn.disabled = true;
-    }
-
-    if (changeSlide.getAttribute('data-number') === 'first') {
+    } else if (changeSlide.getAttribute('data-number') === 'first') {
         prevBtn.disabled = true;
+    } else {
+        nextBtn.disabled = false;
+        prevBtn.disabled = false;
     }
 
     changePageNum();
