@@ -7,10 +7,16 @@ const apiURL = 'http://localhost:3000/data';
 
 // 関数
 const getSlideData = async () => {
-    const res = await fetch('http://localhost:3000/data');
-    const slideData = await res.json();
-
-    return slideData;
+    try {
+        const res = await fetch(apiURL);
+        if (!res.ok) {
+            throw new Error('Network response was not OK');
+        }
+        const slideData = await res.json();
+        return slideData;
+    } catch (error) {
+        console.error('Error:', error);
+    }
 };
 
 const initializePrevBtnState = () => {
