@@ -6,13 +6,33 @@ const sliderList = document.getElementById('js-slider-list');
 const apiURL = 'http://localhost:3000/data';
 
 // 関数
+const loading = () => {
+    const div = document.createElement('div');
+    const img = document.createElement('img');
+
+    img.src = './img/loading-circle.gif';
+
+    div.classList.add('load');
+    div.appendChild(img);
+    slider.appendChild(div);
+};
+
+const removeLoading = () => {
+    const load = document.querySelector('.load');
+
+    load.remove();
+};
+
 const getSlideData = async () => {
     try {
+        loading();
+
         const res = await fetch(apiURL);
         if (!res.ok) {
             throw new Error(res.statusText);
         }
         const slideData = await res.json();
+        removeLoading();
         return slideData;
     } catch (error) {
         console.error('Error:', error);
