@@ -61,15 +61,9 @@ const addPageNum = (totalSlides) => {
     pageNumWrapElem.appendChild(totalPageNum);
 };
 
-const clickEventIndicator = (index, array, event) => {
-    const arraySlideOrderItem = document.querySelectorAll('[data-slide-order]');
+const updateButtonDisabledState = (index, array) => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-
-    const clickedIndicatorItem = event.target;
-    const indicatorOrder = clickedIndicatorItem.getAttribute(
-        'data-indicator-order'
-    );
 
     // ボタンのdisabled属性を設定
     if (index === 0) {
@@ -82,6 +76,17 @@ const clickEventIndicator = (index, array, event) => {
         prevBtn.disabled = false;
         nextBtn.disabled = false;
     }
+};
+
+const clickEventIndicator = (index, array, event) => {
+    const arraySlideOrderItem = document.querySelectorAll('[data-slide-order]');
+
+    const clickedIndicatorItem = event.target;
+    const indicatorOrder = clickedIndicatorItem.getAttribute(
+        'data-indicator-order'
+    );
+
+    updateButtonDisabledState(index, array);
 
     // クリックされる前のdata属性を変更・削除
     const beforeSlideView = document.querySelector('[data-view="on"]');
