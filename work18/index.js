@@ -10,7 +10,7 @@ const getSlideData = async () => {
     try {
         const res = await fetch(apiURL);
         if (!res.ok) {
-            throw new Error('Network response was not OK');
+            throw new Error(res.statusText);
         }
         const slideData = await res.json();
         return slideData;
