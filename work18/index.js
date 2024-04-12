@@ -1,6 +1,7 @@
 // DOM
 const slider = document.getElementById('js-slider');
 const sliderList = document.getElementById('js-slider-list');
+const autoSlideTime = 3000;
 
 // API
 const apiURL = 'http://localhost:3000/data';
@@ -149,6 +150,9 @@ const indicatorEvent = () => {
         indicatorItem.addEventListener('click', (event) => {
             clickEventIndicator(index, array, event);
             changePageNum();
+
+            clearInterval(intervalCount.countId);
+            autoSlide();
         });
     });
 };
@@ -264,6 +268,9 @@ const clickEventBtn = (buttonType) => {
     }
 
     changePageNum();
+
+    clearInterval(intervalCount.countId);
+    autoSlide();
 };
 
 const setupButtonListeners = () => {
@@ -284,6 +291,39 @@ const initializeApp = async () => {
     initializePrevBtnState();
     indicatorEvent();
     setupButtonListeners();
+
+    autoSlide();
 };
 
+const intervalCount = { countId: 0 };
+
+const autoChangeSlide = () => {
+    const beforeSlide = document.querySelector('[data-view="on"]');
+    const beforeIndicator = document.querySelector('[data-select="select"]');
+
+    changeSlide = beforeSlide.nextElementSibling;
+    changeIndicator = beforeIndicator.nextElementSibling;
+
+    beforeSlide.dataset.view = 'off';
+    changeSlide.dataset.view = 'on';
+    beforeIndicator.removeAttribute('data-select');
+    changeIndicator.dataset.select = 'select';
+
+    if (changeSlide.getAttribute('data-number') === 'last') {
+        nextBtn.disabled = true;
+        clearInterval(intervalCount.countId);
+    } else if (changeSlide.getAttribute('data-number') === 'first') {
+        prevBtn.disabled = true;
+    } else {
+        nextBtn.disabled = false;
+        prevBtn.disabled = false;
+    }
+
+    changePageNum();
+};
+
+const autoSlide = () =>
+    (intervalCount.countId = setInterval(() => {
+        autoChangeSlide();
+    }, autoSlideTime));
 initializeApp();
