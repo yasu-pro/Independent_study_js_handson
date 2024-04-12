@@ -151,7 +151,11 @@ const indicatorEvent = () => {
             clickEventIndicator(index, array, event);
             changePageNum();
 
-            resetAutoSlide();
+            if (!isLastSlide()) {
+                resetAutoSlide();
+            } else {
+                clearInterval(intervalCount.countId);
+            }
         });
     });
 };
@@ -291,6 +295,13 @@ const initializeApp = async () => {
     setupButtonListeners();
 
     autoSlide();
+};
+
+const isLastSlide = () => {
+    const currentSlide = document.querySelector('[data-view="on"]');
+    const isLastSlide = currentSlide.getAttribute('data-number') === 'last';
+
+    return isLastSlide;
 };
 
 const intervalCount = { countId: 0 };
