@@ -242,23 +242,23 @@ const createNextPrevBtn = () => {
 };
 
 const clickEventBtn = (buttonType) => {
-    const beforeSlide = document.querySelector('[data-view="on"]');
-    const beforeIndicator = document.querySelector('[data-select="select"]');
+    const currentSlide = document.querySelector('[data-view="on"]');
+    const currentIndicator = document.querySelector('[data-select="select"]');
 
     let changeSlide;
     let changeIndicator;
 
     if (buttonType === 'next') {
-        changeSlide = beforeSlide.nextElementSibling;
-        changeIndicator = beforeIndicator.nextElementSibling;
+        changeSlide = currentSlide.nextElementSibling;
+        changeIndicator = currentIndicator.nextElementSibling;
     } else if (buttonType === 'prev') {
-        changeSlide = beforeSlide.previousElementSibling;
-        changeIndicator = beforeIndicator.previousElementSibling;
+        changeSlide = currentSlide.previousElementSibling;
+        changeIndicator = currentIndicator.previousElementSibling;
     }
 
-    beforeSlide.dataset.view = 'off';
+    currentSlide.dataset.view = 'off';
     changeSlide.dataset.view = 'on';
-    beforeIndicator.removeAttribute('data-select');
+    currentIndicator.removeAttribute('data-select');
     changeIndicator.dataset.select = 'select';
 
     if (changeSlide.getAttribute('data-number') === 'last') {
@@ -307,15 +307,18 @@ const isLastSlide = () => {
 const intervalCount = { countId: 0 };
 
 const autoChangeSlide = () => {
-    const beforeSlide = document.querySelector('[data-view="on"]');
-    const beforeIndicator = document.querySelector('[data-select="select"]');
+    const currentSlide = document.querySelector('[data-view="on"]');
+    const currentIndicator = document.querySelector('[data-select="select"]');
 
-    changeSlide = beforeSlide.nextElementSibling;
-    changeIndicator = beforeIndicator.nextElementSibling;
+    let changeSlide;
+    let changeIndicator;
 
-    beforeSlide.dataset.view = 'off';
+    changeSlide = currentSlide.nextElementSibling;
+    changeIndicator = currentIndicator.nextElementSibling;
+
+    currentSlide.dataset.view = 'off';
     changeSlide.dataset.view = 'on';
-    beforeIndicator.removeAttribute('data-select');
+    currentIndicator.removeAttribute('data-select');
     changeIndicator.dataset.select = 'select';
 
     if (changeSlide.getAttribute('data-number') === 'last') {
