@@ -151,8 +151,7 @@ const indicatorEvent = () => {
             clickEventIndicator(index, array, event);
             changePageNum();
 
-            clearInterval(intervalCount.countId);
-            autoSlide();
+            resetAutoSlide();
         });
     });
 };
@@ -269,8 +268,7 @@ const clickEventBtn = (buttonType) => {
 
     changePageNum();
 
-    clearInterval(intervalCount.countId);
-    autoSlide();
+    resetAutoSlide();
 };
 
 const setupButtonListeners = () => {
@@ -322,8 +320,14 @@ const autoChangeSlide = () => {
     changePageNum();
 };
 
+const resetAutoSlide = () => {
+    clearInterval(intervalCount.countId);
+    autoSlide();
+};
+
 const autoSlide = () =>
     (intervalCount.countId = setInterval(() => {
         autoChangeSlide();
     }, autoSlideTime));
+
 initializeApp();
