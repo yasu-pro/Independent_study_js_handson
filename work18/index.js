@@ -140,16 +140,16 @@ const clickEventIndicator = (index, array, event) => {
     updateButtonDisabledState(index, array);
     updateSlideIndicatorElementState();
     arraySlideOrderItem.forEach(changeIndicatorDisplay(clickedIndicatorItem));
-    changePageNum();
 };
 
 const indicatorEvent = () => {
     const arrayIndicatorItem = document.querySelectorAll('.indicatorItem');
 
     arrayIndicatorItem.forEach((indicatorItem, index, array) => {
-        indicatorItem.addEventListener('click', (event) =>
-            clickEventIndicator(index, array, event)
-        );
+        indicatorItem.addEventListener('click', (event) => {
+            clickEventIndicator(index, array, event);
+            changePageNum();
+        });
     });
 };
 
