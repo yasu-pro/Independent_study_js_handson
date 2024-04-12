@@ -47,7 +47,7 @@ const getSlideData = async () => {
     }
 };
 
-const initializePrevBtnState = () => {
+const initializePrevBtnDisabledState = () => {
     // 読み込み時prevボタンをdisabled
     const firstSlide = document.querySelector('[data-number="first"]');
     const prevBtn = document.getElementById('prevBtn');
@@ -72,7 +72,7 @@ const createPageNumberWrap = () => {
     return pageNumWrap;
 };
 
-const addPageNum = (totalSlides) => {
+const createPageNum = (totalSlides) => {
     // ページ番号追加
     const pageNumWrapElem = document.getElementById('js-pageNumberWrap');
     const currentPageNum = document.createElement('span');
@@ -113,12 +113,12 @@ const updateButtonDisabledState = (index, array) => {
 };
 
 const updateSlideIndicatorElementState = () => {
-    // クリックされる前のdata属性を変更・削除
-    const beforeSlideView = document.querySelector('[data-view="on"]');
-    const beforeIndicatorSelect = document.querySelector('[data-select]');
+    // data属性を変更・削除
+    const currentSlideView = document.querySelector('[data-view="on"]');
+    const currentIndicatorSelect = document.querySelector('[data-select]');
 
-    beforeSlideView.dataset.view = 'off';
-    beforeIndicatorSelect.removeAttribute('data-select');
+    currentSlideView.dataset.view = 'off';
+    currentIndicatorSelect.removeAttribute('data-select');
 };
 
 const changeIndicatorDisplay = (clickedIndicatorItem) => (slideOrderItem) => {
@@ -160,56 +160,58 @@ const indicatorEvent = () => {
     });
 };
 
-const initializeDisplay = async (slideData) => {
+const createSlideImage = (slide, index, array) => {
+    // 画像追加
+    const lists = document.createElement('li');
+    const img = document.createElement('img');
+
+    lists.dataset.view = 'off';
+    if (index === 0) {
+        lists.dataset.view = 'on';
+        lists.dataset.number = 'first';
+    } else if (index + 1 === array.length) {
+        lists.dataset.number = 'last';
+    }
+    lists.dataset.slideOrder = slide.order;
+    lists.id = slide.id;
+    img.src = slide.src;
+    lists.style.zIndex = `-${slide.order}`;
+
+    lists.appendChild(img);
+    sliderList.appendChild(lists);
+};
+
+const createIndicator = (slide, index) => {
+    // インディケーター追加
+    const list = document.getElementById('js-indicator');
+    const item = document.createElement('li');
     const fragment = document.createDocumentFragment();
 
+    item.textContent = '■';
+
+    item.className = 'indicatorItem';
+    item.dataset.indicatorOrder = slide.order;
+
+    if (index === 0) {
+        item.dataset.select = 'select';
+    }
+
+    fragment.appendChild(item);
+    list.appendChild(fragment);
+};
+
+const initializeDisplay = async (slideData) => {
     const dotIndicatorList = createDotIndicatorList();
     const pageNumWrap = createPageNumberWrap();
 
     slider.appendChild(dotIndicatorList);
     slider.appendChild(pageNumWrap);
 
-    slideData.forEach((slide, index, array) => {
-        // 画像追加
-        const lists = document.createElement('li');
-        const img = document.createElement('img');
-
-        lists.dataset.view = 'off';
-        if (index === 0) {
-            lists.dataset.view = 'on';
-            lists.dataset.number = 'first';
-        } else if (index + 1 === array.length) {
-            lists.dataset.number = 'last';
-        }
-        lists.dataset.slideOrder = slide.order;
-        lists.id = slide.id;
-        img.src = slide.src;
-        lists.style.zIndex = `-${slide.order}`;
-
-        lists.appendChild(img);
-        sliderList.appendChild(lists);
-    });
-
-    slideData.forEach((slide, index) => {
-        // インディケーター追加
-        const list = document.getElementById('js-indicator');
-        const item = document.createElement('li');
-
-        item.textContent = '■';
-
-        item.className = 'indicatorItem';
-        item.dataset.indicatorOrder = slide.order;
-
-        if (index === 0) {
-            item.dataset.select = 'select';
-        }
-
-        fragment.appendChild(item);
-
-        list.appendChild(fragment);
-    });
-
-    addPageNum(slideData.length);
+    slideData.forEach(createSlideImage);
+    slideData.forEach(createIndicator);
+    createPageNum(slideData.length);
+    createNextPrevBtn();
+    initializePrevBtnDisabledState();
 };
 
 const changePageNum = () => {
@@ -287,10 +289,8 @@ const initializeApp = async () => {
     loading();
 
     const slideData = await getSlideData();
-    initializeDisplay(slideData);
+    await initializeDisplay(slideData);
     removeLoading();
-    createNextPrevBtn();
-    initializePrevBtnState();
     indicatorEvent();
     setupButtonListeners();
 
