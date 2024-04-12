@@ -250,25 +250,25 @@ const clickEventBtn = (buttonType) => {
     const currentSlide = document.querySelector('[data-view="on"]');
     const currentIndicator = document.querySelector('[data-select="select"]');
 
-    let changeSlide;
-    let changeIndicator;
+    let followingSlide;
+    let followingIndicator;
 
     if (buttonType === 'next') {
-        changeSlide = currentSlide.nextElementSibling;
-        changeIndicator = currentIndicator.nextElementSibling;
+        followingSlide = currentSlide.nextElementSibling;
+        followingIndicator = currentIndicator.nextElementSibling;
     } else if (buttonType === 'prev') {
-        changeSlide = currentSlide.previousElementSibling;
-        changeIndicator = currentIndicator.previousElementSibling;
+        followingSlide = currentSlide.previousElementSibling;
+        followingIndicator = currentIndicator.previousElementSibling;
     }
 
     currentSlide.dataset.view = 'off';
-    changeSlide.dataset.view = 'on';
+    followingSlide.dataset.view = 'on';
     currentIndicator.removeAttribute('data-select');
-    changeIndicator.dataset.select = 'select';
+    followingIndicator.dataset.select = 'select';
 
-    if (changeSlide.getAttribute('data-number') === 'last') {
+    if (followingSlide.getAttribute('data-number') === 'last') {
         nextBtn.disabled = true;
-    } else if (changeSlide.getAttribute('data-number') === 'first') {
+    } else if (followingSlide.getAttribute('data-number') === 'first') {
         prevBtn.disabled = true;
     } else {
         nextBtn.disabled = false;
@@ -313,21 +313,21 @@ const autoChangeSlide = () => {
     const currentSlide = document.querySelector('[data-view="on"]');
     const currentIndicator = document.querySelector('[data-select="select"]');
 
-    let changeSlide;
-    let changeIndicator;
+    let followingSlide;
+    let followingIndicator;
 
-    changeSlide = currentSlide.nextElementSibling;
-    changeIndicator = currentIndicator.nextElementSibling;
+    followingSlide = currentSlide.nextElementSibling;
+    followingIndicator = currentIndicator.nextElementSibling;
 
     currentSlide.dataset.view = 'off';
-    changeSlide.dataset.view = 'on';
+    followingSlide.dataset.view = 'on';
     currentIndicator.removeAttribute('data-select');
-    changeIndicator.dataset.select = 'select';
+    followingIndicator.dataset.select = 'select';
 
-    if (changeSlide.getAttribute('data-number') === 'last') {
+    if (followingSlide.getAttribute('data-number') === 'last') {
         nextBtn.disabled = true;
         clearInterval(intervalCount.countId);
-    } else if (changeSlide.getAttribute('data-number') === 'first') {
+    } else if (followingSlide.getAttribute('data-number') === 'first') {
         prevBtn.disabled = true;
     } else {
         nextBtn.disabled = false;
