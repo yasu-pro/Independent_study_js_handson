@@ -121,18 +121,19 @@ const updateSlideIndicatorElementState = () => {
     currentIndicatorSelect.removeAttribute('data-select');
 };
 
-const changeIndicatorDisplay = (clickedIndicatorItem) => (slideOrderItem) => {
-    // インディケーターの表示変更
-    const indicatorOrder = clickedIndicatorItem.getAttribute(
-        'data-indicator-order'
-    );
-    const slideOrder = slideOrderItem.getAttribute('data-slide-order');
+const changeIndicatorDisplayWhenClicked =
+    (clickedIndicatorItem) => (slideOrderItem) => {
+        // インディケーターの表示変更
+        const indicatorOrder = clickedIndicatorItem.getAttribute(
+            'data-indicator-order'
+        );
+        const slideOrder = slideOrderItem.getAttribute('data-slide-order');
 
-    if (slideOrder === indicatorOrder) {
-        clickedIndicatorItem.dataset.select = 'select';
-        slideOrderItem.dataset.view = 'on';
-    }
-};
+        if (slideOrder === indicatorOrder) {
+            clickedIndicatorItem.dataset.select = 'select';
+            slideOrderItem.dataset.view = 'on';
+        }
+    };
 
 const clickEventIndicator = (index, array, event) => {
     const arraySlideOrderItem = document.querySelectorAll('[data-slide-order]');
@@ -140,7 +141,9 @@ const clickEventIndicator = (index, array, event) => {
 
     updateButtonDisabledState(index, array);
     updateSlideIndicatorElementState();
-    arraySlideOrderItem.forEach(changeIndicatorDisplay(clickedIndicatorItem));
+    arraySlideOrderItem.forEach(
+        changeIndicatorDisplayWhenClicked(clickedIndicatorItem)
+    );
 };
 
 const indicatorEvent = () => {
