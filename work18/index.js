@@ -95,7 +95,7 @@ const createPageNum = (totalSlides) => {
     pageNumWrapElem.appendChild(totalPageNum);
 };
 
-const updateButtonDisabledState = (index, array) => {
+const updateButtonStateOnIndicatorClick = (index, array) => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
@@ -139,7 +139,7 @@ const clickEventIndicator = (index, array, event) => {
     const arraySlideOrderItem = document.querySelectorAll('[data-slide-order]');
     const clickedIndicatorItem = event.target;
 
-    updateButtonDisabledState(index, array);
+    updateButtonStateOnIndicatorClick(index, array);
     updateSlideIndicatorElementState();
     arraySlideOrderItem.forEach(
         changeIndicatorDisplayWhenClicked(clickedIndicatorItem)
@@ -246,40 +246,6 @@ const createNextPrevBtn = () => {
     slider.appendChild(div);
 };
 
-const clickEventBtn = (buttonType) => {
-    const currentSlide = document.querySelector('[data-view="on"]');
-    const currentIndicator = document.querySelector('[data-select="select"]');
-
-    let followingSlide;
-    let followingIndicator;
-
-    if (buttonType === 'next') {
-        followingSlide = currentSlide.nextElementSibling;
-        followingIndicator = currentIndicator.nextElementSibling;
-    } else if (buttonType === 'prev') {
-        followingSlide = currentSlide.previousElementSibling;
-        followingIndicator = currentIndicator.previousElementSibling;
-    }
-
-    currentSlide.dataset.view = 'off';
-    followingSlide.dataset.view = 'on';
-    currentIndicator.removeAttribute('data-select');
-    followingIndicator.dataset.select = 'select';
-
-    if (followingSlide.getAttribute('data-number') === 'last') {
-        nextBtn.disabled = true;
-    } else if (followingSlide.getAttribute('data-number') === 'first') {
-        prevBtn.disabled = true;
-    } else {
-        nextBtn.disabled = false;
-        prevBtn.disabled = false;
-    }
-
-    changePageNum();
-
-    resetAutoSlide();
-};
-
 const setupButtonListeners = () => {
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
@@ -309,21 +275,19 @@ const isLastSlide = () => {
 
 const intervalCount = { countId: 0 };
 
-const autoChangeSlide = () => {
-    const currentSlide = document.querySelector('[data-view="on"]');
-    const currentIndicator = document.querySelector('[data-select="select"]');
-
-    let followingSlide;
-    let followingIndicator;
-
-    followingSlide = currentSlide.nextElementSibling;
-    followingIndicator = currentIndicator.nextElementSibling;
-
+const updateSlideAndView = (
+    currentSlide,
+    currentIndicator,
+    followingSlide,
+    followingIndicator
+) => {
     currentSlide.dataset.view = 'off';
     followingSlide.dataset.view = 'on';
     currentIndicator.removeAttribute('data-select');
     followingIndicator.dataset.select = 'select';
+};
 
+const updateButtonStateForAutoChangeSlide = (followingSlide) => {
     if (followingSlide.getAttribute('data-number') === 'last') {
         nextBtn.disabled = true;
         clearInterval(intervalCount.countId);
@@ -333,7 +297,47 @@ const autoChangeSlide = () => {
         nextBtn.disabled = false;
         prevBtn.disabled = false;
     }
+};
 
+const autoChangeSlide = () => {
+    const currentSlide = document.querySelector('[data-view="on"]');
+    const currentIndicator = document.querySelector('[data-select="select"]');
+
+    let followingSlide = currentSlide.nextElementSibling;
+    let followingIndicator = currentIndicator.nextElementSibling;
+
+    updateSlideAndView(
+        currentSlide,
+        currentIndicator,
+        followingSlide,
+        followingIndicator
+    );
+    updateButtonStateForAutoChangeSlide(followingSlide);
+    changePageNum();
+};
+
+const clickEventBtn = (buttonType) => {
+    resetAutoSlide();
+
+    const currentSlide = document.querySelector('[data-view="on"]');
+    const currentIndicator = document.querySelector('[data-select="select"]');
+    let followingSlide, followingIndicator;
+
+    if (buttonType === 'next') {
+        followingSlide = currentSlide.nextElementSibling;
+        followingIndicator = currentIndicator.nextElementSibling;
+    } else if (buttonType === 'prev') {
+        followingSlide = currentSlide.previousElementSibling;
+        followingIndicator = currentIndicator.previousElementSibling;
+    }
+
+    updateSlideAndView(
+        currentSlide,
+        currentIndicator,
+        followingSlide,
+        followingIndicator
+    );
+    updateButtonStateForAutoChangeSlide(followingSlide);
     changePageNum();
 };
 
