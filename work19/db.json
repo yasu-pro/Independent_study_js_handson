@@ -1,0 +1,190 @@
+{
+    "contentsUI": [
+        {
+            "id": "8b5ae244-cddb-4b94-a5cd-b1ca4201c945",
+            "category": "news",
+            "isFirstDisplay": true,
+            "img": "./img/news_img.jpg",
+            "contents": [
+                {
+                    "id": "3b27461d-8e26-4efc-ade6-5a2ca0d66b4a",
+                    "title": "阪神淡路26年 変わらぬ想い",
+                    "isNew": true,
+                    "comments": 0
+                },
+                {
+                    "id": "3b27461d-8e26-4efc-ade6-5a2ca0d66b4b",
+                    "title": "バス落下免れ震災語る運転手",
+                    "isNew": false,
+                    "comments": 212
+                },
+                {
+                    "id": "3b27461d-8e26-4efc-ade6-5a2ca0d66b4c",
+                    "title": "Gサミット2年ぶり対面開催へ",
+                    "isNew": false,
+                    "comments": 433
+                }
+            ]
+        },
+        {
+            "id": "d70d67e9-fe9d-404e-907c-2dfc22582eb",
+            "category": "economy",
+            "isFirstDisplay": false,
+            "img": "./img/economy_img.jpg",
+            "contents": [
+                {
+                    "id": "d70d67e9-fe9d-404e-907c-2dfc22582eb1",
+                    "title": "経済記事タイトル1",
+                    "isNew": true,
+                    "comments": 431
+                },
+                {
+                    "id": "d70d67e9-fe9d-404e-907c-2dfc22582eb2",
+                    "title": "経済記事タイトル2",
+                    "isNew": true,
+                    "comments": 3821
+                },
+                {
+                    "id": "d70d67e9-fe9d-404e-907c-2dfc22582eb3",
+                    "title": "経済記事タイトル3",
+                    "isNew": false,
+                    "comments": 431
+                },
+                {
+                    "id": "d70d67e9-fe9d-404e-907c-2dfc22582eb4",
+                    "title": "経済記事タイトル4",
+                    "isNew": false,
+                    "comments": 200
+                }
+            ]
+        },
+        {
+            "id": "b376fda8-9a54-4922-b876-8d3247baeec2",
+            "category": "entertainment",
+            "img": "./img/entertainment_img.jpg",
+            "isFirstDisplay": false,
+            "contents": [
+                {
+                    "id": "b376fda8-9a54-4922-b876-8d3247baeec3",
+                    "title": "エンタメ記事タイトル1",
+                    "isNew": true,
+                    "comments": 431
+                },
+                {
+                    "id": "b376fda8-9a54-4922-b876-8d3247baeec4",
+                    "title": "エンタメ記事タイトル2",
+                    "isNew": true,
+                    "comments": 3821
+                },
+                {
+                    "id": "b376fda8-9a54-4922-b876-8d3247baeec5",
+                    "title": "エンタメ記事タイトル3",
+                    "isNew": false,
+                    "comments": 431
+                },
+                {
+                    "id": "b376fda8-9a54-4922-b876-8d3247baeec6",
+                    "title": "エンタメ記事タイトル4",
+                    "isNew": false,
+                    "comments": 200
+                }
+            ]
+        },
+        {
+            "id": "732acae8-fd7a-4eb1-85a7-552ac850c979",
+            "category": "sports",
+            "img": "./img/sports_img.jpg",
+            "isFirstDisplay": false,
+            "contents": [
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c970",
+                    "title": "スポーツ記事タイトル1",
+                    "isNew": true,
+                    "comments": 431
+                },
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c971",
+                    "title": "スポーツ記事タイトル2",
+                    "isNew": true,
+                    "comments": 3821
+                },
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c972",
+                    "title": "スポーツ記事タイトル3",
+                    "isNew": false,
+                    "comments": 431
+                },
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c973",
+                    "title": "スポーツ記事タイトル4",
+                    "isNew": false,
+                    "comments": 200
+                }
+            ]
+        },
+        {
+            "id": "732acae8-fd7a-4eb1-85a7-552ac850c980",
+            "category": "domestic",
+            "img": "./img/domestic_img.jpg",
+            "isFirstDisplay": false,
+            "contents": [
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c981",
+                    "title": "国内記事タイトル1",
+                    "isNew": true,
+                    "comments": 431
+                },
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c982",
+                    "title": "国内記事タイトル2",
+                    "isNew": true,
+                    "comments": 3821
+                },
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c983",
+                    "title": "国内記事タイトル3",
+                    "isNew": false,
+                    "comments": 431
+                },
+                {
+                    "id": "732acae8-fd7a-4eb1-85a7-552ac850c984",
+                    "title": "国内記事タイトル4",
+                    "isNew": false,
+                    "comments": 200
+                }
+            ]
+        }
+    ],
+    "slideshow": [
+        {
+            "id": "8b5ae244-cddb-4b94-a5cd-b1ca4201c940",
+            "src": "./img/img-01.jpg",
+            "order": "1"
+        },
+        {
+            "id": "8b5ae244-cddb-4b94-a5cd-b1ca4201c941",
+            "src": "./img/img-02.jpg",
+            "order": "2"
+        },
+        {
+            "id": "8b5ae244-cddb-4b94-a5cd-b1ca4201c942",
+            "src": "./img/img-03.jpg",
+            "order": "3"
+        },
+        {
+            "id": "8b5ae244-cddb-4b94-a5cd-b1ca4201c943",
+            "src": "./img/img-04.jpg",
+            "order": "4"
+        },
+        {
+            "id": "8b5ae244-cddb-4b94-a5cd-b1ca4201c944",
+            "src": "./img/img-05.jpg",
+            "order": "5"
+        },
+        {
+            "id": "8b5ae244-cddb-4b94-a5cd-b1ca4201c945",
+            "src": "./img/img-06.jpg",
+            "order": "6"
+        }
+    ]
+}
