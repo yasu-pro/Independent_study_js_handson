@@ -11,7 +11,8 @@ img {
   height: auto;
 }
 
-.load {
+.newsLoadImg,
+.slideLoadImg {
   -o-object-fit: contain;
      object-fit: contain;
   width: 150px;
@@ -22,13 +23,19 @@ img {
   transform: translate(-50%, -50%);
 }
 
-.tabTopicsWrap {
+#js-news {
+  position: relative;
   width: 700px;
   margin: 100px auto 0;
-  border: 1px solid #e5e7eb;
   border-radius: 0.375rem;
 }
-.tabTopicsWrap .tabTopics {
+#js-news #error-message {
+  text-align: center;
+}
+#js-news .newsAreaWrap {
+  border: 1px solid #e5e7eb;
+}
+#js-news .tabTopicsWrap .tabTopics {
   display: flex;
   padding-top: 1.5rem;
   padding-right: 1.5rem;
@@ -36,11 +43,11 @@ img {
   padding-left: 1.5rem;
   background-color: rgb(224, 231, 255);
 }
-.tabTopicsWrap .tab.select a {
+#js-news .tabTopicsWrap .tab.select a {
   background-color: rgb(255, 255, 255);
   border-radius: 0.375rem;
 }
-.tabTopicsWrap .tab a {
+#js-news .tabTopicsWrap .tab a {
   padding-top: 0.5rem;
   padding-right: 0.75rem;
   padding-bottom: 0.5rem;
@@ -50,8 +57,7 @@ img {
   font-weight: 500;
   color: rgb(107, 114, 128);
 }
-
-.tabPanelWrap .mainNewsContent {
+#js-news .tabPanelWrap .mainNewsContent {
   display: flex;
   justify-content: space-between;
   padding-top: 1.5rem;
@@ -59,17 +65,17 @@ img {
   padding-bottom: 1.5rem;
   padding-left: 1.5rem;
 }
-.tabPanelWrap .mainNewsContent .newsList li {
+#js-news .tabPanelWrap .mainNewsContent .newsList li {
   display: flex;
   align-items: center;
   transition: 0.3s all ease;
   height: 42px;
   width: 350px;
 }
-.tabPanelWrap .mainNewsContent .newsList li:hover {
+#js-news .tabPanelWrap .mainNewsContent .newsList li:hover {
   background-color: rgb(243, 244, 246);
 }
-.tabPanelWrap .mainNewsContent .newsList li .articleLink {
+#js-news .tabPanelWrap .mainNewsContent .newsList li .articleLink {
   display: flex;
   align-items: center;
   padding-top: 0.5rem;
@@ -77,22 +83,21 @@ img {
   padding-bottom: 0.5rem;
   padding-left: 0.5rem;
 }
-.tabPanelWrap .mainNewsContent .newsList li .articleLink h1 {
+#js-news .tabPanelWrap .mainNewsContent .newsList li .articleLink h1 {
   width: 220px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.tabPanelWrap .mainNewsContent .categoryImg {
+#js-news .tabPanelWrap .mainNewsContent .categoryImg {
   width: 230px;
   height: 130px;
 }
-.tabPanelWrap .mainNewsContent .categoryImg img {
+#js-news .tabPanelWrap .mainNewsContent .categoryImg img {
   width: 100%;
   height: 100%;
 }
-
-.newIcon {
+#js-news .newIcon {
   font-size: 0.75rem;
   line-height: 1rem;
   padding: 0.25rem;
@@ -101,17 +106,16 @@ img {
   border-radius: 0.125rem;
   margin-left: 0.25rem;
 }
-
-.commentIcon {
+#js-news .commentIcon {
   margin-left: 0.25rem;
   height: 100%;
 }
-.commentIcon a {
+#js-news .commentIcon a {
   display: flex;
   align-items: center;
   height: 100%;
 }
-.commentIconNum {
+#js-news .commentIconNum {
   margin-left: 0.25rem;
 }
 
@@ -121,6 +125,13 @@ img {
   height: 350px;
   margin-left: auto;
   margin-right: auto;
+}
+.sliderWrap .errorMessage {
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .sliderWrap .nextPrevBtnWrap .arrowBtn {
   position: absolute;

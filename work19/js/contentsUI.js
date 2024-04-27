@@ -1,9 +1,9 @@
 'use strict';
 // DOM
-const body = document.querySelector('body');
-const ulElemTabs = document.getElementById('js_tabs');
+const newsArea = document.getElementById('js-news');
 const errorMessageElem = document.createElement('div');
 errorMessageElem.id = 'error-message';
+
 const apiURL = 'http://localhost:3000/contentsUI';
 
 // 関数
@@ -26,16 +26,15 @@ const getData = async () => {
         deleteLazyLoad();
         errorMessageElem.textContent = `エラーが発生しました: ${e.message}`;
         console.error('エラーが発生しました:', e.message);
-        ulElemTabs.appendChild(errorMessageElem);
+        newsArea.appendChild(errorMessageElem);
         throw new Error(e);
     }
 };
 
 const createCategoryTab = async (listData) => {
+    const tabTopicsWrap = createTabTopicsWrap();
     const fragment = document.createDocumentFragment();
-
-    // const divElemTabTopicsWrap = document.createElement('div');
-    // divElemTabTopicsWrap.classList = 'tabTopicsWrap';
+    const ulElemTabs = createElemTabs();
 
     listData.forEach((categoryData) => {
         const liElem = document.createElement('li');
@@ -82,9 +81,10 @@ const createCategoryTab = async (listData) => {
 
     ulElemTabs.appendChild(fragment);
     ulElemTabs.classList = 'tabTopics';
-    // divElemTabTopicsWrap.appendChild(ulElemTabs);
-    // return divElemTabTopicsWrap;
-    return ulElemTabs;
+
+    tabTopicsWrap.appendChild(ulElemTabs);
+
+    return tabTopicsWrap;
 };
 
 const createTabPanel = async (listData) => {
@@ -107,15 +107,23 @@ const displayInitialNews = async (listData) => {
     return newsContent;
 };
 
+const createTabTopicsWrap = () => {
+    const div = document.createElement('div');
+    div.classList.add('tabTopicsWrap');
+
+    return div;
+};
+
 const renderElem = async (listData) => {
-    // const articleElem = createArticle();
-    const tabTopicsWrap = document.querySelector('.tabTopicsWrap');
-    const divElemTabToics = await createCategoryTab(listData);
+    const newsAreaWrap = document.createElement('div');
+    const divElemTabTopics = await createCategoryTab(listData);
     const sectionElem = await createTabPanel(listData);
 
-    tabTopicsWrap.appendChild(divElemTabToics);
-    tabTopicsWrap.appendChild(sectionElem);
-    body.insertBefore(tabTopicsWrap, body.firstChild);
+    newsAreaWrap.classList.add('newsAreaWrap');
+
+    newsAreaWrap.appendChild(divElemTabTopics);
+    newsAreaWrap.appendChild(sectionElem);
+    newsArea.appendChild(newsAreaWrap);
 };
 
 const toggleNewsDisplay = async (changeNewsData) => {
@@ -141,23 +149,18 @@ const selectCategoryNewsData = async (listData, className) => {
 
 const lazyLoad = () => {
     const div = document.createElement('div');
-    div.classList = 'load';
+    div.classList = 'newsLoadImg';
     const img = document.createElement('img');
     img.src = './img/loading-circle.gif';
 
     div.appendChild(img);
-    document.body.appendChild(div);
+    newsArea.appendChild(div);
 };
 
 const deleteLazyLoad = () => {
-    const loadElem = document.querySelector('.load');
+    const loadElem = document.querySelector('.newsLoadImg');
     loadElem.remove();
 };
-
-// const createArticle = () => {
-//     const articleElem = document.createElement('article');
-//     return articleElem;
-// };
 
 const getNewsDisplayStatus = (listData) => {
     const displayCategoryAllNews = listData.filter((newsDisplay) => {
@@ -260,10 +263,20 @@ const toggleClassSelect = (ulElemTabs, listItem) => {
     addClassSelect(listItem);
 };
 
+const createElemTabs = () => {
+    const ul = document.createElement('ul');
+    ul.id = 'js_tabs';
+    ul.classList.add('tabTopics');
+
+    return ul;
+};
+
 // イベント
 document.addEventListener('DOMContentLoaded', async () => {
     const listData = await getData();
-    renderElem(listData);
+    await renderElem(listData);
+
+    const ulElemTabs = document.querySelector('.tabTopics');
 
     ulElemTabs.addEventListener('click', async (event) => {
         // クリックされた要素がリストアイテム（<li>要素またはその子要素）であるかを確認

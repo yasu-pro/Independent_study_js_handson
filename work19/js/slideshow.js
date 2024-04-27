@@ -13,13 +13,13 @@ const loading = () => {
 
     img.src = './img/loading-circle.gif';
 
-    div.classList.add('load');
+    div.classList.add('slideLoadImg');
     div.appendChild(img);
     slider.appendChild(div);
 };
 
 const removeLoading = () => {
-    const load = document.querySelector('.load');
+    const load = document.querySelector('.slideLoadImg');
 
     load.remove();
 };
