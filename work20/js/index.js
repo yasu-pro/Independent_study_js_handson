@@ -4,10 +4,14 @@ const userFetchTime = 2000;
 const url = 'http://localhost:3000/data';
 
 const fetchUserData = (ms) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         setTimeout(async () => {
-            const userData = await fetchUser();
-            return resolve(userData);
+            try {
+                const userData = await fetchUser();
+                return resolve(userData);
+            } catch (error) {
+                return reject(error);
+            }
         }, ms);
     });
 };
@@ -24,6 +28,7 @@ const fetchUser = async () => {
         const errorMessageElem = createErrorMessage(error.message);
         memberTable.appendChild(errorMessageElem);
         console.error('エラーが発生しました:', error.message);
+        throw error;
     }
 };
 
@@ -90,9 +95,13 @@ const renderTableLayout = (userData) => {
 };
 
 const app = async () => {
-    const userData = await fetchUserData(userFetchTime);
-    if (userData) {
-        renderTableLayout(userData);
+    try {
+        const userData = await fetchUserData(userFetchTime);
+        if (userData) {
+            renderTableLayout(userData);
+        }
+    } catch (error) {
+        console.error('エラーが発生しました:', error.message);
     }
 };
 
