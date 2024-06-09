@@ -1,7 +1,7 @@
 const memberTable = document.getElementById('memberTable');
 
-const userFetchTime = 2000;
-const url = 'http://localhost:3000/data';
+const userFetchTime = 3000;
+const url = 'http://localhost:3000/data/';
 
 const fetchUserData = (ms) => {
     return new Promise((resolve, reject) => {
