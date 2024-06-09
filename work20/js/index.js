@@ -45,10 +45,10 @@ const createTableHeader = (userData) => {
     const keysArray = Object.keys(userData[0]);
 
     keysArray.forEach((key) => {
-        const td = document.createElement('th');
-        td.textContent = key;
+        const th = document.createElement('th');
+        th.textContent = key;
 
-        fragment.appendChild(td);
+        fragment.appendChild(th);
     });
 
     tr.appendChild(fragment);
