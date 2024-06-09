@@ -4,23 +4,12 @@ const userFetchTime = 2000;
 const url = 'http://localhost:3000/data';
 
 const fetchUserData = (ms) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(async () => {
             const userData = await fetchUser();
             return resolve(userData);
         }, ms);
     });
-};
-
-const createErrorMessage = (message) => {
-    const div = document.createElement('div');
-    const p = document.createElement('p');
-    div.classList.add('errorMessage');
-
-    p.textContent = `エラーが発生しました: ${message}`;
-
-    div.appendChild(p);
-    return div;
 };
 
 const fetchUser = async () => {
@@ -38,13 +27,22 @@ const fetchUser = async () => {
     }
 };
 
+const createErrorMessage = (message) => {
+    const div = document.createElement('div');
+    const p = document.createElement('p');
+    div.classList.add('errorMessage');
+
+    p.textContent = `エラーが発生しました: ${message}`;
+
+    div.appendChild(p);
+    return div;
+};
+
 const createTableHeader = (userData) => {
     const thead = document.createElement('thead');
     const tr = document.createElement('tr');
     const fragment = document.createDocumentFragment();
     const keysArray = Object.keys(userData[0]);
-
-    // console.log(keysArray);
 
     keysArray.forEach((key) => {
         const td = document.createElement('td');
@@ -71,8 +69,8 @@ const createTableBody = (userData) => {
             const td = document.createElement('td');
             td.textContent = value;
             tr.appendChild(td);
-            fragment.appendChild(tr);
         });
+        fragment.appendChild(tr);
     });
     tbody.appendChild(fragment);
 
