@@ -19,8 +19,22 @@
 #memberTable table td {
   padding: 4px;
 }
-#memberTable table th {
-  border: 1px solid #fff;
+#memberTable table th:not(:first-child) {
+  border-left: 1px solid #fff;
+}
+#memberTable table th.id {
+  display: flex;
+}
+#memberTable table th .sortIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+#memberTable table th .sortIcon img {
+  width: 15px;
+  height: 15px;
+  color: black;
 }
 #memberTable table td {
   border: 1px solid #6b7280;

@@ -19,7 +19,23 @@
             padding: 4px;
         }
         th {
-            border: 1px solid #fff;
+            &:not(:first-child) {
+                border-left: 1px solid #fff;
+            }
+            &.id {
+                display: flex;
+            }
+            .sortIcon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 10px;
+                img {
+                    width: 15px;
+                    height: 15px;
+                    color: black;
+                }
+            }
         }
         td {
             border: 1px solid #6b7280;
