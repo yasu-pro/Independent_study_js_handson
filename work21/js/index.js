@@ -1,6 +1,6 @@
 const memberTable = document.getElementById('memberTable');
 
-const userFetchTime = 1000;
+const userFetchTime = 3000;
 const url = 'http://localhost:3000/data/';
 
 const fetchUserData = (ms) => {
@@ -78,6 +78,8 @@ const createTableBody = (userData) => {
     const tbody = document.createElement('tbody');
     const fragment = document.createDocumentFragment();
 
+    tbody.id = 'tbody';
+
     userData.forEach((user) => {
         const tr = document.createElement('tr');
         const userValuesArray = Object.values(user);
@@ -96,6 +98,7 @@ const createTableBody = (userData) => {
 
 const renderTableLayout = (userData) => {
     const table = document.createElement('table');
+    table.id = 'table';
 
     const tableHead = createTableHeader(userData);
     const tableBody = createTableBody(userData);
@@ -117,22 +120,48 @@ const clickedSortIcon = () => {
     const descSrc =
         'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4gPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyNnB4IiB2aWV3Qm94PSIwIDAgMjAgMjYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICA8dGl0bGU+R3JvdXAgNTwvdGl0bGU+ICAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgICA8ZyBpZD0iR3JvdXAtNSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC4wMDAwMDAsIDAuODU0NjI2KSI+ICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJUcmlhbmdsZSIgZmlsbD0iI0Q4RDhEOCIgcG9pbnRzPSIxMC4wMDQ3MzI3IDEuNzc2MzU2ODRlLTE1IDIwLjAwOTQ2NTMgMTAuODIyMTMgMi40ODY4OTk1OGUtMTQgMTAuODIyMTMiPjwvcG9seWdvbj4gICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlRyaWFuZ2xlIiBmaWxsPSIjMDAwMDAwIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMC4wMDQ3MzMsIDE5LjQxMTA2NSkgc2NhbGUoMSwgLTEpIHRyYW5zbGF0ZSgtMTAuMDA0NzMzLCAtMTkuNDExMDY1KSAiIHBvaW50cz0iMTAuMDA0NzMyNyAxNCAyMC4wMDk0NjUzIDI0LjgyMjEzIDIuMzA5MjYzODllLTE0IDI0LjgyMjEzIj48L3BvbHlnb24+ICAgICAgICAgPC9nPiAgICAgPC9nPiA8L3N2Zz4=';
 
-    sortIcon.addEventListener('click', () => {
+    sortIcon.addEventListener('click', async () => {
+        const userData = await fetchUser();
+
+        const currentTbodyLayoutElemets = document.getElementById('tbody');
+        const tableElem = document.getElementById('table');
+
         if (sortIcon.classList.contains('both')) {
             sortIcon.classList.remove('both');
             sortIcon.classList.add('asc');
 
-            img.src = bothSrc;
+            img.src = ascSrc;
+
+            currentTbodyLayoutElemets.remove();
+            const ascUserData = userData.sort((a, b) => {
+                return a.id - b.id;
+            });
+            const tableBody = createTableBody(ascUserData);
+            tableElem.appendChild(tableBody);
+            memberTable.appendChild(tableElem);
         } else if (sortIcon.classList.contains('asc')) {
             sortIcon.classList.remove('asc');
             sortIcon.classList.add('desc');
 
-            img.src = ascSrc;
+            img.src = descSrc;
+
+            currentTbodyLayoutElemets.remove();
+            const descUserData = userData.sort((a, b) => {
+                return b.id - a.id;
+            });
+            const tableBody = createTableBody(descUserData);
+            tableElem.appendChild(tableBody);
+            memberTable.appendChild(tableElem);
         } else {
             sortIcon.classList.remove('desc');
             sortIcon.classList.add('both');
 
-            img.src = descSrc;
+            img.src = bothSrc;
+
+            currentTbodyLayoutElemets.remove();
+            const tableBody = createTableBody(userData);
+            tableElem.appendChild(tableBody);
+            memberTable.appendChild(tableElem);
         }
     });
 };
