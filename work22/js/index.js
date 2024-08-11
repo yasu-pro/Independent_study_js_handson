@@ -142,7 +142,8 @@ const updateTableBody = (tableElem, userData) => {
     tableElem.appendChild(newTbody);
 };
 
-const toggleSortById = (userData, sortIcon, parentSortIconClassName) => {
+const toggleSortById = async (sortIcon, parentSortIconClassName) => {
+    const userData = await fetchUser();
     const tableElem = document.getElementById('table');
     const img = sortIcon.firstElementChild;
 
@@ -180,7 +181,8 @@ const toggleSortById = (userData, sortIcon, parentSortIconClassName) => {
     }
 };
 
-const toggleSortByAge = (userData, sortIcon, parentSortIconClassName) => {
+const toggleSortByAge = async (sortIcon, parentSortIconClassName) => {
+    const userData = await fetchUser();
     const tableElem = document.getElementById('table');
     const img = sortIcon.firstElementChild;
 
@@ -223,11 +225,10 @@ const setSortIconClickListener = () => {
 
     sortIconItems.forEach((sortIcon) => {
         const parentSortIconClassName = sortIcon.parentNode.className;
-        sortIcon.addEventListener('click', async () => {
+        sortIcon.addEventListener('click', () => {
             try {
-                const userData = await fetchUser();
-                toggleSortById(userData, sortIcon, parentSortIconClassName);
-                toggleSortByAge(userData, sortIcon, parentSortIconClassName);
+                toggleSortById(sortIcon, parentSortIconClassName);
+                toggleSortByAge(sortIcon, parentSortIconClassName);
             } catch (error) {
                 console.error('データ再取得中にエラーが発生しました: ', error);
             }
