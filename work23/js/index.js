@@ -237,11 +237,13 @@ const setSortIconClickListener = () => {
 };
 
 const createPaginationBtn = () => {
-    const paginationBtnWrapper = document.createElement('div');
+    const paginationNum = createPaginationNum();
+    const paginationWrapper = document.createElement('div');
+    paginationWrapper.classList.add('paginationWrapper');
+
     const prevBtnArea = document.createElement('div');
     const nextBtnArea = document.createElement('div');
 
-    paginationBtnWrapper.classList.add('paginationBtnWrapper');
     const prevBtn = document.createElement('button');
     const nextBtn = document.createElement('button');
 
@@ -268,10 +270,40 @@ const createPaginationBtn = () => {
     nextBtnArea.appendChild(nextBtn);
     nextBtnArea.appendChild(nextBtnText);
 
-    paginationBtnWrapper.appendChild(prevBtnArea);
-    paginationBtnWrapper.appendChild(nextBtnArea);
+    paginationWrapper.appendChild(prevBtnArea);
+    paginationWrapper.appendChild(paginationNum);
+    paginationWrapper.appendChild(nextBtnArea);
 
-    return paginationBtnWrapper;
+    return paginationWrapper;
+};
+
+const createPaginationNum = () => {
+    const paginationNumWrapper = document.createElement('div');
+    paginationNumWrapper.classList.add('paginationNumWrapper');
+
+    const denominator = document.createElement('div');
+    const denominatorText = document.createElement('span');
+    denominatorText.classList.add('num');
+    denominatorText.textContent = '10';
+    denominator.appendChild(denominatorText);
+
+    const parentheses = document.createElement('div');
+    const parenthesesText = document.createElement('span');
+    parenthesesText.classList.add('parentheses');
+    parenthesesText.textContent = '/';
+    parentheses.appendChild(parenthesesText);
+
+    const numerator = document.createElement('div');
+    const numeratorText = document.createElement('span');
+    numeratorText.classList.add('num');
+    numeratorText.textContent = '3';
+    numerator.appendChild(numeratorText);
+
+    paginationNumWrapper.appendChild(numerator);
+    paginationNumWrapper.appendChild(parentheses);
+    paginationNumWrapper.appendChild(denominator);
+
+    return paginationNumWrapper;
 };
 
 const renderPagination = () => {

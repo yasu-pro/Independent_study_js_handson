@@ -43,7 +43,7 @@
         }
     }
 
-    .paginationBtnWrapper {
+    .paginationWrapper {
         display: flex;
         justify-content: center;
         gap: 30px;
@@ -61,6 +61,19 @@
             .btnText {
                 font-weight: bold;
             }
+        }
+    }
+    .paginationNumWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+
+        .num {
+            font-weight: bold;
+        }
+        .numerator {
+            font-weight: bolder;
         }
     }
 }

@@ -39,21 +39,33 @@
 #memberTable table td {
   border: 1px solid #6b7280;
 }
-#memberTable .paginationBtnWrapper {
+#memberTable .paginationWrapper {
   display: flex;
   justify-content: center;
   gap: 30px;
 }
-#memberTable .paginationBtnWrapper .btnArea {
+#memberTable .paginationWrapper .btnArea {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-#memberTable .paginationBtnWrapper .btnArea .btn {
+#memberTable .paginationWrapper .btnArea .btn {
   padding: 10px;
   font-weight: bolder;
 }
-#memberTable .paginationBtnWrapper .btnArea .btnText {
+#memberTable .paginationWrapper .btnArea .btnText {
   font-weight: bold;
+}
+#memberTable .paginationNumWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+#memberTable .paginationNumWrapper .num {
+  font-weight: bold;
+}
+#memberTable .paginationNumWrapper .numerator {
+  font-weight: bolder;
 }/*# sourceMappingURL=style.css.map */
