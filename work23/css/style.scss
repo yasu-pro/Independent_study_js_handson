@@ -42,4 +42,25 @@
             border: 1px solid #6b7280;
         }
     }
+
+    .paginationBtnWrapper {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+
+        .btnArea {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .btn {
+                padding: 10px;
+                font-weight: bolder;
+            }
+            .btnText {
+                font-weight: bold;
+            }
+        }
+    }
 }

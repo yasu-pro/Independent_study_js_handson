@@ -124,7 +124,7 @@ const renderTableLayout = (userData) => {
     table.appendChild(tableHead);
     table.appendChild(tableBody);
 
-    memberTable.appendChild(table);
+    return table;
 };
 
 const sortByNumber = (changeUserData, order, parentSortIconClassName) => {
@@ -236,11 +236,63 @@ const setSortIconClickListener = () => {
     });
 };
 
+const createPaginationBtn = () => {
+    const paginationBtnWrapper = document.createElement('div');
+    const prevBtnArea = document.createElement('div');
+    const nextBtnArea = document.createElement('div');
+
+    paginationBtnWrapper.classList.add('paginationBtnWrapper');
+    const prevBtn = document.createElement('button');
+    const nextBtn = document.createElement('button');
+
+    prevBtn.classList.add('btn', 'prevBtn');
+    prevBtn.id = 'prev';
+    prevBtn.textContent = '<';
+    nextBtn.classList.add('btn', 'nextBtn');
+    nextBtn.id = 'next';
+    nextBtn.textContent = '>';
+
+    const prevBtnText = document.createElement('span');
+    prevBtnArea.classList.add('btnArea', 'btnArea--prev');
+    prevBtnText.classList.add('btnText', 'btnText--prev');
+    prevBtnText.textContent = 'Back';
+
+    const nextBtnText = document.createElement('span');
+    nextBtnArea.classList.add('btnArea', 'btnArea--next');
+    nextBtnText.classList.add('btnText', 'btnText--next');
+    nextBtnText.textContent = 'Next';
+
+    prevBtnArea.appendChild(prevBtn);
+    prevBtnArea.appendChild(prevBtnText);
+
+    nextBtnArea.appendChild(nextBtn);
+    nextBtnArea.appendChild(nextBtnText);
+
+    paginationBtnWrapper.appendChild(prevBtnArea);
+    paginationBtnWrapper.appendChild(nextBtnArea);
+
+    return paginationBtnWrapper;
+};
+
+const renderPagination = () => {
+    const PaginationBtn = createPaginationBtn();
+
+    return PaginationBtn;
+};
+
+const memberTableLayout = (userData) => {
+    const tableElem = renderTableLayout(userData);
+    const paginationElem = renderPagination();
+
+    memberTable.appendChild(tableElem);
+    memberTable.appendChild(paginationElem);
+};
+
 const app = async () => {
     try {
         const userData = await fetchUserData(userFetchTime);
         if (userData) {
-            renderTableLayout(userData);
+            memberTableLayout(userData);
             setSortIconClickListener();
         }
     } catch (error) {
