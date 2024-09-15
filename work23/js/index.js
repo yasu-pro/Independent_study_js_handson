@@ -306,7 +306,7 @@ const createPaginationNum = () => {
     return paginationNumWrapper;
 };
 
-const renderPagination = () => {
+const renderPagination = (userData) => {
     const PaginationBtn = createPaginationBtn();
 
     return PaginationBtn;
@@ -314,7 +314,7 @@ const renderPagination = () => {
 
 const memberTableLayout = (userData) => {
     const tableElem = renderTableLayout(userData);
-    const paginationElem = renderPagination();
+    const paginationElem = renderPagination(userData);
 
     memberTable.appendChild(tableElem);
     memberTable.appendChild(paginationElem);
