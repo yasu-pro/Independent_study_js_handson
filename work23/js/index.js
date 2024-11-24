@@ -318,6 +318,43 @@ const memberTableLayout = (userData) => {
 
     memberTable.appendChild(tableElem);
     memberTable.appendChild(paginationElem);
+const clickedPaginationBtn = async () => {
+    const prevBtn = document.querySelector('.prevBtn');
+    const nextBtn = document.querySelector('.nextBtn');
+
+    prevBtn.addEventListener('click', () => {
+        const eratorNumElem = document.querySelector('.eratorNum');
+        const eratorNum = Number(eratorNumElem.textContent);
+
+        nextBtn.disabled = false;
+
+        if (eratorNum > 1) {
+            prevBtn.disabled = false;
+            const displayEratorNum = eratorNum - 1;
+            eratorNumElem.textContent = displayEratorNum;
+
+            if (displayEratorNum === 1) {
+                prevBtn.disabled = true;
+            }
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        const eratorNumElem = document.querySelector('.eratorNum');
+        const eratorNum = Number(eratorNumElem.textContent);
+
+        prevBtn.disabled = false;
+
+        if (eratorNum < 10) {
+            nextBtn.disabled = false;
+            const displayEratorNum = eratorNum + 1;
+            eratorNumElem.textContent = displayEratorNum;
+
+            if (displayEratorNum === 10) {
+                nextBtn.disabled = true;
+            }
+        }
+    });
 };
 
 const app = async () => {
