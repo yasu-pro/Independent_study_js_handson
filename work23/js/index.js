@@ -318,6 +318,8 @@ const memberTableLayout = (userData) => {
 
     memberTable.appendChild(tableElem);
     memberTable.appendChild(paginationElem);
+};
+
 const clickedPaginationBtn = async () => {
     const prevBtn = document.querySelector('.prevBtn');
     const nextBtn = document.querySelector('.nextBtn');
