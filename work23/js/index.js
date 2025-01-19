@@ -295,7 +295,7 @@ const createPaginationNum = () => {
 
     const numerator = document.createElement('div');
     const numeratorText = document.createElement('span');
-    numeratorText.classList.add('num');
+    numeratorText.classList.add('num', 'eratorNum');
     numeratorText.textContent = '3';
     numerator.appendChild(numeratorText);
 
@@ -365,6 +365,7 @@ const app = async () => {
         if (userData) {
             memberTableLayout(userData);
             setSortIconClickListener();
+            clickedPaginationBtn();
         }
     } catch (error) {
         console.error('エラーが発生しました:', error.message);
