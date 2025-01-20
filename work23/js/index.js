@@ -308,21 +308,34 @@ const createPaginationNum = (slicedUserData) => {
     return paginationNumWrapper;
 };
 
-const renderPagination = (userData) => {
-    const PaginationBtn = createPaginationBtn();
+const renderPagination = (slicedUserData) => {
+    const PaginationBtn = createPaginationBtn(slicedUserData);
 
     return PaginationBtn;
 };
 
-const memberTableLayout = (userData) => {
-    const tableElem = renderTableLayout(userData);
-    const paginationElem = renderPagination(userData);
+const memberTableLayout = (slicedUserData) => {
+    const paginationElem = document.querySelector('.paginationWrapper');
 
-    memberTable.appendChild(tableElem);
+    const tableElem = renderTableLayout(slicedUserData);
+    paginationElem.before(tableElem);
+};
+
+const paginationLayout = (slicedUserData) => {
+    const paginationElem = renderPagination(slicedUserData);
+
     memberTable.appendChild(paginationElem);
 };
 
-const clickedPaginationBtn = async () => {
+const changedPagination = (slicedUserData) => {
+    const tableElem = document.getElementById('table');
+    tableElem.remove();
+
+    memberTableLayout(slicedUserData);
+    setSortIconClickListener();
+};
+
+const clickedPaginationBtn = async (userData, slicedUserData) => {
     const prevBtn = document.querySelector('.prevBtn');
     const nextBtn = document.querySelector('.nextBtn');
 
@@ -340,6 +353,12 @@ const clickedPaginationBtn = async () => {
             if (displayEratorNum === 1) {
                 prevBtn.disabled = true;
             }
+            const prevUserData = userData.slice(
+                DISPLAYITEM * displayEratorNum - DISPLAYITEM,
+                DISPLAYITEM * displayEratorNum
+            );
+
+            changedPagination(prevUserData);
         }
     });
 
@@ -357,6 +376,12 @@ const clickedPaginationBtn = async () => {
             if (displayEratorNum === slicedUserData.length) {
                 nextBtn.disabled = true;
             }
+            const nextUserData = userData.slice(
+                DISPLAYITEM * eratorNum,
+                DISPLAYITEM * eratorNum + DISPLAYITEM
+            );
+
+            changedPagination(nextUserData);
         }
     });
 };
@@ -364,10 +389,13 @@ const clickedPaginationBtn = async () => {
 const app = async () => {
     try {
         const userData = await fetchUserData(userFetchTime);
+
         if (userData) {
-            memberTableLayout(userData);
+            const slicedUserData = userData.slice(0, DISPLAYITEM);
+            paginationLayout(slicedUserData);
+            memberTableLayout(slicedUserData);
             setSortIconClickListener();
-            clickedPaginationBtn();
+            clickedPaginationBtn(userData, slicedUserData);
         }
     } catch (error) {
         console.error('エラーが発生しました:', error.message);
