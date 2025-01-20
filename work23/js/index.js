@@ -1,6 +1,7 @@
 const memberTable = document.getElementById('memberTable');
 
 const userFetchTime = 3000;
+const DISPLAYITEM = 5;
 const url = 'http://localhost:3000/data/';
 
 const SVG_SRC = {
@@ -236,8 +237,8 @@ const setSortIconClickListener = () => {
     });
 };
 
-const createPaginationBtn = () => {
-    const paginationNum = createPaginationNum();
+const createPaginationBtn = (slicedUserData) => {
+    const paginationNum = createPaginationNum(slicedUserData);
     const paginationWrapper = document.createElement('div');
     paginationWrapper.classList.add('paginationWrapper');
 
@@ -250,6 +251,7 @@ const createPaginationBtn = () => {
     prevBtn.classList.add('btn', 'prevBtn');
     prevBtn.id = 'prev';
     prevBtn.textContent = '<';
+    prevBtn.disabled = true;
     nextBtn.classList.add('btn', 'nextBtn');
     nextBtn.id = 'next';
     nextBtn.textContent = '>';
@@ -277,14 +279,14 @@ const createPaginationBtn = () => {
     return paginationWrapper;
 };
 
-const createPaginationNum = () => {
+const createPaginationNum = (slicedUserData) => {
     const paginationNumWrapper = document.createElement('div');
     paginationNumWrapper.classList.add('paginationNumWrapper');
 
     const denominator = document.createElement('div');
     const denominatorText = document.createElement('span');
-    denominatorText.classList.add('num');
-    denominatorText.textContent = '10';
+    denominatorText.classList.add('num', 'denominatorNum');
+    denominatorText.textContent = slicedUserData.length;
     denominator.appendChild(denominatorText);
 
     const parentheses = document.createElement('div');
@@ -296,7 +298,7 @@ const createPaginationNum = () => {
     const numerator = document.createElement('div');
     const numeratorText = document.createElement('span');
     numeratorText.classList.add('num', 'eratorNum');
-    numeratorText.textContent = '3';
+    numeratorText.textContent = '1';
     numerator.appendChild(numeratorText);
 
     paginationNumWrapper.appendChild(numerator);
@@ -347,12 +349,12 @@ const clickedPaginationBtn = async () => {
 
         prevBtn.disabled = false;
 
-        if (eratorNum < 10) {
+        if (eratorNum < slicedUserData.length) {
             nextBtn.disabled = false;
             const displayEratorNum = eratorNum + 1;
             eratorNumElem.textContent = displayEratorNum;
 
-            if (displayEratorNum === 10) {
+            if (displayEratorNum === slicedUserData.length) {
                 nextBtn.disabled = true;
             }
         }
