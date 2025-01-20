@@ -1,6 +1,7 @@
 const memberTable = document.getElementById('memberTable');
 
 const userFetchTime = 3000;
+const DISPLAYITEM = 5;
 const url = 'http://localhost:3000/data/';
 
 const SVG_SRC = {
@@ -236,8 +237,8 @@ const setSortIconClickListener = () => {
     });
 };
 
-const createPaginationBtn = () => {
-    const paginationNum = createPaginationNum();
+const createPaginationBtn = (slicedUserData) => {
+    const paginationNum = createPaginationNum(slicedUserData);
     const paginationWrapper = document.createElement('div');
     paginationWrapper.classList.add('paginationWrapper');
 
@@ -250,6 +251,7 @@ const createPaginationBtn = () => {
     prevBtn.classList.add('btn', 'prevBtn');
     prevBtn.id = 'prev';
     prevBtn.textContent = '<';
+    prevBtn.disabled = true;
     nextBtn.classList.add('btn', 'nextBtn');
     nextBtn.id = 'next';
     nextBtn.textContent = '>';
@@ -277,14 +279,14 @@ const createPaginationBtn = () => {
     return paginationWrapper;
 };
 
-const createPaginationNum = () => {
+const createPaginationNum = (slicedUserData) => {
     const paginationNumWrapper = document.createElement('div');
     paginationNumWrapper.classList.add('paginationNumWrapper');
 
     const denominator = document.createElement('div');
     const denominatorText = document.createElement('span');
-    denominatorText.classList.add('num');
-    denominatorText.textContent = '10';
+    denominatorText.classList.add('num', 'denominatorNum');
+    denominatorText.textContent = slicedUserData.length;
     denominator.appendChild(denominatorText);
 
     const parentheses = document.createElement('div');
@@ -295,8 +297,8 @@ const createPaginationNum = () => {
 
     const numerator = document.createElement('div');
     const numeratorText = document.createElement('span');
-    numeratorText.classList.add('num');
-    numeratorText.textContent = '3';
+    numeratorText.classList.add('num', 'eratorNum');
+    numeratorText.textContent = '1';
     numerator.appendChild(numeratorText);
 
     paginationNumWrapper.appendChild(numerator);
@@ -306,21 +308,34 @@ const createPaginationNum = () => {
     return paginationNumWrapper;
 };
 
-const renderPagination = (userData) => {
-    const PaginationBtn = createPaginationBtn();
+const renderPagination = (slicedUserData) => {
+    const PaginationBtn = createPaginationBtn(slicedUserData);
 
     return PaginationBtn;
 };
 
-const memberTableLayout = (userData) => {
-    const tableElem = renderTableLayout(userData);
-    const paginationElem = renderPagination(userData);
+const memberTableLayout = (slicedUserData) => {
+    const paginationElem = document.querySelector('.paginationWrapper');
 
-    memberTable.appendChild(tableElem);
+    const tableElem = renderTableLayout(slicedUserData);
+    paginationElem.before(tableElem);
+};
+
+const paginationLayout = (slicedUserData) => {
+    const paginationElem = renderPagination(slicedUserData);
+
     memberTable.appendChild(paginationElem);
 };
 
-const clickedPaginationBtn = async () => {
+const changedPagination = (slicedUserData) => {
+    const tableElem = document.getElementById('table');
+    tableElem.remove();
+
+    memberTableLayout(slicedUserData);
+    setSortIconClickListener();
+};
+
+const clickedPaginationBtn = async (userData, slicedUserData) => {
     const prevBtn = document.querySelector('.prevBtn');
     const nextBtn = document.querySelector('.nextBtn');
 
@@ -338,6 +353,12 @@ const clickedPaginationBtn = async () => {
             if (displayEratorNum === 1) {
                 prevBtn.disabled = true;
             }
+            const prevUserData = userData.slice(
+                DISPLAYITEM * displayEratorNum - DISPLAYITEM,
+                DISPLAYITEM * displayEratorNum
+            );
+
+            changedPagination(prevUserData);
         }
     });
 
@@ -347,14 +368,20 @@ const clickedPaginationBtn = async () => {
 
         prevBtn.disabled = false;
 
-        if (eratorNum < 10) {
+        if (eratorNum < slicedUserData.length) {
             nextBtn.disabled = false;
             const displayEratorNum = eratorNum + 1;
             eratorNumElem.textContent = displayEratorNum;
 
-            if (displayEratorNum === 10) {
+            if (displayEratorNum === slicedUserData.length) {
                 nextBtn.disabled = true;
             }
+            const nextUserData = userData.slice(
+                DISPLAYITEM * eratorNum,
+                DISPLAYITEM * eratorNum + DISPLAYITEM
+            );
+
+            changedPagination(nextUserData);
         }
     });
 };
@@ -362,9 +389,13 @@ const clickedPaginationBtn = async () => {
 const app = async () => {
     try {
         const userData = await fetchUserData(userFetchTime);
+
         if (userData) {
-            memberTableLayout(userData);
+            const slicedUserData = userData.slice(0, DISPLAYITEM);
+            paginationLayout(slicedUserData);
+            memberTableLayout(slicedUserData);
             setSortIconClickListener();
+            clickedPaginationBtn(userData, slicedUserData);
         }
     } catch (error) {
         console.error('エラーが発生しました:', error.message);
