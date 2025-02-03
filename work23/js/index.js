@@ -235,8 +235,8 @@ const setSortIconClickListener = (slicedUserData) => {
     });
 };
 
-const createPaginationBtn = (slicedUserData) => {
-    const paginationNum = createPaginationNum(slicedUserData);
+const createPaginationBtn = (userDataLength) => {
+    const paginationNum = createPaginationNum(userDataLength);
     const paginationWrapper = document.createElement('div');
     paginationWrapper.classList.add('paginationWrapper');
 
@@ -277,14 +277,16 @@ const createPaginationBtn = (slicedUserData) => {
     return paginationWrapper;
 };
 
-const createPaginationNum = (slicedUserData) => {
+const createPaginationNum = (userDataLength) => {
     const paginationNumWrapper = document.createElement('div');
     paginationNumWrapper.classList.add('paginationNumWrapper');
+
+    const totalPages = Math.ceil(userDataLength / DISPLAYITEM);
 
     const denominator = document.createElement('div');
     const denominatorText = document.createElement('span');
     denominatorText.classList.add('num', 'denominatorNum');
-    denominatorText.textContent = slicedUserData.length;
+    denominatorText.textContent = totalPages;
     denominator.appendChild(denominatorText);
 
     const parentheses = document.createElement('div');
@@ -306,8 +308,8 @@ const createPaginationNum = (slicedUserData) => {
     return paginationNumWrapper;
 };
 
-const renderPagination = (slicedUserData) => {
-    const PaginationBtn = createPaginationBtn(slicedUserData);
+const renderPagination = (userDataLength) => {
+    const PaginationBtn = createPaginationBtn(userDataLength);
 
     return PaginationBtn;
 };
@@ -319,8 +321,8 @@ const memberTableLayout = (slicedUserData) => {
     paginationElem.before(tableElem);
 };
 
-const paginationLayout = (slicedUserData) => {
-    const paginationElem = renderPagination(slicedUserData);
+const paginationLayout = (userDataLength) => {
+    const paginationElem = renderPagination(userDataLength);
 
     memberTable.appendChild(paginationElem);
 };
@@ -364,14 +366,16 @@ const clickedPaginationBtn = async (userData, slicedUserData) => {
         const eratorNumElem = document.querySelector('.eratorNum');
         const eratorNum = Number(eratorNumElem.textContent);
 
+        const totalPages = Math.ceil(userData.length / DISPLAYITEM);
+
         prevBtn.disabled = false;
 
-        if (eratorNum < slicedUserData.length) {
+        if (eratorNum < totalPages) {
             nextBtn.disabled = false;
             const displayEratorNum = eratorNum + 1;
             eratorNumElem.textContent = displayEratorNum;
 
-            if (displayEratorNum === slicedUserData.length) {
+            if (displayEratorNum === totalPages) {
                 nextBtn.disabled = true;
             }
             const nextUserData = userData.slice(
@@ -390,10 +394,11 @@ const app = async () => {
 
         if (userData) {
             const slicedUserData = userData.slice(0, DISPLAYITEM);
-            paginationLayout(slicedUserData);
+            const userDataLength = userData.length;
+            paginationLayout(userDataLength);
             memberTableLayout(slicedUserData);
             setSortIconClickListener(slicedUserData);
-            clickedPaginationBtn(userData, slicedUserData);
+            clickedPaginationBtn(userData, userDataLength, slicedUserData);
         }
     } catch (error) {
         console.error('エラーが発生しました:', error.message);
