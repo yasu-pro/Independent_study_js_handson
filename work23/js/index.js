@@ -143,8 +143,9 @@ const updateTableBody = (tableElem, userData) => {
     tableElem.appendChild(newTbody);
 };
 
-const toggleSortById = async (sortIcon, parentSortIconClassName) => {
-    const userData = await fetchUser();
+const toggleSortById = (sortIcon, parentSortIconClassName, slicedUserData) => {
+    const defaultData = [...slicedUserData];
+    let userData = [...slicedUserData];
     const tableElem = document.getElementById('table');
     const img = sortIcon.firstElementChild;
 
@@ -178,12 +179,13 @@ const toggleSortById = async (sortIcon, parentSortIconClassName) => {
 
         img.src = SVG_SRC.BOTH;
 
-        updateTableBody(tableElem, userData);
+        updateTableBody(tableElem, defaultData);
     }
 };
 
-const toggleSortByAge = async (sortIcon, parentSortIconClassName) => {
-    const userData = await fetchUser();
+const toggleSortByAge = (sortIcon, parentSortIconClassName, slicedUserData) => {
+    const defaultData = [...slicedUserData];
+    let userData = [...slicedUserData];
     const tableElem = document.getElementById('table');
     const img = sortIcon.firstElementChild;
 
@@ -217,22 +219,18 @@ const toggleSortByAge = async (sortIcon, parentSortIconClassName) => {
 
         img.src = SVG_SRC.BOTH;
 
-        updateTableBody(tableElem, userData);
+        updateTableBody(tableElem, defaultData);
     }
 };
 
-const setSortIconClickListener = () => {
+const setSortIconClickListener = (slicedUserData) => {
     const sortIconItems = document.querySelectorAll('.sortIcon');
 
     sortIconItems.forEach((sortIcon) => {
         const parentSortIconClassName = sortIcon.parentNode.className;
         sortIcon.addEventListener('click', () => {
-            try {
-                toggleSortById(sortIcon, parentSortIconClassName);
-                toggleSortByAge(sortIcon, parentSortIconClassName);
-            } catch (error) {
-                console.error('データ再取得中にエラーが発生しました: ', error);
-            }
+            toggleSortById(sortIcon, parentSortIconClassName, slicedUserData);
+            toggleSortByAge(sortIcon, parentSortIconClassName, slicedUserData);
         });
     });
 };
@@ -332,7 +330,7 @@ const changedPagination = (slicedUserData) => {
     tableElem.remove();
 
     memberTableLayout(slicedUserData);
-    setSortIconClickListener();
+    setSortIconClickListener(slicedUserData);
 };
 
 const clickedPaginationBtn = async (userData, slicedUserData) => {
@@ -394,7 +392,7 @@ const app = async () => {
             const slicedUserData = userData.slice(0, DISPLAYITEM);
             paginationLayout(slicedUserData);
             memberTableLayout(slicedUserData);
-            setSortIconClickListener();
+            setSortIconClickListener(slicedUserData);
             clickedPaginationBtn(userData, slicedUserData);
         }
     } catch (error) {
