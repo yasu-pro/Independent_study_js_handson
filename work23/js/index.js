@@ -2,6 +2,7 @@ const memberTable = document.getElementById('memberTable');
 
 const userFetchTime = 3000;
 const DISPLAYITEM = 5;
+let isSortBtnPressed = false;
 const url = 'http://localhost:3000/data/';
 
 const SVG_SRC = {
@@ -52,6 +53,7 @@ const createErrorMessage = (message) => {
 
 const createTableHeader = (userData) => {
     const thead = document.createElement('thead');
+    thead.id = 'thead';
     const tr = document.createElement('tr');
     const fragment = document.createDocumentFragment();
     const keysArray = Object.keys(userData[0]);
@@ -63,7 +65,7 @@ const createTableHeader = (userData) => {
         if (key === 'id') {
             const div = document.createElement('div');
             const img = document.createElement('img');
-            div.classList.add('sortIcon', 'both');
+            div.classList.add('sortIcon', 'sort-id', 'both');
             th.classList.add('id');
 
             img.src =
@@ -75,7 +77,7 @@ const createTableHeader = (userData) => {
         if (key === 'age') {
             const div = document.createElement('div');
             const img = document.createElement('img');
-            div.classList.add('sortIcon', 'both');
+            div.classList.add('sortIcon', 'sort-age', 'both');
             th.classList.add('age');
 
             img.src =
@@ -128,11 +130,13 @@ const renderTableLayout = (userData) => {
     return table;
 };
 
-const sortByNumber = (changeUserData, order, parentSortIconClassName) => {
+const sortByNumber = (changeUserData, order, sortIconElem) => {
     return changeUserData.sort((a, b) => {
-        return order === 'asc'
-            ? a[parentSortIconClassName] - b[parentSortIconClassName]
-            : b[parentSortIconClassName] - a[parentSortIconClassName];
+        if (sortIconElem.classList.contains('sort-id')) {
+            return order === 'asc' ? a.id - b.id : b.id - a.id;
+        } else {
+            return order === 'asc' ? a.age - b.age : b.age - a.age;
+        }
     });
 };
 
@@ -143,102 +147,118 @@ const updateTableBody = (tableElem, userData) => {
     tableElem.appendChild(newTbody);
 };
 
-const toggleSortById = async (sortIcon, parentSortIconClassName) => {
-    const userData = await fetchUser();
-    const tableElem = document.getElementById('table');
-    const img = sortIcon.firstElementChild;
+const toggleSortById = (sortIconElem, userData) => {
+    let copyUserData = [...userData];
+    const defaultData = [...userData];
+    const img = sortIconElem.firstElementChild;
+    const sortIconAgeElem = document.querySelector('.sort-age');
 
-    if (sortIcon.classList.contains('both')) {
-        sortIcon.classList.remove('both');
-        sortIcon.classList.add('asc');
+    sortIconAgeElem.classList.remove('on');
 
-        img.src = SVG_SRC.ASC;
-
-        const sortedData = sortByNumber(
-            userData,
-            'asc',
-            parentSortIconClassName
-        );
-        updateTableBody(tableElem, sortedData);
-    } else if (sortIcon.classList.contains('asc')) {
-        sortIcon.classList.remove('asc');
-        sortIcon.classList.add('desc');
-
-        img.src = SVG_SRC.DESC;
-
-        const sortedData = sortByNumber(
-            userData,
-            'desc',
-            parentSortIconClassName
-        );
-        updateTableBody(tableElem, sortedData);
-    } else {
-        sortIcon.classList.remove('desc');
-        sortIcon.classList.add('both');
-
-        img.src = SVG_SRC.BOTH;
-
-        updateTableBody(tableElem, userData);
-    }
-};
-
-const toggleSortByAge = async (sortIcon, parentSortIconClassName) => {
-    const userData = await fetchUser();
-    const tableElem = document.getElementById('table');
-    const img = sortIcon.firstElementChild;
-
-    if (sortIcon.classList.contains('both')) {
-        sortIcon.classList.remove('both');
-        sortIcon.classList.add('asc');
+    if (sortIconElem.classList.contains('both')) {
+        sortIconElem.classList.remove('both');
+        sortIconElem.classList.add('asc', 'on');
 
         img.src = SVG_SRC.ASC;
 
-        const sortedData = sortByNumber(
-            userData,
-            'asc',
-            parentSortIconClassName
-        );
-        updateTableBody(tableElem, sortedData);
-    } else if (sortIcon.classList.contains('asc')) {
-        sortIcon.classList.remove('asc');
-        sortIcon.classList.add('desc');
+        const sortedData = sortByNumber(copyUserData, 'asc', sortIconElem);
+
+        return sortedData;
+    } else if (sortIconElem.classList.contains('asc')) {
+        sortIconElem.classList.remove('asc');
+        sortIconElem.classList.add('desc', 'on');
 
         img.src = SVG_SRC.DESC;
 
-        const sortedData = sortByNumber(
-            userData,
-            'desc',
-            parentSortIconClassName
-        );
-        updateTableBody(tableElem, sortedData);
+        const sortedData = sortByNumber(copyUserData, 'desc', sortIconElem);
+
+        return sortedData;
     } else {
-        sortIcon.classList.remove('desc');
-        sortIcon.classList.add('both');
+        sortIconElem.classList.remove('desc');
+        sortIconElem.classList.add('both', 'on');
 
         img.src = SVG_SRC.BOTH;
 
-        updateTableBody(tableElem, userData);
+        return defaultData;
     }
 };
 
-const setSortIconClickListener = () => {
-    const sortIconItems = document.querySelectorAll('.sortIcon');
+const toggleSortByAge = (sortIconElem, userData) => {
+    let copyUserData = [...userData];
+    const defaultData = [...userData];
+    const img = sortIconElem.firstElementChild;
+    const sortIconIdElem = document.querySelector('.sort-id');
 
-    sortIconItems.forEach((sortIcon) => {
-        const parentSortIconClassName = sortIcon.parentNode.className;
-        sortIcon.addEventListener('click', () => {
-            try {
-                toggleSortById(sortIcon, parentSortIconClassName);
-                toggleSortByAge(sortIcon, parentSortIconClassName);
-            } catch (error) {
-                console.error('データ再取得中にエラーが発生しました: ', error);
-            }
-        });
+    sortIconIdElem.classList.remove('on');
+
+    if (sortIconElem.classList.contains('both')) {
+        sortIconElem.classList.remove('both');
+        sortIconElem.classList.add('asc', 'on');
+
+        img.src = SVG_SRC.ASC;
+
+        const sortedData = sortByNumber(copyUserData, 'asc', sortIconElem);
+        return sortedData;
+    } else if (sortIconElem.classList.contains('asc')) {
+        sortIconElem.classList.remove('asc');
+        sortIconElem.classList.add('desc', 'on');
+
+        img.src = SVG_SRC.DESC;
+
+        const sortedData = sortByNumber(copyUserData, 'desc', sortIconElem);
+        return sortedData;
+    } else {
+        sortIconElem.classList.remove('desc');
+        sortIconElem.classList.add('both', 'on');
+
+        img.src = SVG_SRC.BOTH;
+
+        return defaultData;
+    }
+};
+
+const refreshPagiNationData = (userData) => {
+    const prevBtn = document.querySelector('.prevBtn');
+    const nextBtn = document.querySelector('.nextBtn');
+
+    const eratorNumElem = document.querySelector('.eratorNum');
+
+    nextBtn.disabled = false;
+    prevBtn.disabled = true;
+
+    const displayEratorNum = 1;
+    eratorNumElem.textContent = displayEratorNum;
+
+    const refreshUserData = userData.slice(
+        DISPLAYITEM * displayEratorNum - DISPLAYITEM,
+        DISPLAYITEM * displayEratorNum
+    );
+
+    return refreshUserData;
+};
+
+const sortIconByIdClickListener = (userData) => {
+    const sortIconElem = document.querySelector('.sort-id');
+    sortIconElem.addEventListener('click', () => {
+        const defaultData = [...userData];
+        const sortData = toggleSortById(sortIconElem, userData, defaultData);
+        const refreshUserData = refreshPagiNationData(sortData);
+        changedPagination(refreshUserData);
     });
 };
 
-const createPaginationBtn = (slicedUserData) => {
-    const paginationNum = createPaginationNum(slicedUserData);
+const sortIconByAgeClickListener = (userData) => {
+    const sortIconElem = document.querySelector('.sort-age');
+    sortIconElem.addEventListener('click', () => {
+        const defaultData = [...userData];
+        const sortData = toggleSortByAge(sortIconElem, userData, defaultData);
+        const refreshUserData = refreshPagiNationData(sortData);
+        changedPagination(refreshUserData);
+    });
+};
+
+const createPaginationBtn = (userDataLength) => {
+    const paginationNum = createPaginationNum(userDataLength);
     const paginationWrapper = document.createElement('div');
     paginationWrapper.classList.add('paginationWrapper');
 
@@ -279,14 +299,16 @@ const createPaginationBtn = (slicedUserData) => {
     return paginationWrapper;
 };
 
-const createPaginationNum = (slicedUserData) => {
+const createPaginationNum = (userDataLength) => {
     const paginationNumWrapper = document.createElement('div');
     paginationNumWrapper.classList.add('paginationNumWrapper');
+
+    const totalPages = Math.ceil(userDataLength / DISPLAYITEM);
 
     const denominator = document.createElement('div');
     const denominatorText = document.createElement('span');
     denominatorText.classList.add('num', 'denominatorNum');
-    denominatorText.textContent = slicedUserData.length;
+    denominatorText.textContent = totalPages;
     denominator.appendChild(denominatorText);
 
     const parentheses = document.createElement('div');
@@ -308,8 +330,8 @@ const createPaginationNum = (slicedUserData) => {
     return paginationNumWrapper;
 };
 
-const renderPagination = (slicedUserData) => {
-    const PaginationBtn = createPaginationBtn(slicedUserData);
+const renderPagination = (userDataLength) => {
+    const PaginationBtn = createPaginationBtn(userDataLength);
 
     return PaginationBtn;
 };
@@ -321,27 +343,38 @@ const memberTableLayout = (slicedUserData) => {
     paginationElem.before(tableElem);
 };
 
-const paginationLayout = (slicedUserData) => {
-    const paginationElem = renderPagination(slicedUserData);
+const paginationLayout = (userDataLength) => {
+    const paginationElem = renderPagination(userDataLength);
 
     memberTable.appendChild(paginationElem);
 };
 
-const changedPagination = (slicedUserData) => {
-    const tableElem = document.getElementById('table');
-    tableElem.remove();
-
-    memberTableLayout(slicedUserData);
-    setSortIconClickListener();
+const setSortIconClickListener = (userData, slicedUserData) => {
+    sortIconByIdClickListener(userData, slicedUserData);
+    sortIconByAgeClickListener(userData, slicedUserData);
 };
 
-const clickedPaginationBtn = async (userData, slicedUserData) => {
+const changedPagination = (slicedUserData) => {
+    const theadElem = document.getElementById('thead');
+    const tbodyElem = document.getElementById('tbody');
+    tbodyElem.remove();
+
+    const tableBody = createTableBody(slicedUserData);
+    theadElem.after(tableBody);
+};
+
+const clickedPaginationBtn = async (userData) => {
+    let baseUserData = [...userData];
+    const defaultData = [...userData];
     const prevBtn = document.querySelector('.prevBtn');
     const nextBtn = document.querySelector('.nextBtn');
 
     prevBtn.addEventListener('click', () => {
         const eratorNumElem = document.querySelector('.eratorNum');
         const eratorNum = Number(eratorNumElem.textContent);
+        const sortIconIdElem = document.querySelector('.sort-id');
+        const sortIconAgeElem = document.querySelector('.sort-age');
+        let sortUserData;
 
         nextBtn.disabled = false;
 
@@ -353,7 +386,49 @@ const clickedPaginationBtn = async (userData, slicedUserData) => {
             if (displayEratorNum === 1) {
                 prevBtn.disabled = true;
             }
-            const prevUserData = userData.slice(
+
+            // sort id
+            if (sortIconIdElem.classList.contains('on')) {
+                if (sortIconIdElem.classList.contains('asc')) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'asc',
+                        sortIconIdElem
+                    );
+                } else if (sortIconIdElem.classList.contains('desc')) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'desc',
+                        sortIconIdElem
+                    );
+                } else {
+                    sortUserData = defaultData;
+                }
+            }
+
+            // sort age
+            if (sortIconAgeElem.classList.contains('on')) {
+                if (
+                    sortIconAgeElem.classList.contains('on') &&
+                    sortIconAgeElem.classList.contains('asc')
+                ) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'asc',
+                        sortIconAgeElem
+                    );
+                } else if (sortIconAgeElem.classList.contains('desc')) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'desc',
+                        sortIconAgeElem
+                    );
+                } else {
+                    sortUserData = defaultData;
+                }
+            }
+
+            const prevUserData = sortUserData.slice(
                 DISPLAYITEM * displayEratorNum - DISPLAYITEM,
                 DISPLAYITEM * displayEratorNum
             );
@@ -365,18 +440,65 @@ const clickedPaginationBtn = async (userData, slicedUserData) => {
     nextBtn.addEventListener('click', () => {
         const eratorNumElem = document.querySelector('.eratorNum');
         const eratorNum = Number(eratorNumElem.textContent);
+        const sortIconIdElem = document.querySelector('.sort-id');
+        const sortIconAgeElem = document.querySelector('.sort-age');
+        let sortUserData;
+
+        const totalPages = Math.ceil(userData.length / DISPLAYITEM);
 
         prevBtn.disabled = false;
 
-        if (eratorNum < slicedUserData.length) {
+        if (eratorNum < totalPages) {
             nextBtn.disabled = false;
             const displayEratorNum = eratorNum + 1;
             eratorNumElem.textContent = displayEratorNum;
 
-            if (displayEratorNum === slicedUserData.length) {
+            if (displayEratorNum === totalPages) {
                 nextBtn.disabled = true;
             }
-            const nextUserData = userData.slice(
+
+            // sort id
+            if (sortIconIdElem.classList.contains('on')) {
+                if (sortIconIdElem.classList.contains('asc')) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'asc',
+                        sortIconIdElem
+                    );
+                } else if (sortIconIdElem.classList.contains('desc')) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'desc',
+                        sortIconIdElem
+                    );
+                } else {
+                    sortUserData = defaultData;
+                }
+            }
+
+            // sort age
+            if (sortIconAgeElem.classList.contains('on')) {
+                if (
+                    sortIconAgeElem.classList.contains('on') &&
+                    sortIconAgeElem.classList.contains('asc')
+                ) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'asc',
+                        sortIconAgeElem
+                    );
+                } else if (sortIconAgeElem.classList.contains('desc')) {
+                    sortUserData = sortByNumber(
+                        baseUserData,
+                        'desc',
+                        sortIconAgeElem
+                    );
+                } else {
+                    sortUserData = defaultData;
+                }
+            }
+
+            const nextUserData = sortUserData.slice(
                 DISPLAYITEM * eratorNum,
                 DISPLAYITEM * eratorNum + DISPLAYITEM
             );
@@ -392,10 +514,11 @@ const app = async () => {
 
         if (userData) {
             const slicedUserData = userData.slice(0, DISPLAYITEM);
-            paginationLayout(slicedUserData);
+            const userDataLength = userData.length;
+            paginationLayout(userDataLength);
             memberTableLayout(slicedUserData);
-            setSortIconClickListener();
-            clickedPaginationBtn(userData, slicedUserData);
+            setSortIconClickListener(userData, slicedUserData);
+            clickedPaginationBtn(userData);
         }
     } catch (error) {
         console.error('エラーが発生しました:', error.message);
