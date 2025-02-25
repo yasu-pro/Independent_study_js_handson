@@ -1,0 +1,27 @@
+#memberTable {
+  overflow: hidden;
+  width: 750px;
+  margin: 100px auto 0;
+}
+#memberTable table {
+  width: 100%;
+  text-align: left;
+}
+#memberTable table thead {
+  background-color: #6b7280;
+  color: #e5e7eb;
+}
+#memberTable table tbody {
+  background-color: #fff;
+  color: #6b7280;
+}
+#memberTable table th,
+#memberTable table td {
+  padding: 4px;
+}
+#memberTable table th {
+  border: 1px solid #fff;
+}
+#memberTable table td {
+  border: 1px solid #6b7280;
+}/*# sourceMappingURL=style.css.map */

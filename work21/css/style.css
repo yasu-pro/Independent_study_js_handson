@@ -1,0 +1,41 @@
+#memberTable {
+  overflow: hidden;
+  width: 750px;
+  margin: 100px auto 0;
+}
+#memberTable table {
+  width: 100%;
+  text-align: left;
+}
+#memberTable table thead {
+  background-color: #6b7280;
+  color: #e5e7eb;
+}
+#memberTable table tbody {
+  background-color: #fff;
+  color: #6b7280;
+}
+#memberTable table th,
+#memberTable table td {
+  padding: 4px;
+}
+#memberTable table th:not(:first-child) {
+  border-left: 1px solid #fff;
+}
+#memberTable table th.id {
+  display: flex;
+}
+#memberTable table th .sortIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+#memberTable table th .sortIcon img {
+  width: 15px;
+  height: 15px;
+  color: black;
+}
+#memberTable table td {
+  border: 1px solid #6b7280;
+}/*# sourceMappingURL=style.css.map */

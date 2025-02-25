@@ -1,0 +1,44 @@
+#memberTable {
+    overflow: hidden;
+    width: 750px;
+    margin: 100px auto 0;
+    table {
+        width: 100%;
+        text-align: left;
+
+        thead {
+            background-color: #6b7280;
+            color: #e5e7eb;
+        }
+        tbody {
+            background-color: #fff;
+            color: #6b7280;
+        }
+        th,
+        td {
+            padding: 4px;
+        }
+        th {
+            &:not(:first-child) {
+                border-left: 1px solid #fff;
+            }
+            &.id {
+                display: flex;
+            }
+            .sortIcon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: 10px;
+                img {
+                    width: 15px;
+                    height: 15px;
+                    color: black;
+                }
+            }
+        }
+        td {
+            border: 1px solid #6b7280;
+        }
+    }
+}
