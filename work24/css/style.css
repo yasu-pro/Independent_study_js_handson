@@ -1,0 +1,130 @@
+body {
+  height: 100%;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.registerTxt {
+  border-bottom: 1px solid #000;
+}
+
+.submitBtn {
+  padding: 3px 8px;
+  border: 2px solid blue;
+  background-color: rgb(59, 191, 244);
+  color: #fff;
+}
+
+.form_wrap {
+  width: 650px;
+  margin-top: 250px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 30px 50px;
+  border: 1px solid #000;
+}
+.form_head {
+  margin-top: 20px;
+  text-align: center;
+}
+.form_area {
+  margin-top: 20px;
+}
+.form_area-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.form_area-input .userName,
+.form_area-input .userMail,
+.form_area-input .userPassword {
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+}
+.form_area-input .userName input[name=name],
+.form_area-input .userName input[name=mail],
+.form_area-input .userName input[name=password],
+.form_area-input .userMail input[name=name],
+.form_area-input .userMail input[name=mail],
+.form_area-input .userMail input[name=password],
+.form_area-input .userPassword input[name=name],
+.form_area-input .userPassword input[name=mail],
+.form_area-input .userPassword input[name=password] {
+  border: 1px solid #000;
+}
+.form_area .register {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.form_area .register label {
+  margin-left: 8px;
+}
+.form_area .submit {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.modal.close {
+  display: none;
+}
+.modal.open {
+  display: block;
+}
+.modal_wrap {
+  margin-top: 15%;
+  margin-right: auto;
+  margin-left: auto;
+  width: 700px;
+  height: 500px;
+  overflow: hidden;
+}
+.modal_contents {
+  position: relative;
+  height: 100%;
+  background-color: #fff;
+  overflow-y: scroll;
+}
+.modal_contents .closeBtn {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background-color: rgb(166, 164, 164);
+  z-index: 999;
+  cursor: pointer;
+}
+.modal_contents .closeBtn span {
+  color: #fff;
+}
+.modal_contents ul {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 50px;
+  gap: 15px;
+}
+.modal_contents ul li .title {
+  font-size: 18px;
+  font-weight: bolder;
+}
+.modal_contents ul li .text {
+  line-height: 1.25;
+}/*# sourceMappingURL=style.css.map */
