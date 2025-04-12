@@ -2,13 +2,13 @@ const registerElem = document.querySelector('.registerTxt');
 const closeBtn = document.querySelector('.closeBtn');
 
 registerElem.addEventListener('click', () => {
-    const modalElem = document.getElementById('modal');
+    const modalElem = document.getElementById('js-modal');
     modalElem.classList.remove('close');
     modalElem.classList.add('open');
 });
 
 closeBtn.addEventListener('click', () => {
-    const modalElem = document.getElementById('modal');
+    const modalElem = document.getElementById('js-modal');
     modalElem.classList.remove('open');
     modalElem.classList.add('close');
 });
