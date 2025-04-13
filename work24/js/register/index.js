@@ -1,8 +1,9 @@
-const registerElem = document.querySelector('.registerTxt');
+const registerTextElem = document.querySelector('.registerText');
 const closeBtn = document.querySelector('.closeBtn');
 const modalElem = document.querySelector('.modal_contents');
+const registerCheckBox = document.getElementById('register');
 
-registerElem.addEventListener('click', () => {
+registerTextElem.addEventListener('click', () => {
     const modalElem = document.getElementById('js-modal');
     modalElem.classList.remove('close');
     modalElem.classList.add('open');
@@ -15,18 +16,21 @@ closeBtn.addEventListener('click', () => {
 });
 
 modalElem.addEventListener('scroll', () => {
-    const registerElem = document.querySelectorAll('.modal li');
+    if (registerCheckBox.checked) return;
+    const registerListElem = document.querySelectorAll('.modal li');
+    const submitBtn = document.getElementById('js-submitBtn');
 
-    if (registerElem.length > 0) {
-        const lastElem = registerElem[registerElem.length - 1];
-        const scroll = modalElem.scrollTop;
+    if (registerListElem.length > 0) {
+        const lastElem = registerListElem[registerListElem.length - 1];
         const modalHeight = modalElem.clientHeight;
         const lastElemPos =
             lastElem.getBoundingClientRect().top -
             modalElem.getBoundingClientRect().top;
 
         if (lastElemPos < modalHeight) {
-            lastElem.classList.add('js-agree-position');
+            registerCheckBox.checked = true;
+            registerCheckBox.disabled = false;
+            submitBtn.disabled = false;
         }
     }
 });

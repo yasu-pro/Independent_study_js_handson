@@ -34,17 +34,19 @@
                         </div>
                     </div>
                     <div class="register">
-                        <input type="checkbox" name="register" id="register" />
-                        <p>
-                            <label for="register"
-                                ><span class="registerTxt"
-                                    >利用規約</span
-                                ></label
-                            >に同意する
-                        </p>
+                        <input
+                            type="checkbox"
+                            name="register"
+                            id="register"
+                            disabled
+                            aria-label="利用規約に同意するチェックボックス（自動的に選択されます）"
+                        />
+                        <span class="registerText">利用規約</span>に同意する
                     </div>
                     <div class="submit">
-                        <button class="submitBtn" type="submit">送信</button>
+                        <button class="submitBtn" id="js-submitBtn" type="submit" disabled>
+                            送信
+                        </button>
                     </div>
                 </form>
             </div>
