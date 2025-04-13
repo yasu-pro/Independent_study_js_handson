@@ -25,9 +25,6 @@ modalElem.addEventListener('scroll', () => {
             lastElem.getBoundingClientRect().top -
             modalElem.getBoundingClientRect().top;
 
-        console.log('scrollTop', scroll);
-        console.log('lastElemPos', lastElemPos);
-
         if (lastElemPos < modalHeight) {
             lastElem.classList.add('js-agree-position');
         }
