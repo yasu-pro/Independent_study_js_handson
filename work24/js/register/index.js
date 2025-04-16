@@ -45,3 +45,17 @@ inputUserName.addEventListener('keyup', () => {
 
     invalidElem.style.display = 'none';
 });
+
+const inputMail = document.querySelector('input[name="mail"]');
+inputMail.addEventListener('keyup', () => {
+    const inputValue = inputMail.value.trim();
+    const invalidElem = document.querySelector('.invalidError.mail');
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(inputValue)) {
+        invalidElem.style.display = 'block';
+        return;
+    }
+
+    invalidElem.style.display = 'none';
+});
