@@ -34,3 +34,14 @@ modalElem.addEventListener('scroll', () => {
         }
     }
 });
+
+const inputUserName = document.querySelector('input[name="name"]');
+inputUserName.addEventListener('keyup', () => {
+    const invalidElem = document.querySelector('.invalidError.name');
+    if (inputUserName.value.length > 15) {
+        invalidElem.style.display = 'block';
+        return;
+    }
+
+    invalidElem.style.display = 'none';
+});
