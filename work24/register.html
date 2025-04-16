@@ -22,15 +22,45 @@
                     <div class="form_area-input">
                         <div class="userName">
                             <label for="name">ユーザー名</label>
-                            <input type="text" name="name" id="name" />
+                            <div class="columnBox">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    required
+                                />
+                                <p class="invalidError name">
+                                    ※ユーザー名は15文字以下にしてください。
+                                </p>
+                            </div>
                         </div>
                         <div class="userMail">
                             <label for="mail">メールアドレス</label>
-                            <input type="text" name="mail" id="mail" />
+                            <div class="columnBox">
+                                <input
+                                    type="text"
+                                    name="mail"
+                                    id="mail"
+                                    required
+                                />
+                                <p class="invalidError mail">
+                                    ※メールアドレスの形式になっていません。
+                                </p>
+                            </div>
                         </div>
                         <div class="userPassword">
                             <label for="password">パスワード</label>
-                            <input type="text" name="password" id="password" />
+                            <div class="columnBox">
+                                <input
+                                    type="text"
+                                    name="password"
+                                    id="password"
+                                    required
+                                />
+                                <p class="invalidError password">
+                                    ※8文字以上の大小の英数字を交ぜたものにしてください。
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div class="register">
@@ -44,7 +74,11 @@
                         <span class="registerText">利用規約</span>に同意する
                     </div>
                     <div class="submit">
-                        <button class="submitBtn" id="js-submitBtn" type="submit" disabled>
+                        <button
+                            class="submitBtn"
+                            id="js-submitBtn"
+                            type="submit"
+                        >
                             送信
                         </button>
                     </div>
