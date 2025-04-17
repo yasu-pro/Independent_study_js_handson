@@ -59,3 +59,17 @@ inputMail.addEventListener('keyup', () => {
 
     invalidElem.style.display = 'none';
 });
+
+const inputPassword = document.querySelector('input[name="password"]');
+inputPassword.addEventListener('keyup', () => {
+    const password = inputPassword.value;
+    const invalidElem = document.querySelector('.invalidError.password');
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+        invalidElem.style.display = 'block';
+        return;
+    }
+
+    invalidElem.style.display = 'none';
+});
