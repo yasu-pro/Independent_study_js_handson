@@ -1,6 +1,6 @@
 const registerTextElem = document.querySelector('.registerText');
 const closeBtn = document.querySelector('.closeBtn');
-const modalElem = document.querySelector('.modal_contents');
+const modalContentsElem = document.querySelector('.modal_contents');
 const registerCheckBox = document.getElementById('register');
 
 const validState = {
@@ -22,16 +22,16 @@ closeBtn.addEventListener('click', () => {
     modalElem.classList.add('close');
 });
 
-modalElem.addEventListener('scroll', () => {
+modalContentsElem.addEventListener('scroll', () => {
     if (registerCheckBox.checked) return;
     const registerListElem = document.querySelectorAll('.modal li');
 
     if (registerListElem.length > 0) {
         const lastElem = registerListElem[registerListElem.length - 1];
-        const modalHeight = modalElem.clientHeight;
+        const modalHeight = modalContentsElem.clientHeight;
         const lastElemPos =
             lastElem.getBoundingClientRect().top -
-            modalElem.getBoundingClientRect().top;
+            modalContentsElem.getBoundingClientRect().top;
 
         if (lastElemPos < modalHeight) {
             registerCheckBox.checked = true;
@@ -43,10 +43,10 @@ modalElem.addEventListener('scroll', () => {
     }
 });
 
-const inputUserName = document.querySelector('input[name="name"]');
-inputUserName.addEventListener('keyup', () => {
+const userNameInputElem = document.querySelector('input[name="name"]');
+userNameInputElem.addEventListener('keyup', () => {
     const invalidElem = document.querySelector('.invalidError.name');
-    if (inputUserName.value.length > 15) {
+    if (userNameInputElem.value.length > 15) {
         invalidElem.style.display = 'block';
         validState.name = false;
     } else {
@@ -57,13 +57,13 @@ inputUserName.addEventListener('keyup', () => {
     toggleSubmit();
 });
 
-const inputMail = document.querySelector('input[name="mail"]');
-inputMail.addEventListener('keyup', () => {
-    const inputValue = inputMail.value.trim();
+const mailInputElem = document.querySelector('input[name="mail"]');
+mailInputElem.addEventListener('keyup', () => {
+    const mailValue = mailInputElem.value.trim();
     const invalidElem = document.querySelector('.invalidError.mail');
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (!emailRegex.test(inputValue)) {
+    if (!emailRegex.test(mailValue)) {
         invalidElem.style.display = 'block';
         validState.mail = false;
     } else {
@@ -74,13 +74,13 @@ inputMail.addEventListener('keyup', () => {
     toggleSubmit();
 });
 
-const inputPassword = document.querySelector('input[name="password"]');
-inputPassword.addEventListener('keyup', () => {
-    const password = inputPassword.value;
+const passwordInputElem = document.querySelector('input[name="password"]');
+passwordInputElem.addEventListener('keyup', () => {
+    const passwordValue = passwordInputElem.value;
     const invalidElem = document.querySelector('.invalidError.password');
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-    if (!passwordRegex.test(password)) {
+    if (!passwordRegex.test(passwordValue)) {
         invalidElem.style.display = 'block';
         validState.password = false;
     } else {
