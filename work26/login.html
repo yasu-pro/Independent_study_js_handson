@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>register</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css"
+        />
+        <link rel="stylesheet" href="./css/login/style.css" />
+        <script defer type="module" src="./js/login/index.js"></script>
+    </head>
+    <body>
+        <div class="form_wrap">
+            <div class="form_head">
+                <h1 class="title">ログイン画面</h1>
+            </div>
+
+            <div class="form_area">
+                <form action="./register-done.html">
+                    <div class="form_area-input">
+                        <div class="userNameOrEmail">
+                            <label for="nameOrEmail"
+                                >ユーザー名 <br />
+                                メールアドレス</label
+                            >
+                            <div class="columnBox">
+                                <input
+                                    type="text"
+                                    name="userNameOrEmail"
+                                    id="userNameOrEmail"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="userPassword">
+                            <label for="password">パスワード</label>
+                            <div class="columnBox">
+                                <input
+                                    type="text"
+                                    name="password"
+                                    id="password"
+                                    required
+                                />
+                                <p class="invalidError password">
+                                    ※8文字以上の大小の英数字を交ぜたものにしてください。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="memberRegister">
+                        <a href="./register.html" class="memberRegisterText">
+                            会員登録はこちら
+                        </a>
+                    </div>
+                    <div class="forgotPassword">
+                        <a
+                            href="./forgot-password.html"
+                            class="forgotPasswordText"
+                            >パスワードを忘れた方</a
+                        >
+                    </div>
+                    <div class="submit">
+                        <button
+                            class="submitBtn"
+                            id="js-submitBtn"
+                            type="submit"
+                            disabled
+                        >
+                            送信
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

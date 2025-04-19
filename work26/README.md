@@ -1,5 +1,5 @@
 #課題
-[もりけん塾ハンズオン](https://github.com/sae-github/handsonFrontend/blob/master/work/markup/1.md#24)
+[もりけん塾ハンズオン](https://github.com/kenmori/handsonFrontend/blob/master/work/markup/1.md#26)
 
 # json-server を使用 下記を実行
 
