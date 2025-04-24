@@ -6,6 +6,15 @@ a:hover {
   cursor: pointer;
 }
 
+.logout {
+  margin-top: 20px;
+  text-align: center;
+}
+.logout .logoutBtn {
+  border: 1px solid #000;
+  padding: 2px 3px;
+}
+
 img {
   max-width: 100%;
   height: auto;

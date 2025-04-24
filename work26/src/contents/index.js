@@ -6,10 +6,10 @@ const errorMessageElem = document.createElement("div");
 errorMessageElem.id = "error-message";
 body.appendChild(errorMessageElem);
 const apiURL = "http://localhost:3000/data";
-
+const logoutBtn = document.querySelector(".logoutBtn");
 
 // 関数
-const getData = async() => {
+const getData = async () => {
   try {
     lazyLoad();
     const response = await fetch(apiURL);
@@ -18,7 +18,7 @@ const getData = async() => {
       deleteLazyLoad();
       return json;
     } else {
-      const error = new Error(`${response.status}:${response.statusText}`)
+      const error = new Error(`${response.status}:${response.statusText}`);
       error.response = response;
       throw error;
     }
@@ -32,22 +32,22 @@ const getData = async() => {
 
 const createCategoryTab = async (listData) => {
   const fragment = document.createDocumentFragment();
-  const divElemTabTopicsWrap = document.createElement('div')
+  const divElemTabTopicsWrap = document.createElement("div");
   divElemTabTopicsWrap.classList = "tabTopicsWrap";
 
-  listData.forEach((categoryData)=> {
+  listData.forEach((categoryData) => {
     const liElem = document.createElement("li");
 
     if (categoryData.isFirstDisplay) {
-      liElem.classList=`tab ${categoryData.category} select`
+      liElem.classList = `tab ${categoryData.category} select`;
     } else {
-      liElem.classList=`tab ${categoryData.category}`
+      liElem.classList = `tab ${categoryData.category}`;
     }
 
     const aElem = document.createElement("a");
     liElem.appendChild(aElem);
 
-    let categoryTitle ="";
+    let categoryTitle = "";
 
     switch (categoryData.category) {
       case "news":
@@ -76,18 +76,18 @@ const createCategoryTab = async (listData) => {
 
     aElem.innerText = categoryTitle;
     fragment.appendChild(liElem);
-  })
+  });
 
   ulElemTabs.appendChild(fragment);
-  ulElemTabs.classList = "tabTopics"
-  divElemTabTopicsWrap.appendChild(ulElemTabs)
+  ulElemTabs.classList = "tabTopics";
+  divElemTabTopicsWrap.appendChild(ulElemTabs);
   return divElemTabTopicsWrap;
 };
 
-const createTabPanel = async(listData) => {
+const createTabPanel = async (listData) => {
   const sectionElem = document.createElement("section");
   const divElemTabPanelWrap = document.createElement("div");
-  divElemTabPanelWrap.classList = "tabPanelWrap"
+  divElemTabPanelWrap.classList = "tabPanelWrap";
 
   const newsContentNode = await displayInitialNews(listData);
 
@@ -104,7 +104,7 @@ const displayInitialNews = async (listData) => {
   return newsContent;
 };
 
-const renderElem = async(listData) => {
+const renderElem = async (listData) => {
   const articleElem = createArticle();
   const divElemTabToics = await createCategoryTab(listData);
   const sectionElem = await createTabPanel(listData);
@@ -114,9 +114,9 @@ const renderElem = async(listData) => {
   body.insertBefore(articleElem, body.firstChild);
 };
 
-const toggleNewsDisplay = async(changeNewsData) => {
-  const divElemMainNewsContent = document.querySelector('.mainNewsContent');
-  const divElemTabPanelWrap = document.querySelector('.tabPanelWrap');
+const toggleNewsDisplay = async (changeNewsData) => {
+  const divElemMainNewsContent = document.querySelector(".mainNewsContent");
+  const divElemTabPanelWrap = document.querySelector(".tabPanelWrap");
 
   divElemMainNewsContent.remove();
 
@@ -125,21 +125,21 @@ const toggleNewsDisplay = async(changeNewsData) => {
   divElemTabPanelWrap.appendChild(changeNewsElem);
 };
 
-const selectCategoryNewsData = async(listData, className) => {
+const selectCategoryNewsData = async (listData, className) => {
   const clickedCategory = formatCategoryName(className);
 
-  const changeNewsData = listData.filter(newsCategoy => {
+  const changeNewsData = listData.filter((newsCategoy) => {
     return newsCategoy.category === clickedCategory;
-  })
+  });
 
   return changeNewsData;
 };
 
 const lazyLoad = () => {
-  const div = document.createElement('div');
-  div.classList='load'
-  const img = document.createElement('img');
-  img.src = "./img/loading-circle.gif"
+  const div = document.createElement("div");
+  div.classList = "load";
+  const img = document.createElement("img");
+  img.src = "./img/loading-circle.gif";
 
   div.appendChild(img);
   document.body.appendChild(div);
@@ -152,13 +152,13 @@ const deleteLazyLoad = () => {
 
 const createArticle = () => {
   const articleElem = document.createElement("article");
-  return articleElem
+  return articleElem;
 };
 
 const getNewsDisplayStatus = (listData) => {
-  const displayCategoryAllNews = listData.filter(newsDisplay => {
+  const displayCategoryAllNews = listData.filter((newsDisplay) => {
     return newsDisplay.isFirstDisplay === true;
-  })
+  });
 
   return displayCategoryAllNews;
 };
@@ -173,20 +173,19 @@ const displayNews = (newsData) => {
   newsData.forEach((newsItem) => {
     // 各カテゴリーの画像表示
     const divElemCategoryImg = document.createElement("div");
-    divElemCategoryImg.classList = "categoryImg"
+    divElemCategoryImg.classList = "categoryImg";
     const imgElem = document.createElement("img");
     const categoryImage = newsItem.img;
-    imgElem.src = categoryImage
+    imgElem.src = categoryImage;
 
     divElemCategoryImg.appendChild(imgElem);
-
 
     // ニュース記事の要素作成
     newsItem.contents.forEach((news) => {
       const liElem = document.createElement("li");
 
       const aElemAritcleLink = document.createElement("a");
-      aElemAritcleLink.classList = "articleLink"
+      aElemAritcleLink.classList = "articleLink";
       const h1Elem = document.createElement("h1");
 
       h1Elem.innerText = news.title;
@@ -220,7 +219,10 @@ const displayNews = (newsData) => {
   });
 
   ulElem.appendChild(fragment);
-  divElemMainNewsContent.insertBefore(ulElem, divElemMainNewsContent.firstChild);
+  divElemMainNewsContent.insertBefore(
+    ulElem,
+    divElemMainNewsContent.firstChild
+  );
 
   return divElemMainNewsContent;
 };
@@ -250,26 +252,37 @@ const addClassSelect = (listItem) => {
 };
 
 const toggleClassSelect = (ulElemTabs, listItem) => {
-    removeClassSelect(ulElemTabs);
-    addClassSelect(listItem)
+  removeClassSelect(ulElemTabs);
+  addClassSelect(listItem);
 };
 
 // イベント
-document.addEventListener("DOMContentLoaded", async() => {
+document.addEventListener("DOMContentLoaded", async () => {
   const listData = await getData();
   renderElem(listData);
   console.log(listData);
 
-  ulElemTabs.addEventListener("click", async(event) => {
+  ulElemTabs.addEventListener("click", async (event) => {
     // クリックされた要素がリストアイテム（<li>要素またはその子要素）であるかを確認
     const listItem = event.target.closest("li");
     if (listItem) {
       const clickListElemClassName = listItem.className;
 
-      const changeNewsData = await selectCategoryNewsData(listData, clickListElemClassName);
+      const changeNewsData = await selectCategoryNewsData(
+        listData,
+        clickListElemClassName
+      );
 
       toggleClassSelect(ulElemTabs, listItem);
       toggleNewsDisplay(changeNewsData);
     }
   });
 });
+
+// ローカルストレージ削除処理
+logoutBtn.addEventListener(
+  ("click",
+  () => {
+    localStorage.removeItem("token");
+  })
+);
