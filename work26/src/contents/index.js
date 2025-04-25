@@ -279,9 +279,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // ローカルストレージ削除処理
-logoutBtn.addEventListener(
-  ("click",
-  () => {
-    localStorage.removeItem("token");
-  })
-);
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("token");
+});
