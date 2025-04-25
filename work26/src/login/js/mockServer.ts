@@ -40,12 +40,16 @@ export const usersHandler = async (value: { id: string; password: string }) => {
       };
     }
 
-    return user;
-  } catch (error) {
     return {
       ok: false,
       code: 401,
       message: "Not found",
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      code: 500,
+      message: "サーバーエラー",
     };
   }
 };
