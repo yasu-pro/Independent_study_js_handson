@@ -20,3 +20,7 @@
  "id":"11"
 }
 ```
+
+# 課題注意点
+
+- [ローカルストレージ使うな](https://www.rdegges.com/2018/please-stop-using-local-storage/)
