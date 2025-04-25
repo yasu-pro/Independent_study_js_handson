@@ -260,7 +260,6 @@ const toggleClassSelect = (ulElemTabs, listItem) => {
 document.addEventListener("DOMContentLoaded", async () => {
   const listData = await getData();
   renderElem(listData);
-  console.log(listData);
 
   ulElemTabs.addEventListener("click", async (event) => {
     // クリックされた要素がリストアイテム（<li>要素またはその子要素）であるかを確認
