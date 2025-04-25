@@ -1,12 +1,5 @@
 import { usersHandler } from "./mockServer";
 
-window.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    window.location.href = "/work26/src/contents/index.html";
-  }
-});
-
 const submitBtn = document.querySelector(".submitBtn");
 
 const validState = {
@@ -19,12 +12,20 @@ const inputValueState = {
   password: "",
 };
 
+window.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    window.location.href = "../contents/index.html";
+  }
+});
+
 const userNameOrEmailInputElem = document.querySelector(
   'input[name="userNameOrEmail"]'
 );
 userNameOrEmailInputElem.addEventListener("blur", () => {
   const invalidElem = document.querySelector(".invalidError.nameOrEmail");
   const userNameOrEmailValue = userNameOrEmailInputElem.value;
+
   if (userNameOrEmailInputElem.value.length === 0) {
     invalidElem.style.display = "block";
     validState.nameOrMail = false;
@@ -68,9 +69,9 @@ submitBtn.addEventListener("click", async () => {
 
   if (token && token.ok) {
     localStorage.setItem("token", token.token);
-    window.location.href = "/work26/src/contents/index.html";
+    window.location.href = "../contents/index.html";
   } else {
     alert("ログインに失敗しました。");
-    window.location.href = "/work26/src/login/index.html";
+    window.location.href = "./";
   }
 });
