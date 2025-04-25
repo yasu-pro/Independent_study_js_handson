@@ -1,3 +1,10 @@
+type User = {
+  userId: string;
+  name: string;
+  email: string;
+  password: string;
+};
+
 const findMatchingUser = (users, value: { id: string; password: string }) => {
   return users.find((user) => {
     return (
@@ -12,7 +19,7 @@ export const usersHandler = async (value: { id: string; password: string }) => {
     const res = await fetch(
       "https://6802e9880a99cb7408eab082.mockapi.io/api/v1/users"
     );
-    const users: [] = await res.json();
+    const users: User[] = await res.json();
 
     if (users.length === 0) {
       return {
