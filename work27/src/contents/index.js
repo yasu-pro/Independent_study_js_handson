@@ -258,6 +258,8 @@ const toggleClassSelect = (ulElemTabs, listItem) => {
 
 // イベント
 document.addEventListener("DOMContentLoaded", async () => {
+  if (redirectToLoginIfNoToken()) return;
+
   const listData = await getData();
   renderElem(listData);
 
@@ -277,6 +279,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
+const redirectToLoginIfNoToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "../login/index.html";
+    return true;
+  }
+  return false;
+};
 
 // ローカルストレージ削除処理
 logoutBtn.addEventListener("click", () => {
