@@ -18,48 +18,47 @@
       </div>
 
       <div class="form_area">
-        <form action="../contents/index.html">
-          <div class="form_area-input">
-            <div class="userNameOrEmail">
-              <label for="nameOrEmail"
-                >ユーザー名 <br />
-                メールアドレス</label
-              >
-              <div class="columnBox">
-                <input
-                  type="text"
-                  name="userNameOrEmail"
-                  id="userNameOrEmail"
-                  required
-                />
-              </div>
-            </div>
-            <div class="userPassword">
-              <label for="password">パスワード</label>
-              <div class="columnBox">
-                <input type="text" name="password" id="password" required />
-                <p class="invalidError password">
-                  ※8文字以上の大小の英数字を交ぜたものにしてください。
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="memberRegister">
-            <a href="../register/index.html" class="memberRegisterText">
-              会員登録はこちら
-            </a>
-          </div>
-          <div class="forgotPassword">
-            <a href="../forgot-password/index.html" class="forgotPasswordText"
-              >パスワードを忘れた方</a
+        <div class="form_area-input">
+          <div class="userNameOrEmail">
+            <label for="nameOrEmail"
+              >ユーザー名 <br />
+              メールアドレス</label
             >
+            <div class="columnBox">
+              <input
+                type="text"
+                name="userNameOrEmail"
+                id="userNameOrEmail"
+                required
+              />
+              <p class="invalidError nameOrEmail">※入力してください。</p>
+            </div>
           </div>
-          <div class="submit">
-            <button class="submitBtn" id="js-submitBtn" type="submit" disabled>
-              送信
-            </button>
+          <div class="userPassword">
+            <label for="password">パスワード</label>
+            <div class="columnBox">
+              <input type="text" name="password" id="password" required />
+              <p class="invalidError password">
+                ※8文字以上の大小の英数字を交ぜたものにしてください。
+              </p>
+            </div>
           </div>
-        </form>
+        </div>
+        <div class="memberRegister">
+          <a href="../register/index.html" class="memberRegisterText">
+            会員登録はこちら
+          </a>
+        </div>
+        <div class="forgotPassword">
+          <a href="../forgot-password/index.html" class="forgotPasswordText"
+            >パスワードを忘れた方</a
+          >
+        </div>
+        <div class="submit">
+          <button class="submitBtn" id="js-submitBtn" type="submit" disabled>
+            送信
+          </button>
+        </div>
       </div>
     </div>
   </body>
