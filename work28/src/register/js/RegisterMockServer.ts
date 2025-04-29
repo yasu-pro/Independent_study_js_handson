@@ -1,7 +1,7 @@
 export const userRegister = (user: { mail: string; password: string }) => {
   if (isUserRegisterNeededServer(user.mail)) {
-    localStorage.setItem("registerUserMail", user.mail);
-    localStorage.setItem("registerUserPassword", user.password);
+    const registerUserJson = JSON.stringify(user);
+    localStorage.setItem("registerUser", registerUserJson);
 
     return true;
   }
@@ -9,9 +9,15 @@ export const userRegister = (user: { mail: string; password: string }) => {
 };
 
 const isUserRegisterNeededServer = (userMail: string) => {
-  const registerUserInfoServer = localStorage.getItem("registerUserMail");
+  const registerUserInfoServer = localStorage.getItem("registerUser");
 
-  if (registerUserInfoServer === userMail) {
+  if (!registerUserInfoServer) {
+    return true;
+  }
+
+  const registerUserJson = JSON.parse(registerUserInfoServer);
+
+  if (registerUserJson.mail === userMail) {
     alert("すでに登録されているメールアドレスです。");
     return false;
   }
