@@ -1,7 +1,4 @@
-const registerTextElem = document.querySelector('.registerText');
-const closeBtn = document.querySelector('.closeBtn');
-const modalContentsElem = document.querySelector('.modal_contents');
-const registerCheckBox = document.getElementById('register');
+import { userRegister } from "./RegisterMockServer";
 
 const registerTextElem = document.querySelector(".registerText");
 const closeBtn = document.querySelector(".closeBtn");
@@ -97,3 +94,8 @@ const toggleSubmit = () => {
   registerSubmitBtn.disabled = !allValid;
 };
 
+registerSubmitBtn.addEventListener("click", () => {
+  if (!userRegister(inputValueState)) return;
+
+  window.location.href = "../register-done/index.html";
+});
