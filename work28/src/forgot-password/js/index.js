@@ -1,3 +1,5 @@
+import { handleForgotPassword } from "./passwordReset";
+
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
 const validState = {
@@ -33,3 +35,9 @@ const toggleSubmit = () => {
 
   registerSubmitBtn.disabled = !allValid;
 };
+
+registerSubmitBtn.addEventListener("click", () => {
+  const forgotPasswordForUrl = handleForgotPassword();
+
+  window.location.href = forgotPasswordForUrl;
+});
