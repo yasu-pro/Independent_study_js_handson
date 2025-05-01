@@ -6,7 +6,7 @@ const storePasswordResetToken = () => {
 
 const buildPasswordResetUrl = () => {
   const token = passwordResetToken;
-  return `../register-done/password/index.html?token=${token}`;
+  return `../register/password/index.html?token=${token}`;
 };
 
 export const handleForgotPassword = () => {
