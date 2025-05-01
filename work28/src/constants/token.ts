@@ -1,1 +1,1 @@
-export const forgotPasswordToken = "482r22fafah";
+export const passwordResetToken = "482r22fafah";
