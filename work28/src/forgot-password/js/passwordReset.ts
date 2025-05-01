@@ -1,16 +1,16 @@
-import { forgotPasswordToken } from "../../constants/token";
+import { passwordResetToken } from "../../constants/token";
 
-const setLocalStorageToken = () => {
-  localStorage.setItem("token", forgotPasswordToken);
+const storePasswordResetToken = () => {
+  localStorage.setItem("token", passwordResetToken);
 };
 
-const generatePasswordResetUrl = () => {
-  const token = forgotPasswordToken;
+const buildPasswordResetUrl = () => {
+  const token = passwordResetToken;
   return `../register-done/password/index.html?token=${token}`;
 };
 
-export const forgotPassword = () => {
-  setLocalStorageToken();
+export const handleForgotPassword = () => {
+  storePasswordResetToken();
 
-  return generatePasswordResetUrl();
+  return buildPasswordResetUrl();
 };
