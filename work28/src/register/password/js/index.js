@@ -1,3 +1,6 @@
+import { reissuePassword } from "./ReissuePassword";
+import { reissueToken } from "./ReissuePassword";
+
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
 const validState = {
@@ -88,3 +91,38 @@ const toggleSubmit = () => {
   registerSubmitBtn.disabled = !allValid;
 };
 
+registerSubmitBtn.addEventListener("click", async () => {
+  let newToken = "";
+  const newPassword = inputValueState.password;
+  // パスワードを送信して取得する
+  const reissuePasswordResult = await reissuePassword(newPassword);
+
+  // 取得したらローカルストレージに保存
+  if (reissuePasswordResult.ok) {
+    const currentUserInfoJson = localStorage.getItem("registerUser");
+    const currentUserInfo = JSON.parse(currentUserInfoJson);
+    console.log("currentUserInfo", currentUserInfo);
+
+    const newUserInfo = {
+      ...currentUserInfo,
+      password: reissuePasswordResult.password,
+    };
+    const newUserInfoJson = JSON.stringify(newUserInfo);
+    localStorage.setItem("registerUser", newUserInfoJson);
+  } else {
+    alert(reissuePasswordResult.message);
+  }
+
+  // 新たなトークンを発行
+  const reissueTokenResult = await reissueToken();
+  // 新しいトークンを発行する
+  if (reissueTokenResult.ok) {
+    localStorage.removeItem("token");
+    localStorage.setItem("token", reissueTokenResult.token);
+    newToken = reissueTokenResult.token;
+  } else {
+    alert(reissueTokenResults.message);
+  }
+
+  return (window.location.href = `../password-done.html?token=${newToken}`);
+});
