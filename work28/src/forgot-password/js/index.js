@@ -36,8 +36,25 @@ const toggleSubmit = () => {
   registerSubmitBtn.disabled = !allValid;
 };
 
-registerSubmitBtn.addEventListener("click", () => {
-  const forgotPasswordForUrl = handleForgotPassword();
+const isCheckedRegisterMail = () => {
+  const registerUserInfoServer = localStorage.getItem("registerUser");
 
-  window.location.href = forgotPasswordForUrl;
+  const registerUserJson = JSON.parse(registerUserInfoServer);
+
+  if (registerUserJson.mail === inputValueState.mail) {
+    return true;
+  }
+
+  return false;
+};
+
+registerSubmitBtn.addEventListener("click", () => {
+  if (isCheckedRegisterMail()) {
+    const forgotPasswordForUrl = handleForgotPassword();
+
+    window.location.href = forgotPasswordForUrl;
+    return;
+  }
+
+  return alert("一致するアカウントが見つかりませんでした");
 });
