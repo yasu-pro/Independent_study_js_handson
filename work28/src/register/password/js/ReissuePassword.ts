@@ -1,7 +1,7 @@
 const newToken = "tagaerega";
 
 // トークンを発行する
-export const reissueToken = async (): Promise<{
+export const requestNewToken = async (): Promise<{
   ok: boolean;
   code: number;
   token?: string;
@@ -23,8 +23,8 @@ export const reissueToken = async (): Promise<{
 };
 
 // パスワードを再発行する
-export const reissuePassword = async (
-  reissuePassword: string
+export const requestNewPassword = async (
+  newPassword: string
 ): Promise<{
   ok: boolean;
   code: number;
@@ -35,7 +35,7 @@ export const reissuePassword = async (
     return {
       ok: true,
       code: 200,
-      password: reissuePassword,
+      password: newPassword,
     };
   } catch (error) {
     return {
