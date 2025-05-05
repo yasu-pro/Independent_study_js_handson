@@ -1,5 +1,5 @@
-import { reissuePassword } from "./ReissuePassword";
-import { reissueToken } from "./ReissuePassword";
+import { requestNewPassword } from "./ReissuePassword";
+import { requestNewToken } from "./ReissuePassword";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
@@ -91,38 +91,46 @@ const toggleSubmit = () => {
   registerSubmitBtn.disabled = !allValid;
 };
 
-registerSubmitBtn.addEventListener("click", async () => {
-  let newToken = "";
-  const newPassword = inputValueState.password;
-  // パスワードを送信して取得する
-  const reissuePasswordResult = await reissuePassword(newPassword);
-
-  // 取得したらローカルストレージに保存
-  if (reissuePasswordResult.ok) {
+const updateUserPasswordInStorage = (newPassword) => {
+  try {
     const currentUserInfoJson = localStorage.getItem("registerUser");
     const currentUserInfo = JSON.parse(currentUserInfoJson);
-    console.log("currentUserInfo", currentUserInfo);
 
     const newUserInfo = {
       ...currentUserInfo,
-      password: reissuePasswordResult.password,
+      password: newPassword,
     };
+
     const newUserInfoJson = JSON.stringify(newUserInfo);
     localStorage.setItem("registerUser", newUserInfoJson);
-  } else {
-    alert(reissuePasswordResult.message);
+  } catch (error) {
+    alert("パスワードの保存に失敗しました。");
   }
+};
 
-  // 新たなトークンを発行
-  const reissueTokenResult = await reissueToken();
-  // 新しいトークンを発行する
-  if (reissueTokenResult.ok) {
-    localStorage.removeItem("token");
-    localStorage.setItem("token", reissueTokenResult.token);
-    newToken = reissueTokenResult.token;
-  } else {
-    alert(reissueTokenResults.message);
-  }
+const redirectToPasswordDonePage = (newToken) => {
+  localStorage.removeItem("token");
+  localStorage.setItem("token", newToken.token);
 
+  newToken = newToken.token;
   return (window.location.href = `../password-done.html?token=${newToken}`);
+};
+
+registerSubmitBtn.addEventListener("click", async () => {
+  const newPassword = inputValueState.password;
+
+  const reissuePasswordResult = await requestNewPassword(newPassword);
+
+  if (!reissuePasswordResult.ok) {
+    alert(reissuePasswordResult.message);
+    return;
+  }
+  updateUserPasswordInStorage(reissuePasswordResult.password);
+
+  const reissueTokenResult = await requestNewToken();
+  if (!reissueTokenResult.ok) {
+    alert(reissueTokenResult.message);
+    return;
+  }
+  redirectToPasswordDonePage(reissueTokenResult);
 });
