@@ -1,7 +1,7 @@
 import { passwordResetToken } from "../../constants/token";
 
 const storePasswordResetToken = () => {
-  localStorage.setItem("token", passwordResetToken);
+  localStorage.setItem("passwordResetToken", passwordResetToken);
 };
 
 const buildPasswordResetUrl = () => {

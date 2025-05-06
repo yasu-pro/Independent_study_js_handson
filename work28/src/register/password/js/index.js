@@ -20,10 +20,10 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("tokenFromUrl", tokenFromUrl);
 
   // パラメータから取得したトークンとローカルストレージにあるトークンが一致するかどうか
-  const resetPasswordToken = window.localStorage.getItem("token");
-  console.log("resetPasswordToken", resetPasswordToken);
+  const passwordResetToken = window.localStorage.getItem("passwordResetToken");
+  console.log("resetPasswordToken", passwordResetToken);
 
-  if (tokenFromUrl === resetPasswordToken) return;
+  if (tokenFromUrl === passwordResetToken) return;
 
   window.location.href = "../../notautherize/index.html";
 });
@@ -109,8 +109,8 @@ const updateUserPasswordInStorage = (newPassword) => {
 };
 
 const redirectToPasswordDonePage = (newToken) => {
-  localStorage.removeItem("token");
-  localStorage.setItem("token", newToken.token);
+  localStorage.removeItem("passwordResetToken");
+  localStorage.setItem("registerPasswordToken", newToken.token);
 
   newToken = newToken.token;
   return (window.location.href = `../password-done.html?token=${newToken}`);
