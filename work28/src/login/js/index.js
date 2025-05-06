@@ -68,7 +68,7 @@ submitBtn.addEventListener("click", async () => {
   const token = await usersHandler(inputValueState);
 
   if (token && token.ok) {
-    localStorage.setItem("token", token.token);
+    localStorage.setItem("loginToken", token.token);
     window.location.href = "../contents/index.html";
   } else {
     alert("ログインに失敗しました。");
