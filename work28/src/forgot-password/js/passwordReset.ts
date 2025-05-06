@@ -1,11 +1,11 @@
-import { passwordResetToken } from "../../constants/token";
+import { PASSWORD_RESET_TOKEN } from "../../constants/token";
 
 const storePasswordResetToken = () => {
-  localStorage.setItem("passwordResetToken", passwordResetToken);
+  localStorage.setItem("passwordResetToken", PASSWORD_RESET_TOKEN);
 };
 
 const buildPasswordResetUrl = () => {
-  const token = passwordResetToken;
+  const token = PASSWORD_RESET_TOKEN;
   return `../register/password/index.html?token=${token}`;
 };
 

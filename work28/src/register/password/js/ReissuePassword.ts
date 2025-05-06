@@ -1,4 +1,4 @@
-const newToken = "tagaerega";
+import { REGISTER_PASSWORD_TOKEN } from "../../../constants/token";
 
 // トークンを発行する
 export const requestNewToken = async (): Promise<{
@@ -11,7 +11,7 @@ export const requestNewToken = async (): Promise<{
     return {
       ok: true,
       code: 200,
-      token: newToken,
+      token: REGISTER_PASSWORD_TOKEN,
     };
   } catch (error) {
     return {
