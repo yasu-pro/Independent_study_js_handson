@@ -1,0 +1,136 @@
+import { requestNewPassword } from "./ReissuePassword";
+import { requestNewToken } from "./ReissuePassword";
+
+const registerSubmitBtn = document.getElementById("js-submitBtn");
+
+const validState = {
+  password: false,
+  confirmPassword: false,
+};
+
+const inputValueState = {
+  password: "",
+  confirmPassword: "",
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  // urlからtokenのパラメーター取得
+  const extractTokenFromUrl = new URLSearchParams(document.location.search);
+  const tokenFromUrl = extractTokenFromUrl.get("token");
+  console.log("tokenFromUrl", tokenFromUrl);
+
+  // パラメータから取得したトークンとローカルストレージにあるトークンが一致するかどうか
+  const passwordResetToken = window.localStorage.getItem("passwordResetToken");
+  console.log("resetPasswordToken", passwordResetToken);
+
+  if (tokenFromUrl === passwordResetToken) return;
+
+  window.location.href = "../../notautherize/index.html";
+});
+
+const passwordInputElem = document.querySelector('input[name="password"]');
+passwordInputElem.addEventListener("keyup", () => {
+  const passwordValue = passwordInputElem.value;
+  const invalidElem = document.querySelector(".invalidError.password");
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  if (!passwordRegex.test(passwordValue)) {
+    invalidElem.style.display = "block";
+    validState.password = false;
+  } else {
+    invalidElem.style.display = "none";
+    validState.password = true;
+    inputValueState.password = passwordValue;
+  }
+
+  toggleSubmit();
+});
+
+const confirmPasswordInputElem = document.querySelector(
+  'input[name="confirmPassword"]'
+);
+confirmPasswordInputElem.addEventListener("keyup", () => {
+  const passwordValue = inputValueState.password;
+  const confirmPasswordValue = confirmPasswordInputElem.value;
+  const invalidCharElem = document.querySelector(".invalidError.charError");
+  const invalidNotMatchElem = document.querySelector(
+    ".invalidError.notMatchError"
+  );
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  // 8文字以上代償の英数字を混ぜたものがあること
+  // passwordと確認パスワードがあっていること
+  if (
+    passwordRegex.test(confirmPasswordValue) &&
+    passwordValue === confirmPasswordValue
+  ) {
+    invalidCharElem.style.display = "none";
+    invalidNotMatchElem.style.display = "none";
+    validState.password = true;
+    validState.confirmPassword = true;
+  }
+
+  if (!passwordRegex.test(confirmPasswordValue)) {
+    invalidCharElem.style.display = "block";
+    validState.password = false;
+  }
+
+  if (passwordValue !== confirmPasswordValue) {
+    invalidNotMatchElem.style.display = "block";
+    validState.password = false;
+  }
+
+  toggleSubmit();
+});
+
+const toggleSubmit = () => {
+  const allValid = Object.values(validState).every(
+    (validValue) => validValue === true
+  );
+
+  registerSubmitBtn.disabled = !allValid;
+};
+
+const updateUserPasswordInStorage = (newPassword) => {
+  try {
+    const currentUserInfoJson = localStorage.getItem("registerUser");
+    const currentUserInfo = JSON.parse(currentUserInfoJson);
+
+    const newUserInfo = {
+      ...currentUserInfo,
+      password: newPassword,
+    };
+
+    const newUserInfoJson = JSON.stringify(newUserInfo);
+    localStorage.setItem("registerUser", newUserInfoJson);
+  } catch (error) {
+    alert("パスワードの保存に失敗しました。");
+  }
+};
+
+const redirectToPasswordDonePage = (newToken) => {
+  localStorage.removeItem("passwordResetToken");
+  localStorage.setItem("registerPasswordToken", newToken.token);
+
+  newToken = newToken.token;
+  return (window.location.href = `../password-done.html?token=${newToken}`);
+};
+
+registerSubmitBtn.addEventListener("click", async () => {
+  const newPassword = inputValueState.password;
+
+  const reissuePasswordResult = await requestNewPassword(newPassword);
+
+  if (!reissuePasswordResult.ok) {
+    alert(reissuePasswordResult.message);
+    return;
+  }
+  updateUserPasswordInStorage(reissuePasswordResult.password);
+
+  const reissueTokenResult = await requestNewToken();
+  if (!reissueTokenResult.ok) {
+    alert(reissueTokenResult.message);
+    return;
+  }
+  redirectToPasswordDonePage(reissueTokenResult);
+});
