@@ -1,4 +1,4 @@
-import { PASSWORD_RESET_TOKEN } from "../../constants/token";
+import { PASSWORD_RESET_TOKEN } from "../../constants/tokenKeys/token";
 
 const storePasswordResetToken = () => {
   localStorage.setItem("passwordResetToken", PASSWORD_RESET_TOKEN);

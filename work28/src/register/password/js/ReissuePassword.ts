@@ -1,4 +1,4 @@
-import { REGISTER_PASSWORD_TOKEN } from "../../../constants/token";
+import { REGISTER_PASSWORD_TOKEN } from "../../../constants/tokenKeys/token";
 
 // トークンを発行する
 export const requestNewToken = async (): Promise<{
