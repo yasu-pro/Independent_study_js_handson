@@ -1,8 +1,5 @@
 import { PASSWORD_RESET_TOKEN } from "../../constants/tokenKeys/token";
-
-const storePasswordResetToken = () => {
-  localStorage.setItem("passwordResetToken", PASSWORD_RESET_TOKEN);
-};
+import { setToken } from "../../feature/token-utils/tokenUtils";
 
 const buildPasswordResetUrl = () => {
   const token = PASSWORD_RESET_TOKEN;
@@ -10,7 +7,7 @@ const buildPasswordResetUrl = () => {
 };
 
 export const handleForgotPassword = () => {
-  storePasswordResetToken();
+  setToken("passwordResetToken", PASSWORD_RESET_TOKEN);
 
   return buildPasswordResetUrl();
 };

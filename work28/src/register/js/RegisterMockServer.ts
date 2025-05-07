@@ -1,7 +1,9 @@
+import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
+
 export const userRegister = (user: { mail: string; password: string }) => {
   if (isUserRegisterNeededServer(user.mail)) {
     const registerUserJson = JSON.stringify(user);
-    localStorage.setItem("registerUser", registerUserJson);
+    setToken("registerUser", registerUserJson);
 
     return true;
   }
@@ -9,7 +11,7 @@ export const userRegister = (user: { mail: string; password: string }) => {
 };
 
 const isUserRegisterNeededServer = (userMail: string) => {
-  const registerUserInfoServer = localStorage.getItem("registerUser");
+  const registerUserInfoServer = getToken("registerUser");
 
   if (!registerUserInfoServer) {
     return true;

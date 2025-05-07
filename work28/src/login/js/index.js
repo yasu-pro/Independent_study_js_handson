@@ -1,4 +1,5 @@
 import { usersHandler } from "./mockServer";
+import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
 
 const submitBtn = document.querySelector(".submitBtn");
 
@@ -13,7 +14,7 @@ const inputValueState = {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token");
+  const token = getToken("token");
   if (token) {
     window.location.href = "../contents/index.html";
   }
@@ -68,7 +69,7 @@ submitBtn.addEventListener("click", async () => {
   const token = await usersHandler(inputValueState);
 
   if (token && token.ok) {
-    localStorage.setItem("loginToken", token.token);
+    setToken("loginToken", token.token);
     window.location.href = "../contents/index.html";
   } else {
     alert("ログインに失敗しました。");
