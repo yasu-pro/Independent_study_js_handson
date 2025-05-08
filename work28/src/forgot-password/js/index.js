@@ -1,3 +1,4 @@
+import { emailRegex } from "../../utils/regex.ts";
 import { handleForgotPassword } from "./passwordReset";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
@@ -14,7 +15,6 @@ const mailInputElem = document.querySelector('input[name="mail"]');
 mailInputElem.addEventListener("keyup", () => {
   const mailValue = mailInputElem.value.trim();
   const invalidElem = document.querySelector(".invalidError.mail");
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!emailRegex.test(mailValue)) {
     invalidElem.style.display = "block";
