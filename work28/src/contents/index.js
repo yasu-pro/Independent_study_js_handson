@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 const redirectToLoginIfNoToken = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("loginToken");
   if (!token) {
     window.location.href = "../login/index.html";
     return true;
@@ -291,5 +291,5 @@ const redirectToLoginIfNoToken = () => {
 
 // ローカルストレージ削除処理
 logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("loginToken");
 });

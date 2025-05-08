@@ -1,3 +1,8 @@
+import {
+  getToken,
+  setToken,
+  removeToken,
+} from "../../../feature/token-utils/tokenUtils";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
 
@@ -17,11 +22,9 @@ window.addEventListener("DOMContentLoaded", () => {
   // urlからtokenのパラメーター取得
   const extractTokenFromUrl = new URLSearchParams(document.location.search);
   const tokenFromUrl = extractTokenFromUrl.get("token");
-  console.log("tokenFromUrl", tokenFromUrl);
 
   // パラメータから取得したトークンとローカルストレージにあるトークンが一致するかどうか
-  const passwordResetToken = window.localStorage.getItem("passwordResetToken");
-  console.log("resetPasswordToken", passwordResetToken);
+  const passwordResetToken = getToken("passwordResetToken");
 
   if (tokenFromUrl === passwordResetToken) return;
 
@@ -93,7 +96,7 @@ const toggleSubmit = () => {
 
 const updateUserPasswordInStorage = (newPassword) => {
   try {
-    const currentUserInfoJson = localStorage.getItem("registerUser");
+    const currentUserInfoJson = getToken("registerUser");
     const currentUserInfo = JSON.parse(currentUserInfoJson);
 
     const newUserInfo = {
@@ -102,15 +105,15 @@ const updateUserPasswordInStorage = (newPassword) => {
     };
 
     const newUserInfoJson = JSON.stringify(newUserInfo);
-    localStorage.setItem("registerUser", newUserInfoJson);
+    setToken("registerUser", newUserInfoJson);
   } catch (error) {
     alert("パスワードの保存に失敗しました。");
   }
 };
 
 const redirectToPasswordDonePage = (newToken) => {
-  localStorage.removeItem("passwordResetToken");
-  localStorage.setItem("registerPasswordToken", newToken.token);
+  removeToken("passwordResetToken");
+  setToken("registerPasswordToken", newToken.token);
 
   newToken = newToken.token;
   return (window.location.href = `../password-done.html?token=${newToken}`);
