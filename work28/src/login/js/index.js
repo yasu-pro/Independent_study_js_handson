@@ -1,5 +1,6 @@
 import { usersHandler } from "./mockServer";
 import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
+import { passwordRegex } from "../../utils/regex";
 
 const submitBtn = document.querySelector(".submitBtn");
 
@@ -43,7 +44,6 @@ const passwordInputElem = document.querySelector('input[name="password"]');
 passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";

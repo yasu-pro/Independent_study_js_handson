@@ -1,3 +1,4 @@
+import { emailRegex, passwordRegex } from "../../utils/regex";
 import { userRegister } from "./RegisterMockServer";
 
 const registerTextElem = document.querySelector(".registerText");
@@ -54,7 +55,6 @@ const mailInputElem = document.querySelector('input[name="mail"]');
 mailInputElem.addEventListener("keyup", () => {
   const mailValue = mailInputElem.value.trim();
   const invalidElem = document.querySelector(".invalidError.mail");
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!emailRegex.test(mailValue)) {
     invalidElem.style.display = "block";
@@ -72,7 +72,6 @@ const passwordInputElem = document.querySelector('input[name="password"]');
 passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";

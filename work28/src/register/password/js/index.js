@@ -3,6 +3,7 @@ import {
   setToken,
   removeToken,
 } from "../../../feature/token-utils/tokenUtils";
+import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
 
@@ -35,7 +36,6 @@ const passwordInputElem = document.querySelector('input[name="password"]');
 passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";
@@ -59,7 +59,6 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
   const invalidNotMatchElem = document.querySelector(
     ".invalidError.notMatchError"
   );
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   // 8文字以上代償の英数字を混ぜたものがあること
   // passwordと確認パスワードがあっていること
