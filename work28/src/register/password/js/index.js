@@ -7,6 +7,7 @@ import {
   passwordReissueInputValueState,
   passwordReissueValidState,
 } from "../../../states/passwordReissueFormState";
+import { toggleSubmitBtn } from "../../../utils/form-utils";
 import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
@@ -40,7 +41,7 @@ passwordInputElem.addEventListener("keyup", () => {
     passwordReissueInputValueState.password = passwordValue;
   }
 
-  toggleSubmit();
+  toggleSubmitBtn();
 });
 
 const confirmPasswordInputElem = document.querySelector(
@@ -76,16 +77,8 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
     passwordReissueValidState.password = false;
   }
 
-  toggleSubmit();
+  toggleSubmitBtn();
 });
-
-const toggleSubmit = () => {
-  const allValid = Object.values(passwordReissueValidState).every(
-    (validValue) => validValue === true
-  );
-
-  registerSubmitBtn.disabled = !allValid;
-};
 
 const updateUserPasswordInStorage = (newPassword) => {
   try {

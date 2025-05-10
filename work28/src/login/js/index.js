@@ -5,6 +5,7 @@ import {
   loginInputValueState,
   loginValidState,
 } from "../../states/loginFormState";
+import { toggleSubmitBtn } from "../../utils/form-utils";
 
 const submitBtn = document.querySelector(".submitBtn");
 
@@ -31,7 +32,7 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
     loginInputValueState.id = userNameOrEmailValue;
   }
 
-  toggleSubmit();
+  toggleSubmitBtn();
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
@@ -48,16 +49,8 @@ passwordInputElem.addEventListener("keyup", () => {
     loginInputValueState.password = passwordValue;
   }
 
-  toggleSubmit();
+  toggleSubmitBtn();
 });
-
-const toggleSubmit = () => {
-  const allValid = Object.values(loginValidState).every(
-    (validValue) => validValue === true
-  );
-
-  submitBtn.disabled = !allValid;
-};
 
 submitBtn.addEventListener("click", async () => {
   const token = await usersHandler(loginInputValueState);
