@@ -3,21 +3,15 @@ import {
   setToken,
   removeToken,
 } from "../../../feature/token-utils/tokenUtils";
+import {
+  passwordReissueInputValueState,
+  passwordReissueValidState,
+} from "../../../states/passwordReissueFormState";
 import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
-
-const validState = {
-  password: false,
-  confirmPassword: false,
-};
-
-const inputValueState = {
-  password: "",
-  confirmPassword: "",
-};
 
 window.addEventListener("DOMContentLoaded", () => {
   // urlからtokenのパラメーター取得
@@ -39,11 +33,11 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";
-    validState.password = false;
+    passwordReissueValidState.password = false;
   } else {
     invalidElem.style.display = "none";
-    validState.password = true;
-    inputValueState.password = passwordValue;
+    passwordReissueValidState.password = true;
+    passwordReissueInputValueState.password = passwordValue;
   }
 
   toggleSubmit();
@@ -53,7 +47,7 @@ const confirmPasswordInputElem = document.querySelector(
   'input[name="confirmPassword"]'
 );
 confirmPasswordInputElem.addEventListener("keyup", () => {
-  const passwordValue = inputValueState.password;
+  const passwordValue = passwordReissueInputValueState.password;
   const confirmPasswordValue = confirmPasswordInputElem.value;
   const invalidCharElem = document.querySelector(".invalidError.charError");
   const invalidNotMatchElem = document.querySelector(
@@ -68,25 +62,25 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
   ) {
     invalidCharElem.style.display = "none";
     invalidNotMatchElem.style.display = "none";
-    validState.password = true;
-    validState.confirmPassword = true;
+    passwordReissueValidState.password = true;
+    passwordReissueValidState.confirmPassword = true;
   }
 
   if (!passwordRegex.test(confirmPasswordValue)) {
     invalidCharElem.style.display = "block";
-    validState.password = false;
+    passwordReissueValidState.password = false;
   }
 
   if (passwordValue !== confirmPasswordValue) {
     invalidNotMatchElem.style.display = "block";
-    validState.password = false;
+    passwordReissueValidState.password = false;
   }
 
   toggleSubmit();
 });
 
 const toggleSubmit = () => {
-  const allValid = Object.values(validState).every(
+  const allValid = Object.values(passwordReissueValidState).every(
     (validValue) => validValue === true
   );
 
@@ -119,7 +113,7 @@ const redirectToPasswordDonePage = (newToken) => {
 };
 
 registerSubmitBtn.addEventListener("click", async () => {
-  const newPassword = inputValueState.password;
+  const newPassword = passwordReissueInputValueState.password;
 
   const reissuePasswordResult = await requestNewPassword(newPassword);
 

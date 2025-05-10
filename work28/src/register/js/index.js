@@ -1,3 +1,7 @@
+import {
+  registerValidState,
+  registerInputValueState,
+} from "../../states/registerFromState";
 import { emailRegex, passwordRegex } from "../../utils/regex";
 import { userRegister } from "./RegisterMockServer";
 
@@ -6,17 +10,6 @@ const closeBtn = document.querySelector(".closeBtn");
 const modalContentsElem = document.querySelector(".modal_contents");
 const registerCheckBox = document.getElementById("register");
 const registerSubmitBtn = document.getElementById("js-submitBtn");
-
-const validState = {
-  mail: false,
-  password: false,
-  register: false,
-};
-
-const inputValueState = {
-  mail: "",
-  password: "",
-};
 
 registerTextElem.addEventListener("click", () => {
   const modalElem = document.getElementById("js-modal");
@@ -44,7 +37,7 @@ modalContentsElem.addEventListener("scroll", () => {
     if (lastElemPos < modalHeight) {
       registerCheckBox.checked = true;
       registerCheckBox.disabled = false;
-      validState.register = true;
+      registerValidState.register = true;
 
       toggleSubmit();
     }
@@ -58,11 +51,11 @@ mailInputElem.addEventListener("keyup", () => {
 
   if (!emailRegex.test(mailValue)) {
     invalidElem.style.display = "block";
-    validState.mail = false;
+    registerValidState.mail = false;
   } else {
     invalidElem.style.display = "none";
-    validState.mail = true;
-    inputValueState.mail = mailValue;
+    registerValidState.mail = true;
+    registerInputValueState.mail = mailValue;
   }
 
   toggleSubmit();
@@ -75,18 +68,18 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";
-    validState.password = false;
+    registerValidState.password = false;
   } else {
     invalidElem.style.display = "none";
-    validState.password = true;
-    inputValueState.password = passwordValue;
+    registerValidState.password = true;
+    registerInputValueState.password = passwordValue;
   }
 
   toggleSubmit();
 });
 
 const toggleSubmit = () => {
-  const allValid = Object.values(validState).every(
+  const allValid = Object.values(registerValidState).every(
     (validValue) => validValue === true
   );
 
@@ -94,7 +87,7 @@ const toggleSubmit = () => {
 };
 
 registerSubmitBtn.addEventListener("click", () => {
-  if (!userRegister(inputValueState)) return;
+  if (!userRegister(registerInputValueState)) return;
 
   window.location.href = "../register-done/index.html";
 });
