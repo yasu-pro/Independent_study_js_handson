@@ -1,18 +1,12 @@
 import { usersHandler } from "./mockServer";
 import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
 import { passwordRegex } from "../../utils/regex";
+import {
+  loginInputValueState,
+  loginValidState,
+} from "../../states/loginFormState";
 
 const submitBtn = document.querySelector(".submitBtn");
-
-const validState = {
-  nameOrMail: false,
-  password: false,
-};
-
-const inputValueState = {
-  id: "", // 名前かパスワードが入る
-  password: "",
-};
 
 window.addEventListener("DOMContentLoaded", () => {
   const token = getToken("token");
@@ -20,6 +14,8 @@ window.addEventListener("DOMContentLoaded", () => {
     window.location.href = "../contents/index.html";
   }
 });
+
+const validateNameOrEmail = (value, invalidElem) => {};
 
 const userNameOrEmailInputElem = document.querySelector(
   'input[name="userNameOrEmail"]'
@@ -30,11 +26,11 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
 
   if (userNameOrEmailInputElem.value.length === 0) {
     invalidElem.style.display = "block";
-    validState.nameOrMail = false;
+    loginValidState.nameOrMail = false;
   } else {
     invalidElem.style.display = "none";
-    validState.nameOrMail = true;
-    inputValueState.id = userNameOrEmailValue;
+    loginValidState.nameOrMail = true;
+    loginInputValueState.id = userNameOrEmailValue;
   }
 
   toggleSubmit();
@@ -47,18 +43,18 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";
-    validState.password = false;
+    loginValidState.password = false;
   } else {
     invalidElem.style.display = "none";
-    validState.password = true;
-    inputValueState.password = passwordValue;
+    loginValidState.password = true;
+    loginInputValueState.password = passwordValue;
   }
 
   toggleSubmit();
 });
 
 const toggleSubmit = () => {
-  const allValid = Object.values(validState).every(
+  const allValid = Object.values(loginValidState).every(
     (validValue) => validValue === true
   );
 
@@ -66,7 +62,7 @@ const toggleSubmit = () => {
 };
 
 submitBtn.addEventListener("click", async () => {
-  const token = await usersHandler(inputValueState);
+  const token = await usersHandler(loginInputValueState);
 
   if (token && token.ok) {
     setToken("loginToken", token.token);

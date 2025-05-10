@@ -1,15 +1,11 @@
+import {
+  forgotPasswordValidState,
+  forgotPasswordInputValueState,
+} from "../../states/forgotPasswordFormState.ts";
 import { emailRegex } from "../../utils/regex.ts";
 import { handleForgotPassword } from "./passwordReset";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
-
-const validState = {
-  mail: false,
-};
-
-const inputValueState = {
-  mail: "",
-};
 
 const mailInputElem = document.querySelector('input[name="mail"]');
 mailInputElem.addEventListener("keyup", () => {
@@ -18,18 +14,18 @@ mailInputElem.addEventListener("keyup", () => {
 
   if (!emailRegex.test(mailValue)) {
     invalidElem.style.display = "block";
-    validState.mail = false;
+    forgotPasswordValidState.mail = false;
   } else {
     invalidElem.style.display = "none";
-    validState.mail = true;
-    inputValueState.mail = mailValue;
+    forgotPasswordValidState.mail = true;
+    forgotPasswordInputValueState.mail = mailValue;
   }
 
   toggleSubmit();
 });
 
 const toggleSubmit = () => {
-  const allValid = Object.values(validState).every(
+  const allValid = Object.values(forgotPasswordValidState).every(
     (validValue) => validValue === true
   );
 
@@ -43,7 +39,7 @@ const isRegisteredEmail = () => {
 
   const registerUserJson = JSON.parse(registerUserInfoServer);
 
-  if (registerUserJson.mail === inputValueState.mail) return true;
+  if (registerUserJson.mail === forgotPasswordInputValueState.mail) return true;
 
   return false;
 };
