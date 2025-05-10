@@ -15,8 +15,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-const validateNameOrEmail = (value, invalidElem) => {};
-
 const userNameOrEmailInputElem = document.querySelector(
   'input[name="userNameOrEmail"]'
 );
