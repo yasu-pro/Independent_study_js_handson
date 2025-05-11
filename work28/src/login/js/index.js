@@ -6,6 +6,7 @@ import {
   loginValidState,
 } from "../../states/loginFormState";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
+import { updateValidState } from "../../utils/form/validationUtils";
 
 const submitBtn = document.querySelector(".submitBtn");
 
@@ -25,10 +26,10 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
 
   if (userNameOrEmailInputElem.value.length === 0) {
     invalidElem.style.display = "block";
-    loginValidState.nameOrMail = false;
+    updateValidState(loginValidState, "nameOrMail", false);
   } else {
     invalidElem.style.display = "none";
-    loginValidState.nameOrMail = true;
+    updateValidState(loginValidState, "nameOrMail", true);
     loginInputValueState.id = userNameOrEmailValue;
   }
 
@@ -42,10 +43,10 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";
-    loginValidState.password = false;
+    updateValidState(loginValidState, "password", false);
   } else {
     invalidElem.style.display = "none";
-    loginValidState.password = true;
+    updateValidState(loginValidState, "password", true);
     loginInputValueState.password = passwordValue;
   }
 

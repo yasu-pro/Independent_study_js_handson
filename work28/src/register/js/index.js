@@ -38,7 +38,7 @@ modalContentsElem.addEventListener("scroll", () => {
     if (lastElemPos < modalHeight) {
       registerCheckBox.checked = true;
       registerCheckBox.disabled = false;
-      registerValidState.register = true;
+      updateValidState(registerValidState, "register", true);
 
       toggleSubmitBtn(registerValidState, registerSubmitBtn);
     }
@@ -52,10 +52,10 @@ mailInputElem.addEventListener("keyup", () => {
 
   if (!emailRegex.test(mailValue)) {
     invalidElem.style.display = "block";
-    registerValidState.mail = false;
+    updateValidState(registerValidState, "mail", false);
   } else {
     invalidElem.style.display = "none";
-    registerValidState.mail = true;
+    updateValidState(registerValidState, "mail", true);
     registerInputValueState.mail = mailValue;
   }
 
@@ -69,10 +69,10 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";
-    registerValidState.password = false;
+    updateValidState(registerValidState, "mail", false);
   } else {
     invalidElem.style.display = "none";
-    registerValidState.password = true;
+    updateValidState(registerValidState, "mail", true);
     registerInputValueState.password = passwordValue;
   }
 

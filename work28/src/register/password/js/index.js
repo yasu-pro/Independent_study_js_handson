@@ -8,6 +8,7 @@ import {
   passwordReissueValidState,
 } from "../../../states/passwordReissueFormState";
 import { toggleSubmitBtn } from "../../../utils/form/formUtils";
+import { updateValidState } from "../../../utils/form/validationUtils";
 import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
@@ -34,10 +35,10 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     invalidElem.style.display = "block";
-    passwordReissueValidState.password = false;
+    updateValidState(loginValidState, "passwordReissueValidState", false);
   } else {
     invalidElem.style.display = "none";
-    passwordReissueValidState.password = true;
+    updateValidState(loginValidState, "passwordReissueValidState", true);
     passwordReissueInputValueState.password = passwordValue;
   }
 
@@ -63,18 +64,18 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
   ) {
     invalidCharElem.style.display = "none";
     invalidNotMatchElem.style.display = "none";
-    passwordReissueValidState.password = true;
-    passwordReissueValidState.confirmPassword = true;
+    updateValidState(passwordReissueValidState, "password", true);
+    updateValidState(passwordReissueValidState, "confirmPassword", true);
   }
 
   if (!passwordRegex.test(confirmPasswordValue)) {
     invalidCharElem.style.display = "block";
-    passwordReissueValidState.password = false;
+    updateValidState(passwordReissueValidState, "password", false);
   }
 
   if (passwordValue !== confirmPasswordValue) {
     invalidNotMatchElem.style.display = "block";
-    passwordReissueValidState.password = false;
+    updateValidState(passwordReissueValidState, "password", false);
   }
 
   toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
