@@ -2,6 +2,7 @@ import {
   registerValidState,
   registerInputValueState,
 } from "../../states/registerFromState";
+import { toggleSubmitBtn } from "../../utils/form-utils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
 import { userRegister } from "./RegisterMockServer";
 
@@ -39,7 +40,7 @@ modalContentsElem.addEventListener("scroll", () => {
       registerCheckBox.disabled = false;
       registerValidState.register = true;
 
-      toggleSubmit();
+      toggleSubmitBtn();
     }
   }
 });
@@ -58,7 +59,7 @@ mailInputElem.addEventListener("keyup", () => {
     registerInputValueState.mail = mailValue;
   }
 
-  toggleSubmit();
+  toggleSubmitBtn();
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
@@ -75,16 +76,8 @@ passwordInputElem.addEventListener("keyup", () => {
     registerInputValueState.password = passwordValue;
   }
 
-  toggleSubmit();
+  toggleSubmitBtn();
 });
-
-const toggleSubmit = () => {
-  const allValid = Object.values(registerValidState).every(
-    (validValue) => validValue === true
-  );
-
-  registerSubmitBtn.disabled = !allValid;
-};
 
 registerSubmitBtn.addEventListener("click", () => {
   if (!userRegister(registerInputValueState)) return;
