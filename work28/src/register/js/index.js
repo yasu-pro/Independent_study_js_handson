@@ -40,7 +40,7 @@ modalContentsElem.addEventListener("scroll", () => {
       registerCheckBox.disabled = false;
       registerValidState.register = true;
 
-      toggleSubmitBtn();
+      toggleSubmitBtn(registerValidState, registerSubmitBtn);
     }
   }
 });
@@ -59,7 +59,7 @@ mailInputElem.addEventListener("keyup", () => {
     registerInputValueState.mail = mailValue;
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(registerValidState, registerSubmitBtn);
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
@@ -76,7 +76,7 @@ passwordInputElem.addEventListener("keyup", () => {
     registerInputValueState.password = passwordValue;
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(registerValidState, registerSubmitBtn);
 });
 
 registerSubmitBtn.addEventListener("click", () => {

@@ -32,7 +32,7 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
     loginInputValueState.id = userNameOrEmailValue;
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(loginValidState, submitBtn);
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
@@ -49,7 +49,7 @@ passwordInputElem.addEventListener("keyup", () => {
     loginInputValueState.password = passwordValue;
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(loginValidState, submitBtn);
 });
 
 submitBtn.addEventListener("click", async () => {

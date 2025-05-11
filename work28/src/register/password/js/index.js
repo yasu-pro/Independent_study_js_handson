@@ -41,7 +41,7 @@ passwordInputElem.addEventListener("keyup", () => {
     passwordReissueInputValueState.password = passwordValue;
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
 });
 
 const confirmPasswordInputElem = document.querySelector(
@@ -77,7 +77,7 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
     passwordReissueValidState.password = false;
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
 });
 
 const updateUserPasswordInStorage = (newPassword) => {

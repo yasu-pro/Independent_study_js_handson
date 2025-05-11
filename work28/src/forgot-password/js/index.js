@@ -22,7 +22,7 @@ mailInputElem.addEventListener("keyup", () => {
     forgotPasswordInputValueState.mail = mailValue;
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(forgotPasswordValidState, registerSubmitBtn);
 });
 
 const isRegisteredEmail = () => {
