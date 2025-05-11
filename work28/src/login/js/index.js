@@ -5,7 +5,7 @@ import {
   loginInputValueState,
   loginValidState,
 } from "../../states/loginFormState";
-import { toggleSubmitBtn } from "../../utils/form-utils";
+import { toggleSubmitBtn } from "../../utils/form/formUtils";
 
 const submitBtn = document.querySelector(".submitBtn");
 

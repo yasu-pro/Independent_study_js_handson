@@ -2,7 +2,7 @@ import {
   registerValidState,
   registerInputValueState,
 } from "../../states/registerFromState";
-import { toggleSubmitBtn } from "../../utils/form-utils";
+import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
 import { userRegister } from "./RegisterMockServer";
 

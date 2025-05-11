@@ -2,7 +2,7 @@ import {
   forgotPasswordValidState,
   forgotPasswordInputValueState,
 } from "../../states/forgotPasswordFormState.ts";
-import { toggleSubmitBtn } from "../../utils/form-utils.ts";
+import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { emailRegex } from "../../utils/regex.ts";
 import { handleForgotPassword } from "./passwordReset";
 

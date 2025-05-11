@@ -7,7 +7,7 @@ import {
   passwordReissueInputValueState,
   passwordReissueValidState,
 } from "../../../states/passwordReissueFormState";
-import { toggleSubmitBtn } from "../../../utils/form-utils";
+import { toggleSubmitBtn } from "../../../utils/form/formUtils";
 import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
