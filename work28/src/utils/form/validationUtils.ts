@@ -13,3 +13,7 @@ export const updateInputValue = (
 ) => {
   state[key] = value;
 };
+
+export const toggleErrorDisplay = (elem: HTMLElement, show: boolean) => {
+  elem.style.display = show ? "block" : "none";
+};

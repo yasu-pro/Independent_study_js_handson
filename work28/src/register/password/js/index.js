@@ -37,10 +37,10 @@ passwordInputElem.addEventListener("keyup", () => {
   const invalidElem = document.querySelector(".invalidError.password");
 
   if (!passwordRegex.test(passwordValue)) {
-    invalidElem.style.display = "block";
+    toggleErrorDisplay(invalidElem, true);
     updateValidState(loginValidState, "passwordReissueValidState", false);
   } else {
-    invalidElem.style.display = "none";
+    toggleErrorDisplay(invalidElem, false);
     updateValidState(loginValidState, "passwordReissueValidState", true);
     updateInputValue(
       loginValidState,
