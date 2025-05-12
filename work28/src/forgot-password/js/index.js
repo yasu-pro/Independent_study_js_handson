@@ -16,10 +16,10 @@ mailInputElem.addEventListener("keyup", () => {
 
   if (!emailRegex.test(mailValue)) {
     invalidElem.style.display = "block";
-    forgotPasswordValidState.mail = false;
+    updateValidState(forgotPasswordValidState, "mail", false);
   } else {
     invalidElem.style.display = "none";
-    forgotPasswordValidState.mail = true;
+    updateValidState(forgotPasswordValidState, "mail", true);
     updateInputValue(forgotPasswordInputValueState, "mail", mailValue);
   }
 
