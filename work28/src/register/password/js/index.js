@@ -8,7 +8,10 @@ import {
   passwordReissueValidState,
 } from "../../../states/passwordReissueFormState";
 import { toggleSubmitBtn } from "../../../utils/form/formUtils";
-import { updateValidState } from "../../../utils/form/validationUtils";
+import {
+  updateInputValue,
+  updateValidState,
+} from "../../../utils/form/validationUtils";
 import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
@@ -39,7 +42,11 @@ passwordInputElem.addEventListener("keyup", () => {
   } else {
     invalidElem.style.display = "none";
     updateValidState(loginValidState, "passwordReissueValidState", true);
-    passwordReissueInputValueState.password = passwordValue;
+    updateInputValue(
+      loginValidState,
+      "passwordReissueInputValueState",
+      passwordValue
+    );
   }
 
   toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);

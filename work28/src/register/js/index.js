@@ -3,6 +3,7 @@ import {
   registerInputValueState,
 } from "../../states/registerFromState";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
+import { updateInputValue } from "../../utils/form/validationUtils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
 import { userRegister } from "./RegisterMockServer";
 
@@ -56,7 +57,7 @@ mailInputElem.addEventListener("keyup", () => {
   } else {
     invalidElem.style.display = "none";
     updateValidState(registerValidState, "mail", true);
-    registerInputValueState.mail = mailValue;
+    updateInputValue(registerInputValueState, "mail", mailValue);
   }
 
   toggleSubmitBtn(registerValidState, registerSubmitBtn);
@@ -73,7 +74,7 @@ passwordInputElem.addEventListener("keyup", () => {
   } else {
     invalidElem.style.display = "none";
     updateValidState(registerValidState, "mail", true);
-    registerInputValueState.password = passwordValue;
+    updateInputValue(registerInputValueState, "password", passwordValue);
   }
 
   toggleSubmitBtn(registerValidState, registerSubmitBtn);

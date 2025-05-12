@@ -6,7 +6,10 @@ import {
   loginValidState,
 } from "../../states/loginFormState";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
-import { updateValidState } from "../../utils/form/validationUtils";
+import {
+  updateInputValue,
+  updateValidState,
+} from "../../utils/form/validationUtils";
 
 const submitBtn = document.querySelector(".submitBtn");
 
@@ -30,7 +33,7 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
   } else {
     invalidElem.style.display = "none";
     updateValidState(loginValidState, "nameOrMail", true);
-    loginInputValueState.id = userNameOrEmailValue;
+    updateInputValue(loginInputValueState, "id", userNameOrEmailValue);
   }
 
   toggleSubmitBtn(loginValidState, submitBtn);
@@ -47,7 +50,7 @@ passwordInputElem.addEventListener("keyup", () => {
   } else {
     invalidElem.style.display = "none";
     updateValidState(loginValidState, "password", true);
-    loginInputValueState.password = passwordValue;
+    updateInputValue(loginInputValueState, "password", passwordValue);
   }
 
   toggleSubmitBtn(loginValidState, submitBtn);
