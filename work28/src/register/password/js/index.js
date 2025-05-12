@@ -9,6 +9,7 @@ import {
 } from "../../../states/passwordReissueFormState";
 import { toggleSubmitBtn } from "../../../utils/form/formUtils";
 import {
+  toggleErrorDisplay,
   updateInputValue,
   updateValidState,
 } from "../../../utils/form/validationUtils";
@@ -38,15 +39,11 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     toggleErrorDisplay(invalidElem, true);
-    updateValidState(loginValidState, "passwordReissueValidState", false);
+    updateValidState(passwordReissueValidState, "password", false);
   } else {
     toggleErrorDisplay(invalidElem, false);
-    updateValidState(loginValidState, "passwordReissueValidState", true);
-    updateInputValue(
-      loginValidState,
-      "passwordReissueInputValueState",
-      passwordValue
-    );
+    updateValidState(passwordReissueValidState, "password", true);
+    updateInputValue(passwordReissueInputValueState, "password", passwordValue);
   }
 
   toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);

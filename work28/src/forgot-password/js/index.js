@@ -6,6 +6,7 @@ import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import {
   toggleErrorDisplay,
   updateInputValue,
+  updateValidState,
 } from "../../utils/form/validationUtils.ts";
 import { emailRegex } from "../../utils/regex.ts";
 import { handleForgotPassword } from "./passwordReset";

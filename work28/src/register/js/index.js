@@ -74,10 +74,10 @@ passwordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(passwordValue)) {
     toggleErrorDisplay(invalidElem, true);
-    updateValidState(registerValidState, "mail", false);
+    updateValidState(registerValidState, "password", false);
   } else {
     toggleErrorDisplay(invalidElem, false);
-    updateValidState(registerValidState, "mail", true);
+    updateValidState(registerValidState, "password", true);
     updateInputValue(registerInputValueState, "password", passwordValue);
   }
 
