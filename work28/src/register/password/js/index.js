@@ -66,19 +66,19 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
     passwordRegex.test(confirmPasswordValue) &&
     passwordValue === confirmPasswordValue
   ) {
-    invalidCharElem.style.display = "none";
-    invalidNotMatchElem.style.display = "none";
+    toggleErrorDisplay(invalidCharElem, false);
+    toggleErrorDisplay(invalidNotMatchElem, false);
     updateValidState(passwordReissueValidState, "password", true);
     updateValidState(passwordReissueValidState, "confirmPassword", true);
   }
 
   if (!passwordRegex.test(confirmPasswordValue)) {
-    invalidCharElem.style.display = "block";
+    toggleErrorDisplay(invalidCharElem, true);
     updateValidState(passwordReissueValidState, "password", false);
   }
 
   if (passwordValue !== confirmPasswordValue) {
-    invalidNotMatchElem.style.display = "block";
+    toggleErrorDisplay(invalidNotMatchElem, true);
     updateValidState(passwordReissueValidState, "password", false);
   }
 
