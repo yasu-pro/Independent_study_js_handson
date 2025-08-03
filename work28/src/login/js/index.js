@@ -5,7 +5,13 @@ import {
   loginInputValueState,
   loginValidState,
 } from "../../states/loginFormState";
-import { toggleSubmitBtn } from "../../utils/form-utils";
+import { toggleSubmitBtn } from "../../utils/form/formUtils";
+import {
+  toggleErrorDisplay,
+  updateInputValue,
+  updateValidState,
+  validateInputField,
+} from "../../utils/form/validationUtils";
 
 const submitBtn = document.querySelector(".submitBtn");
 
@@ -24,15 +30,25 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
   const userNameOrEmailValue = userNameOrEmailInputElem.value;
 
   if (userNameOrEmailInputElem.value.length === 0) {
-    invalidElem.style.display = "block";
-    loginValidState.nameOrMail = false;
+    toggleErrorDisplay(invalidElem, true);
+    updateValidState(loginValidState, "id", false);
   } else {
-    invalidElem.style.display = "none";
-    loginValidState.nameOrMail = true;
-    loginInputValueState.id = userNameOrEmailValue;
+    toggleErrorDisplay(invalidElem, false);
+    updateValidState(loginValidState, "id", true);
+    updateInputValue(loginInputValueState, "id", userNameOrEmailValue);
   }
 
-  toggleSubmitBtn();
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    loginValidState,
+    loginInputValueState,
+    "id"
+  );
+
+  toggleSubmitBtn(loginValidState, submitBtn);
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
@@ -40,16 +56,16 @@ passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
 
-  if (!passwordRegex.test(passwordValue)) {
-    invalidElem.style.display = "block";
-    loginValidState.password = false;
-  } else {
-    invalidElem.style.display = "none";
-    loginValidState.password = true;
-    loginInputValueState.password = passwordValue;
-  }
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    loginValidState,
+    loginInputValueState
+  );
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(loginValidState, submitBtn);
 });
 
 submitBtn.addEventListener("click", async () => {

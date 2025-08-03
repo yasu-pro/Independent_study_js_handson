@@ -7,7 +7,12 @@ import {
   passwordReissueInputValueState,
   passwordReissueValidState,
 } from "../../../states/passwordReissueFormState";
-import { toggleSubmitBtn } from "../../../utils/form-utils";
+import { toggleSubmitBtn } from "../../../utils/form/formUtils";
+import {
+  toggleErrorDisplay,
+  updateValidState,
+  validateInputField,
+} from "../../../utils/form/validationUtils";
 import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
 import { requestNewToken } from "./ReissuePassword";
@@ -32,16 +37,16 @@ passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
 
-  if (!passwordRegex.test(passwordValue)) {
-    invalidElem.style.display = "block";
-    passwordReissueValidState.password = false;
-  } else {
-    invalidElem.style.display = "none";
-    passwordReissueValidState.password = true;
-    passwordReissueInputValueState.password = passwordValue;
-  }
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    passwordReissueValidState,
+    passwordReissueInputValueState
+  );
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
 });
 
 const confirmPasswordInputElem = document.querySelector(
@@ -61,23 +66,23 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
     passwordRegex.test(confirmPasswordValue) &&
     passwordValue === confirmPasswordValue
   ) {
-    invalidCharElem.style.display = "none";
-    invalidNotMatchElem.style.display = "none";
-    passwordReissueValidState.password = true;
-    passwordReissueValidState.confirmPassword = true;
+    toggleErrorDisplay(invalidCharElem, false);
+    toggleErrorDisplay(invalidNotMatchElem, false);
+    updateValidState(passwordReissueValidState, "password", true);
+    updateValidState(passwordReissueValidState, "confirmPassword", true);
   }
 
   if (!passwordRegex.test(confirmPasswordValue)) {
-    invalidCharElem.style.display = "block";
-    passwordReissueValidState.password = false;
+    toggleErrorDisplay(invalidCharElem, true);
+    updateValidState(passwordReissueValidState, "password", false);
   }
 
   if (passwordValue !== confirmPasswordValue) {
-    invalidNotMatchElem.style.display = "block";
-    passwordReissueValidState.password = false;
+    toggleErrorDisplay(invalidNotMatchElem, true);
+    updateValidState(passwordReissueValidState, "password", false);
   }
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
 });
 
 const updateUserPasswordInStorage = (newPassword) => {

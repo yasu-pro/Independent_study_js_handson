@@ -2,7 +2,11 @@ import {
   registerValidState,
   registerInputValueState,
 } from "../../states/registerFromState";
-import { toggleSubmitBtn } from "../../utils/form-utils";
+import { toggleSubmitBtn } from "../../utils/form/formUtils";
+import {
+  updateValidState,
+  validateInputField,
+} from "../../utils/form/validationUtils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
 import { userRegister } from "./RegisterMockServer";
 
@@ -38,9 +42,9 @@ modalContentsElem.addEventListener("scroll", () => {
     if (lastElemPos < modalHeight) {
       registerCheckBox.checked = true;
       registerCheckBox.disabled = false;
-      registerValidState.register = true;
+      updateValidState(registerValidState, "register", true);
 
-      toggleSubmitBtn();
+      toggleSubmitBtn(registerValidState, registerSubmitBtn);
     }
   }
 });
@@ -50,16 +54,16 @@ mailInputElem.addEventListener("keyup", () => {
   const mailValue = mailInputElem.value.trim();
   const invalidElem = document.querySelector(".invalidError.mail");
 
-  if (!emailRegex.test(mailValue)) {
-    invalidElem.style.display = "block";
-    registerValidState.mail = false;
-  } else {
-    invalidElem.style.display = "none";
-    registerValidState.mail = true;
-    registerInputValueState.mail = mailValue;
-  }
+  validateInputField(
+    emailRegex,
+    mailValue,
+    invalidElem,
+    "mail",
+    registerValidState,
+    registerInputValueState
+  );
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(registerValidState, registerSubmitBtn);
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
@@ -67,16 +71,16 @@ passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
 
-  if (!passwordRegex.test(passwordValue)) {
-    invalidElem.style.display = "block";
-    registerValidState.password = false;
-  } else {
-    invalidElem.style.display = "none";
-    registerValidState.password = true;
-    registerInputValueState.password = passwordValue;
-  }
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    registerValidState,
+    registerInputValueState
+  );
 
-  toggleSubmitBtn();
+  toggleSubmitBtn(registerValidState, registerSubmitBtn);
 });
 
 registerSubmitBtn.addEventListener("click", () => {
