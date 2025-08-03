@@ -4,9 +4,8 @@ import {
 } from "../../states/registerFromState";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import {
-  toggleErrorDisplay,
-  updateInputValue,
   updateValidState,
+  validateInputField,
 } from "../../utils/form/validationUtils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
 import { userRegister } from "./RegisterMockServer";
@@ -55,14 +54,14 @@ mailInputElem.addEventListener("keyup", () => {
   const mailValue = mailInputElem.value.trim();
   const invalidElem = document.querySelector(".invalidError.mail");
 
-  if (!emailRegex.test(mailValue)) {
-    toggleErrorDisplay(invalidElem, true);
-    updateValidState(registerValidState, "mail", false);
-  } else {
-    toggleErrorDisplay(invalidElem, false);
-    updateValidState(registerValidState, "mail", true);
-    updateInputValue(registerInputValueState, "mail", mailValue);
-  }
+  validateInputField(
+    emailRegex,
+    mailValue,
+    invalidElem,
+    "mail",
+    registerValidState,
+    registerInputValueState
+  );
 
   toggleSubmitBtn(registerValidState, registerSubmitBtn);
 });
@@ -72,14 +71,14 @@ passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
 
-  if (!passwordRegex.test(passwordValue)) {
-    toggleErrorDisplay(invalidElem, true);
-    updateValidState(registerValidState, "password", false);
-  } else {
-    toggleErrorDisplay(invalidElem, false);
-    updateValidState(registerValidState, "password", true);
-    updateInputValue(registerInputValueState, "password", passwordValue);
-  }
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    registerValidState,
+    registerInputValueState
+  );
 
   toggleSubmitBtn(registerValidState, registerSubmitBtn);
 });

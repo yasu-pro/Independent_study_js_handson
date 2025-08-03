@@ -1,5 +1,5 @@
 export const loginValidState = {
-  nameOrMail: false,
+  id: false,
   password: false,
 };
 

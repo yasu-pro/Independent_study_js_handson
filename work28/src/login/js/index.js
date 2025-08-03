@@ -10,6 +10,7 @@ import {
   toggleErrorDisplay,
   updateInputValue,
   updateValidState,
+  validateInputField,
 } from "../../utils/form/validationUtils";
 
 const submitBtn = document.querySelector(".submitBtn");
@@ -30,12 +31,22 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
 
   if (userNameOrEmailInputElem.value.length === 0) {
     toggleErrorDisplay(invalidElem, true);
-    updateValidState(loginValidState, "nameOrMail", false);
+    updateValidState(loginValidState, "id", false);
   } else {
     toggleErrorDisplay(invalidElem, false);
-    updateValidState(loginValidState, "nameOrMail", true);
+    updateValidState(loginValidState, "id", true);
     updateInputValue(loginInputValueState, "id", userNameOrEmailValue);
   }
+
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    loginValidState,
+    loginInputValueState,
+    "id"
+  );
 
   toggleSubmitBtn(loginValidState, submitBtn);
 });
@@ -45,14 +56,14 @@ passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
 
-  if (!passwordRegex.test(passwordValue)) {
-    toggleErrorDisplay(invalidElem, true);
-    updateValidState(loginValidState, "password", false);
-  } else {
-    toggleErrorDisplay(invalidElem, false);
-    updateValidState(loginValidState, "password", true);
-    updateInputValue(loginInputValueState, "password", passwordValue);
-  }
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    loginValidState,
+    loginInputValueState
+  );
 
   toggleSubmitBtn(loginValidState, submitBtn);
 });

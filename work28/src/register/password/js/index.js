@@ -10,8 +10,8 @@ import {
 import { toggleSubmitBtn } from "../../../utils/form/formUtils";
 import {
   toggleErrorDisplay,
-  updateInputValue,
   updateValidState,
+  validateInputField,
 } from "../../../utils/form/validationUtils";
 import { passwordRegex } from "../../../utils/regex";
 import { requestNewPassword } from "./ReissuePassword";
@@ -37,14 +37,14 @@ passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
 
-  if (!passwordRegex.test(passwordValue)) {
-    toggleErrorDisplay(invalidElem, true);
-    updateValidState(passwordReissueValidState, "password", false);
-  } else {
-    toggleErrorDisplay(invalidElem, false);
-    updateValidState(passwordReissueValidState, "password", true);
-    updateInputValue(passwordReissueInputValueState, "password", passwordValue);
-  }
+  validateInputField(
+    passwordRegex,
+    passwordValue,
+    invalidElem,
+    "password",
+    passwordReissueValidState,
+    passwordReissueInputValueState
+  );
 
   toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
 });

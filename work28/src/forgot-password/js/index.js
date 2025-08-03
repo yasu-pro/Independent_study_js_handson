@@ -3,11 +3,7 @@ import {
   forgotPasswordInputValueState,
 } from "../../states/forgotPasswordFormState.ts";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
-import {
-  toggleErrorDisplay,
-  updateInputValue,
-  updateValidState,
-} from "../../utils/form/validationUtils.ts";
+import { validateInputField } from "../../utils/form/validationUtils.ts";
 import { emailRegex } from "../../utils/regex.ts";
 import { handleForgotPassword } from "./passwordReset";
 
@@ -18,14 +14,14 @@ mailInputElem.addEventListener("keyup", () => {
   const mailValue = mailInputElem.value.trim();
   const invalidElem = document.querySelector(".invalidError.mail");
 
-  if (!emailRegex.test(mailValue)) {
-    toggleErrorDisplay(invalidElem, true);
-    updateValidState(forgotPasswordValidState, "mail", false);
-  } else {
-    toggleErrorDisplay(invalidElem, false);
-    updateValidState(forgotPasswordValidState, "mail", true);
-    updateInputValue(forgotPasswordInputValueState, "mail", mailValue);
-  }
+  validateInputField(
+    emailRegex,
+    mailValue,
+    invalidElem,
+    "mail",
+    forgotPasswordValidState,
+    forgotPasswordInputValueState
+  );
 
   toggleSubmitBtn(forgotPasswordValidState, registerSubmitBtn);
 });
