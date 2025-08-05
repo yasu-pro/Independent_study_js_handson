@@ -1,6 +1,6 @@
 # 課題 26
 
-[もりけん塾ハンズオン](https://github.com/kenmori/handsonFrontend/blob/master/work/markup/1.md#28)
+[もりけん塾ハンズオン](https://github.com/kenmori/handsonFrontend/blob/master/work/markup/1.md#29)
 
 # json-server を使用 下記を実行
 
