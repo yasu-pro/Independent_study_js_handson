@@ -17,28 +17,45 @@ const mailInputElem = document.querySelector('input[name="mail"]');
 mailInputElem.addEventListener("keyup", () => {
   const mailValue = mailInputElem.value.trim();
   mailReissueInputValueState.mail = mailValue;
-  const invalidElem = document.querySelector(".invalidError.mail");
+  const confirmMail = mailReissueInputValueState.confirmMail;
 
-  console.log("mailReissueInputValueState", mailReissueInputValueState);
-
-  validateInputField(
-    emailRegex,
-    mailValue,
-    invalidElem,
-    "mail",
-    mailReissueValidState,
-    mailReissueInputValueState
+  const invalidNotMailCharElem = document.querySelector(
+    ".invalidError.notMailCharError"
+  );
+  const invalidNotMatchElem = document.querySelector(
+    ".invalidError.notMatchError"
   );
 
-  toggleSubmitBtn(mailReissueInputValueState, registerSubmitBtn);
+  // メールアドレスの形式に合っていること
+  // メールアドレスと確認メールアドレスが合っていること
+  if (emailRegex.test(mailValue) && mailValue === confirmMail) {
+    toggleErrorDisplay(invalidNotMailCharElem, false);
+    toggleErrorDisplay(invalidNotMatchElem, false);
+    updateValidState(mailReissueValidState, "mail", true);
+    updateValidState(mailReissueValidState, "confirmMail", true);
+  }
+
+  if (!emailRegex.test(mailValue)) {
+    toggleErrorDisplay(invalidNotMailCharElem, true);
+    updateValidState(mailReissueValidState, "mail", false);
+  }
+
+  if (mailValue !== confirmMail) {
+    toggleErrorDisplay(invalidNotMatchElem, true);
+    updateValidState(mailReissueValidState, "mail", false);
+  }
+
+  toggleSubmitBtn(mailReissueValidState, registerSubmitBtn);
 });
 
 const confirmMaliInputElem = document.querySelector(
   'input[name="confirmMail"]'
 );
 confirmMaliInputElem.addEventListener("keyup", () => {
-  const changeMailValue = mailReissueInputValueState.value;
-  const confirmMailValue = confirmMaliInputElem.value;
+  const confirmMailValue = confirmMaliInputElem.value.trim();
+  mailReissueInputValueState.confirmMail = confirmMailValue;
+  const changeMailValue = mailReissueInputValueState.mail;
+
   const invalidMailCharElem = document.querySelector(
     ".invalidError.notMailCharError"
   );
@@ -65,7 +82,7 @@ confirmMaliInputElem.addEventListener("keyup", () => {
 
   if (changeMailValue !== confirmMailValue) {
     toggleErrorDisplay(invalidNotMatchElem, true);
-    updateValidState(mailReissueValidState, "mail", false);
+    updateValidState(mailReissueValidState, "confirmMail", false);
   }
 
   toggleSubmitBtn(mailReissueValidState, registerSubmitBtn);
