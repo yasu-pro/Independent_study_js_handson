@@ -35,16 +35,34 @@ window.addEventListener("DOMContentLoaded", () => {
 const passwordInputElem = document.querySelector('input[name="password"]');
 passwordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordInputElem.value;
+  passwordReissueInputValueState.password = passwordValue;
+  const confirmPasswordValue = passwordReissueInputValueState.confirmPassword;
   const invalidElem = document.querySelector(".invalidError.password");
-
-  validateInputField(
-    passwordRegex,
-    passwordValue,
-    invalidElem,
-    "password",
-    passwordReissueValidState,
-    passwordReissueInputValueState
+  const invalidNotMatchElem = document.querySelector(
+    ".invalidError.notMatchError"
   );
+
+  // 8文字以上代償の英数字を混ぜたものがあること
+  // passwordと確認パスワードがあっていること
+  if (
+    passwordRegex.test(passwordValue) &&
+    passwordValue === confirmPasswordValue
+  ) {
+    toggleErrorDisplay(invalidElem, false);
+    toggleErrorDisplay(invalidNotMatchElem, false);
+    updateValidState(passwordReissueValidState, "password", true);
+    updateValidState(passwordReissueValidState, "confirmPassword", true);
+  }
+
+  if (!passwordRegex.test(passwordValue)) {
+    toggleErrorDisplay(invalidElem, true);
+    updateValidState(passwordReissueValidState, "confirmPassword", false);
+  }
+
+  if (passwordValue !== passwordValue) {
+    toggleErrorDisplay(invalidNotMatchElem, true);
+    updateValidState(passwordReissueValidState, "password", false);
+  }
 
   toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
 });
@@ -55,6 +73,7 @@ const confirmPasswordInputElem = document.querySelector(
 confirmPasswordInputElem.addEventListener("keyup", () => {
   const passwordValue = passwordReissueInputValueState.password;
   const confirmPasswordValue = confirmPasswordInputElem.value;
+  passwordReissueInputValueState.confirmPassword = confirmPasswordValue;
   const invalidCharElem = document.querySelector(".invalidError.charError");
   const invalidNotMatchElem = document.querySelector(
     ".invalidError.notMatchError"
@@ -74,7 +93,7 @@ confirmPasswordInputElem.addEventListener("keyup", () => {
 
   if (!passwordRegex.test(confirmPasswordValue)) {
     toggleErrorDisplay(invalidCharElem, true);
-    updateValidState(passwordReissueValidState, "password", false);
+    updateValidState(passwordReissueValidState, "confirmPassword", false);
   }
 
   if (passwordValue !== confirmPasswordValue) {
@@ -111,6 +130,15 @@ const redirectToPasswordDonePage = (newToken) => {
 };
 
 registerSubmitBtn.addEventListener("click", async () => {
+  const isPasswordMatch =
+    passwordReissueInputValueState.password ===
+    passwordReissueInputValueState.confirmPassword;
+
+  if (!isPasswordMatch) {
+    alert("パスワードが一致していません。");
+    return;
+  }
+
   const newPassword = passwordReissueInputValueState.password;
 
   const reissuePasswordResult = await requestNewPassword(newPassword);
