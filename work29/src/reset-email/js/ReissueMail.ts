@@ -1,9 +1,11 @@
-import { MAIL_RESET_TOKEN } from "../../constants/tokenKeys/token";
+import { REGISTER_MAIL_TOKEN } from "../../constants/tokenKeys/token";
 
-// トークンを発行する
-export const requestNewToken = async (): Promise<{
+export const requestNewMailAndToken = async (
+  newMail: string
+): Promise<{
   ok: boolean;
   code: number;
+  mail?: string;
   token?: string;
   message?: string;
 }> => {
@@ -11,31 +13,8 @@ export const requestNewToken = async (): Promise<{
     return {
       ok: true,
       code: 200,
-      token: MAIL_RESET_TOKEN,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      code: 500,
-      message: "サーバーエラー",
-    };
-  }
-};
-
-// メールアドレスを再発行する
-export const requestNewMail = async (
-  newPassword: string
-): Promise<{
-  ok: boolean;
-  code: number;
-  password?: string;
-  message?: string;
-}> => {
-  try {
-    return {
-      ok: true,
-      code: 200,
-      password: newPassword,
+      mail: newMail,
+      token: REGISTER_MAIL_TOKEN, // 新しい有効なトークン
     };
   } catch (error) {
     return {

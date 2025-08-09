@@ -1,6 +1,6 @@
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { emailRegex } from "../../utils/regex";
-import { requestNewToken, requestNewMail } from "./ReissueMail.ts";
+import { requestNewMailAndToken } from "./ReissueMail.ts";
 import {
   mailReissueValidState,
   mailReissueInputValueState,
@@ -8,8 +8,8 @@ import {
 import {
   toggleErrorDisplay,
   updateValidState,
-  validateInputField,
 } from "../../utils/form/validationUtils.ts";
+import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
@@ -88,6 +88,7 @@ confirmMaliInputElem.addEventListener("keyup", () => {
   toggleSubmitBtn(mailReissueValidState, registerSubmitBtn);
 });
 
+// ユーザー情報を localStorage に反映
 const updateUserMailInStorage = (newMail) => {
   try {
     const currentUserInfoJson = getToken("registerUser");
@@ -95,7 +96,7 @@ const updateUserMailInStorage = (newMail) => {
 
     const newUserInfo = {
       ...currentUserInfo,
-      eMail: newMail,
+      mail: newMail,
     };
 
     const newUserInfoJson = JSON.stringify(newUserInfo);
@@ -105,29 +106,32 @@ const updateUserMailInStorage = (newMail) => {
   }
 };
 
+// 完了ページへリダイレクト
 const redirectToMailDonePage = (newToken) => {
-  removeToken("eMailResetToken");
-  setToken("registerMailToken", newToken.token);
+  setToken("registerMailToken", newToken);
 
-  newToken = newToken.token;
-  return (window.location.href = `../reset-email-done.html?token=${newToken}`);
+  return (window.location.href = `./reset-email-done.html?token=${newToken}`);
 };
 
+// 送信処理
 registerSubmitBtn.addEventListener("click", async () => {
-  const newMail = mailReissueInputValueState.eMail;
-
-  const reissueMailResult = await requestNewMail(newMail);
-
-  if (!reissueMailResult.ok) {
-    alert(reissueMailResult.message);
+  const isValid =
+    mailReissueValidState.mail === mailReissueValidState.confirmMail;
+  if (!isValid) {
+    alert("メールアドレスが一致しません。");
     return;
   }
-  updateUserMailInStorage(reissueMailResult.eMail);
 
-  const reissueTokenResult = await requestNewToken();
-  if (!reissueTokenResult.ok) {
-    alert(reissueTokenResult.message);
+  const newMail = mailReissueInputValueState.mail;
+
+  // サーバーにメール更新と新トークン発行をまとめて依頼
+  const result = await requestNewMailAndToken(newMail);
+
+  if (!result.ok) {
+    alert(result.message);
     return;
   }
-  redirectToMailDonePage(reissueTokenResult);
+
+  updateUserMailInStorage(result.mail);
+  redirectToMailDonePage(result.token);
 });
