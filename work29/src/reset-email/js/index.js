@@ -15,33 +15,34 @@ const registerSubmitBtn = document.getElementById("js-submitBtn");
 
 const mailInputElem = document.querySelector('input[name="mail"]');
 mailInputElem.addEventListener("keyup", () => {
-  const mailValue = mailInputElem.value.trim();
-  mailReissueInputValueState.mail = mailValue;
+  const changeMailValue = mailInputElem.value.trim();
+  mailReissueInputValueState.mail = changeMailValue;
   const confirmMail = mailReissueInputValueState.confirmMail;
 
-  const invalidNotMailCharElem = document.querySelector(
-    ".invalidError.notMailCharError"
-  );
-  const invalidNotMatchElem = document.querySelector(
+  const invalidMailCharElem = document.querySelector(".invalidError.mail");
+  const invalidMatchElem = document.querySelector(
     ".invalidError.notMatchError"
   );
 
   // メールアドレスの形式に合っていること
   // メールアドレスと確認メールアドレスが合っていること
-  if (emailRegex.test(mailValue) && mailValue === confirmMail) {
-    toggleErrorDisplay(invalidNotMailCharElem, false);
-    toggleErrorDisplay(invalidNotMatchElem, false);
+  if (emailRegex.test(changeMailValue) && changeMailValue === confirmMail) {
+    toggleErrorDisplay(invalidMailCharElem, false);
+    toggleErrorDisplay(invalidMatchElem, false);
     updateValidState(mailReissueValidState, "mail", true);
     updateValidState(mailReissueValidState, "confirmMail", true);
   }
 
-  if (!emailRegex.test(mailValue)) {
-    toggleErrorDisplay(invalidNotMailCharElem, true);
+  if (!emailRegex.test(changeMailValue)) {
+    toggleErrorDisplay(invalidMailCharElem, true);
     updateValidState(mailReissueValidState, "mail", false);
+  } else {
+    toggleErrorDisplay(invalidMailCharElem, false);
+    updateValidState(mailReissueValidState, "mail", true);
   }
 
-  if (mailValue !== confirmMail) {
-    toggleErrorDisplay(invalidNotMatchElem, true);
+  if (changeMailValue !== confirmMail) {
+    toggleErrorDisplay(invalidMatchElem, true);
     updateValidState(mailReissueValidState, "mail", false);
   }
 
@@ -59,7 +60,7 @@ confirmMaliInputElem.addEventListener("keyup", () => {
   const invalidMailCharElem = document.querySelector(
     ".invalidError.notMailCharError"
   );
-  const invalidNotMatchElem = document.querySelector(
+  const invalidMatchElem = document.querySelector(
     ".invalidError.notMatchError"
   );
 
@@ -70,7 +71,7 @@ confirmMaliInputElem.addEventListener("keyup", () => {
     changeMailValue === confirmMailValue
   ) {
     toggleErrorDisplay(invalidMailCharElem, false);
-    toggleErrorDisplay(invalidNotMatchElem, false);
+    toggleErrorDisplay(invalidMatchElem, false);
     updateValidState(mailReissueValidState, "mail", true);
     updateValidState(mailReissueValidState, "confirmMail", true);
   }
@@ -78,10 +79,13 @@ confirmMaliInputElem.addEventListener("keyup", () => {
   if (!emailRegex.test(confirmMailValue)) {
     toggleErrorDisplay(invalidMailCharElem, true);
     updateValidState(mailReissueValidState, "confirmMail", false);
+  } else {
+    toggleErrorDisplay(invalidMailCharElem, false);
+    updateValidState(mailReissueValidState, "confirmMail", true);
   }
 
   if (changeMailValue !== confirmMailValue) {
-    toggleErrorDisplay(invalidNotMatchElem, true);
+    toggleErrorDisplay(invalidMatchElem, true);
     updateValidState(mailReissueValidState, "confirmMail", false);
   }
 
