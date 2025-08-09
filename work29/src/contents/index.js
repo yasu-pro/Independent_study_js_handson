@@ -7,6 +7,7 @@ errorMessageElem.id = "error-message";
 body.appendChild(errorMessageElem);
 const apiURL = "http://localhost:3000/data";
 const logoutBtn = document.querySelector(".logoutBtn");
+const resetEmailBtn = document.querySelector(".resetEmailBtn");
 
 // 関数
 const getData = async () => {
@@ -292,4 +293,8 @@ const redirectToLoginIfNoToken = () => {
 // ローカルストレージ削除処理
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("loginToken");
+});
+
+resetEmailBtn.addEventListener("click", () => {
+  window.location.href = "../contents/index.html";
 });

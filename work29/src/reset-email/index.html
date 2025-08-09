@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>register</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script defer type="module" src="./js/index.js"></script>
+  </head>
+  <body>
+    <div class="form_wrap">
+      <div class="form_head">
+        <h1 class="title">メールアドレス変更画面</h1>
+      </div>
+
+      <div class="form_area">
+        <div class="form_area-input">
+          <div class="userMail">
+            <label for="mail">メールアドレス</label>
+            <div class="columnBox">
+              <input type="mail" name="mail" id="mail" required />
+              <p class="invalidError mail">
+                ※メールアドレスの形式になっていません。
+              </p>
+            </div>
+          </div>
+          <div class="userConfirmMail">
+            <label for="confirmMail">確認用メールアドレス</label>
+            <div class="columnBox">
+              <input type="mail" name="confirmMail" id="confirmMail" required />
+              <p class="invalidError confirmMail notMailCharError">
+                ※メールアドレスの形式になっていません。
+              </p>
+              <p class="invalidError confirmMail notMatchError">
+                ※入力されたメールアドレスが一致したものを入力してください
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="submit">
+          <button class="submitBtn" id="js-submitBtn" type="submit" disabled>
+            送信
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
