@@ -76,13 +76,15 @@ body {
   padding: 2px 3px;
 }
 .form_area .memberRegister,
-.form_area .forgotPassword {
+.form_area .forgotPassword,
+.form_area .resetMail {
   width: 250px;
   text-align: center;
   margin: 8px auto 0;
 }
 .form_area .memberRegister a,
-.form_area .forgotPassword a {
+.form_area .forgotPassword a,
+.form_area .resetMail a {
   padding: 1px 2px;
   border-bottom: 1px solid #000;
   color: blue;
