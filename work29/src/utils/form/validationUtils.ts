@@ -35,5 +35,3 @@ export const validateInputField = (
     updateInputValue(valueState, key, value);
   }
 };
-
-

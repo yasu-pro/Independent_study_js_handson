@@ -1,6 +1,6 @@
 import { usersHandler } from "./mockServer";
 import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
-import { passwordRegex } from "../../utils/regex";
+import { passwordRegex, emailRegex } from "../../utils/regex";
 import {
   loginInputValueState,
   loginValidState,
@@ -22,30 +22,18 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-const userNameOrEmailInputElem = document.querySelector(
-  'input[name="userNameOrEmail"]'
-);
-userNameOrEmailInputElem.addEventListener("blur", () => {
-  const invalidElem = document.querySelector(".invalidError.nameOrEmail");
-  const userNameOrEmailValue = userNameOrEmailInputElem.value;
-
-  if (userNameOrEmailInputElem.value.length === 0) {
-    toggleErrorDisplay(invalidElem, true);
-    updateValidState(loginValidState, "id", false);
-  } else {
-    toggleErrorDisplay(invalidElem, false);
-    updateValidState(loginValidState, "id", true);
-    updateInputValue(loginInputValueState, "id", userNameOrEmailValue);
-  }
+const userMailInputElem = document.querySelector('input[name="mail"]');
+userMailInputElem.addEventListener("keyup", () => {
+  const invalidMailElem = document.querySelector(".invalidError.mail");
+  const mailValue = userMailInputElem.value.trim();
 
   validateInputField(
-    passwordRegex,
-    passwordValue,
-    invalidElem,
-    "password",
+    emailRegex,
+    mailValue,
+    invalidMailElem,
+    "mail",
     loginValidState,
-    loginInputValueState,
-    "id"
+    loginInputValueState
   );
 
   toggleSubmitBtn(loginValidState, submitBtn);
@@ -53,7 +41,8 @@ userNameOrEmailInputElem.addEventListener("blur", () => {
 
 const passwordInputElem = document.querySelector('input[name="password"]');
 passwordInputElem.addEventListener("keyup", () => {
-  const passwordValue = passwordInputElem.value;
+  const passwordValue = passwordInputElem.value.trim();
+  loginInputValueState.password = passwordValue;
   const invalidElem = document.querySelector(".invalidError.password");
 
   validateInputField(

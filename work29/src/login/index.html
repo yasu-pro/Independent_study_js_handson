@@ -19,19 +19,13 @@
 
       <div class="form_area">
         <div class="form_area-input">
-          <div class="userNameOrEmail">
-            <label for="nameOrEmail"
-              >ユーザー名 <br />
-              メールアドレス</label
-            >
+          <div class="userMail">
+            <label for="mail">メールアドレス</label>
             <div class="columnBox">
-              <input
-                type="text"
-                name="userNameOrEmail"
-                id="userNameOrEmail"
-                required
-              />
-              <p class="invalidError nameOrEmail">※入力してください。</p>
+              <input type="text" name="mail" id="mail" required />
+              <p class="invalidError mail">
+                ※メールアドレスの形式になっていません。
+              </p>
             </div>
           </div>
           <div class="userPassword">

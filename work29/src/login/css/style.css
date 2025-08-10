@@ -12,7 +12,7 @@ body {
   font-size: 12px;
   color: red;
 }
-.invalidError.password, .invalidError.nameOrEmail {
+.invalidError.mail, .invalidError.password {
   display: none;
 }
 
@@ -50,27 +50,27 @@ body {
   align-items: center;
   gap: 10px;
 }
-.form_area-input .userNameOrEmail,
+.form_area-input .userMail,
 .form_area-input .userPassword {
   display: flex;
   justify-content: space-between;
   width: 400px;
 }
-.form_area-input .userNameOrEmail .columnBox,
+.form_area-input .userMail .columnBox,
 .form_area-input .userPassword .columnBox {
   display: flex;
   flex-direction: column;
   width: 70%;
 }
-.form_area-input .userNameOrEmail label[for=userNameOrEmail],
-.form_area-input .userNameOrEmail label[for=password],
-.form_area-input .userPassword label[for=userNameOrEmail],
+.form_area-input .userMail label[for=mail],
+.form_area-input .userMail label[for=password],
+.form_area-input .userPassword label[for=mail],
 .form_area-input .userPassword label[for=password] {
   width: 30%;
 }
-.form_area-input .userNameOrEmail input[name=userNameOrEmail],
-.form_area-input .userNameOrEmail input[name=password],
-.form_area-input .userPassword input[name=userNameOrEmail],
+.form_area-input .userMail input[name=mail],
+.form_area-input .userMail input[name=password],
+.form_area-input .userPassword input[name=mail],
 .form_area-input .userPassword input[name=password] {
   border: 1px solid #000;
   padding: 2px 3px;

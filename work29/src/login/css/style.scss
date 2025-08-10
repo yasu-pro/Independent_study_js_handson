@@ -12,8 +12,8 @@ body {
   font-size: 12px;
   color: red;
 
-  &.password,
-  &.nameOrEmail {
+  &.mail,
+  &.password {
     display: none;
   }
 }
@@ -55,7 +55,7 @@ body {
       align-items: center;
       gap: 10px;
 
-      .userNameOrEmail,
+      .userMail,
       .userPassword {
         display: flex;
         justify-content: space-between;
@@ -67,12 +67,12 @@ body {
           width: 70%;
         }
 
-        label[for="userNameOrEmail"],
+        label[for="mail"],
         label[for="password"] {
           width: 30%;
         }
 
-        input[name="userNameOrEmail"],
+        input[name="mail"],
         input[name="password"] {
           border: 1px solid #000;
           padding: 2px 3px;

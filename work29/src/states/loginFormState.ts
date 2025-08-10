@@ -1,9 +1,9 @@
 export const loginValidState = {
-  id: false,
+  mail: false,
   password: false,
 };
 
 export const loginInputValueState = {
-  id: "", // 名前かパスワードが入る
+  mail: "", // 名前かパスワードが入る
   password: "",
 };
