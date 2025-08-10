@@ -1,22 +1,29 @@
-import { getToken, removeToken } from "../../feature/token-utils/tokenUtils";
+import { getToken } from "../../feature/token-utils/tokenUtils";
 import { isLoginTokenValid } from "../../utils/isLoginTokenValid";
+import { deleteResetMailToken } from "./deleteRegisterMailToken";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const result = await isLoginTokenValid();
+  const loginResult = await isLoginTokenValid();
 
-  if (!result.ok) {
-    alert(result.message ?? "トークンが無効です。");
+  if (!loginResult.ok) {
+    alert(loginResult.message ?? "トークンが無効です。");
     window.location.href = "../../login/index.html";
     return;
   }
 
   const extractTokenFromUrl = new URLSearchParams(document.location.search);
   const tokenFromUrl = extractTokenFromUrl.get("token");
+  const resetMailToken = getToken("resetMailToken");
 
-  const registerMailToken = getToken("registerMailToken");
+  if (!resetMailToken || tokenFromUrl !== resetMailToken) {
+    window.location.href = "../../notautherize/index.html";
+    return;
+  }
 
-  if (tokenFromUrl === registerMailToken) return;
+  const deletedResult = await deleteResetMailToken(resetMailToken);
 
-  removeToken("registerMailToken");
-  window.location.href = "../../notautherize/index.html";
+  if (!deletedResult.ok) {
+    alert(deletedResult.message);
+    window.location.href = "../../login/index.html";
+  }
 });
