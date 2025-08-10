@@ -16,7 +16,7 @@ import {
 const submitBtn = document.querySelector(".submitBtn");
 
 window.addEventListener("DOMContentLoaded", () => {
-  const token = getToken("token");
+  const token = getToken("loginToken");
   if (token) {
     window.location.href = "../contents/index.html";
   }
