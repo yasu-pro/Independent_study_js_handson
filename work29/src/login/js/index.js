@@ -6,12 +6,7 @@ import {
   loginValidState,
 } from "../../states/loginFormState";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
-import {
-  toggleErrorDisplay,
-  updateInputValue,
-  updateValidState,
-  validateInputField,
-} from "../../utils/form/validationUtils";
+import { validateInputField } from "../../utils/form/validationUtils";
 
 const submitBtn = document.querySelector(".submitBtn");
 
