@@ -37,6 +37,8 @@ export const usersHandler = async (value: { id: string; password: string }) => {
         ok: true,
         code: 200,
         token: user.userId,
+        mail: user.email,
+        password: user.password,
       };
     }
 

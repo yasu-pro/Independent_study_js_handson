@@ -69,10 +69,14 @@ passwordInputElem.addEventListener("keyup", () => {
 });
 
 submitBtn.addEventListener("click", async () => {
-  const token = await usersHandler(loginInputValueState);
+  const userInfo = await usersHandler(loginInputValueState);
 
-  if (token && token.ok) {
-    setToken("loginToken", token.token);
+  if (userInfo && userInfo.ok) {
+    setToken("loginToken", userInfo.token);
+    setToken("loginUserInfo", {
+      mail: `${userInfo.mail}`,
+      password: `${userInfo.password}`,
+    });
     window.location.href = "../contents/index.html";
   } else {
     alert("ログインに失敗しました。");
