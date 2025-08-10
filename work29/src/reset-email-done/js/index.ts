@@ -1,4 +1,4 @@
-import { removeToken } from "../../feature/token-utils/tokenUtils";
+import { getToken, removeToken } from "../../feature/token-utils/tokenUtils";
 import { isLoginTokenValid } from "../../utils/isLoginTokenValid";
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -10,6 +10,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // クリーンアップは最後に実施
-  //   removeToken("loginToken");
+  const extractTokenFromUrl = new URLSearchParams(document.location.search);
+  const tokenFromUrl = extractTokenFromUrl.get("token");
+
+  const registerMailToken = getToken("registerMailToken");
+
+  if (tokenFromUrl === registerMailToken) return;
+
+  removeToken("registerMailToken");
+  window.location.href = "../../notautherize/index.html";
 });

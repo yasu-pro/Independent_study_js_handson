@@ -24,7 +24,7 @@ export const isLoginTokenValid = async (): Promise<{
     return {
       ok: false,
       code: 500,
-      message: "サーバーエラー（ローカル判定）",
+      message: "サーバーエラー",
     };
   }
 };
