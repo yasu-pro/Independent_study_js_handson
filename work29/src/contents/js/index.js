@@ -1,4 +1,5 @@
-"use strict";
+import { removeToken } from "../../feature/token-utils/tokenUtils.ts";
+
 // DOM
 const body = document.querySelector("body");
 const ulElemTabs = document.getElementById("js_tabs");
@@ -7,7 +8,6 @@ errorMessageElem.id = "error-message";
 body.appendChild(errorMessageElem);
 const apiURL = "http://localhost:3000/data";
 const logoutBtn = document.querySelector(".logoutBtn");
-const resetEmailBtn = document.querySelector(".resetEmailBtn");
 
 // 関数
 const getData = async () => {
@@ -310,5 +310,6 @@ const redirectToLoginIfNoToken = () => {
 
 // ローカルストレージ削除処理
 logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("loginToken");
+  removeToken("loginToken");
+  removeToken("loginUserInfo");
 });
