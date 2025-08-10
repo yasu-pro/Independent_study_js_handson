@@ -14,7 +14,8 @@ body {
 
   &.mail,
   &.confirmMail.notMailCharError,
-  &.confirmMail.notMatchError {
+  &.confirmMail.notMatchError,
+  &.password {
     display: none;
   }
 }
@@ -57,7 +58,8 @@ body {
       gap: 10px;
 
       .userMail,
-      .userConfirmMail {
+      .userConfirmMail,
+      .userPassword {
         display: flex;
         justify-content: space-between;
         width: 350px;
@@ -69,12 +71,14 @@ body {
         }
 
         label[for="mail"],
-        label[for="confirmMail"] {
+        label[for="confirmMail"],
+        label[for="password"] {
           width: 40%;
         }
 
         input[name="mail"],
-        input[name="confirmMail"] {
+        input[name="confirmMail"],
+        input[name="password"] {
           border: 1px solid #000;
           padding: 2px 3px;
         }
