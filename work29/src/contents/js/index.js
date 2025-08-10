@@ -312,4 +312,6 @@ const redirectToLoginIfNoToken = () => {
 logoutBtn.addEventListener("click", () => {
   removeToken("loginToken");
   removeToken("loginUserInfo");
+
+  window.location.href = "../login/index.html";
 });
