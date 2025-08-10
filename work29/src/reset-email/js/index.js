@@ -114,7 +114,7 @@ const updateUserMailInStorage = (newMail) => {
 const redirectToMailDonePage = (newToken) => {
   setToken("registerMailToken", newToken);
 
-  return (window.location.href = `./reset-email-done.html?token=${newToken}`);
+  return (window.location.href = `../../reset-email-done/index.html?token=${newToken}`);
 };
 
 // 送信処理
