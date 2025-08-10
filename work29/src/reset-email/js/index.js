@@ -1,6 +1,6 @@
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
-import { emailRegex } from "../../utils/regex";
-import { requestNewMailAndToken } from "./ReissueMail.ts";
+import { emailRegex, passwordRegex } from "../../utils/regex";
+import { requestNewUserInfoAndToken } from "./requestNewUserInfoAndToken.ts";
 import {
   mailReissueValidState,
   mailReissueInputValueState,
@@ -92,27 +92,45 @@ confirmMaliInputElem.addEventListener("keyup", () => {
   toggleSubmitBtn(mailReissueValidState, registerSubmitBtn);
 });
 
-// ユーザー情報を localStorage に反映
-const updateUserMailInStorage = (newMail) => {
-  try {
-    const currentUserInfoJson = getToken("registerUser");
-    const currentUserInfo = JSON.parse(currentUserInfoJson);
+const passwordInputElem = document.querySelector('input[name="password"]');
+passwordInputElem.addEventListener("keyup", () => {
+  const passwordValue = passwordInputElem.value.trim();
+  mailReissueInputValueState.password = passwordValue;
 
-    const newUserInfo = {
-      ...currentUserInfo,
-      mail: newMail,
-    };
+  const changeMailValue = mailReissueInputValueState.mail;
+  const confirmMailValue = mailReissueInputValueState.confirmMail;
 
-    const newUserInfoJson = JSON.stringify(newUserInfo);
-    setToken("registerUser", newUserInfoJson);
-  } catch (error) {
-    alert("メールアドレスの保存に失敗しました。");
+  const invalidMatchElem = document.querySelector(
+    ".invalidError.notMatchError"
+  );
+  const invalidPasswordElem = document.querySelector(".invalidError.password");
+
+  const isPasswordValid = passwordRegex.test(passwordValue);
+  const isMailMatch = changeMailValue === confirmMailValue;
+
+  if (isPasswordValid) {
+    console.log("password OK");
+    toggleErrorDisplay(invalidPasswordElem, false);
+    updateValidState(mailReissueValidState, "password", true);
+  } else {
+    console.log("password NO");
+    toggleErrorDisplay(invalidPasswordElem, true);
+    updateValidState(mailReissueValidState, "password", false);
   }
-};
+
+  // メール一致のチェック
+  if (isMailMatch) {
+    toggleErrorDisplay(invalidMatchElem, false);
+  } else {
+    toggleErrorDisplay(invalidMatchElem, true);
+  }
+
+  toggleSubmitBtn(mailReissueValidState, registerSubmitBtn);
+});
 
 // 完了ページへリダイレクト
 const redirectToMailDonePage = (newToken) => {
-  setToken("registerMailToken", newToken);
+  setToken("resetMailToken", newToken);
 
   return (window.location.href = `../reset-email-done/index.html?token=${newToken}`);
 };
@@ -120,22 +138,27 @@ const redirectToMailDonePage = (newToken) => {
 // 送信処理
 registerSubmitBtn.addEventListener("click", async () => {
   const isValid =
-    mailReissueValidState.mail === mailReissueValidState.confirmMail;
+    mailReissueValidState.mail &&
+    mailReissueValidState.confirmMail &&
+    mailReissueValidState.password;
+
   if (!isValid) {
     alert("メールアドレスが一致しません。");
     return;
   }
 
-  const newMail = mailReissueInputValueState.mail;
+  const userInfo = {
+    mail: mailReissueInputValueState.mail,
+    password: mailReissueInputValueState.password,
+  };
 
   // サーバーにメール更新と新トークン発行をまとめて依頼
-  const result = await requestNewMailAndToken(newMail);
+  const result = await requestNewUserInfoAndToken(userInfo);
 
   if (!result.ok) {
     alert(result.message);
     return;
   }
 
-  updateUserMailInStorage(result.mail);
   redirectToMailDonePage(result.token);
 });
