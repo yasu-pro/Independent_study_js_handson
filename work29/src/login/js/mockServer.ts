@@ -30,7 +30,7 @@ export const usersHandler = async (value: {
     const res = await fetch(
       "https://6802e9880a99cb7408eab082.mockapi.io/api/v1/users"
     );
-    const users: User[] = await res.json();
+    const users: ResponseUserInfo[] = await res.json();
 
     if (users.length === 0) {
       return {
