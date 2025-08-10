@@ -6,11 +6,12 @@ a:hover {
   cursor: pointer;
 }
 
-.logout {
+.postLoginActionBtn {
   margin-top: 20px;
   text-align: center;
 }
-.logout .logoutBtn {
+.postLoginActionBtn .logoutBtn,
+.postLoginActionBtn .resetMailBtn {
   border: 1px solid #000;
   padding: 2px 3px;
 }

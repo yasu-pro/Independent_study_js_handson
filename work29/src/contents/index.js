@@ -257,9 +257,22 @@ const toggleClassSelect = (ulElemTabs, listItem) => {
   addClassSelect(listItem);
 };
 
+const createResetMailPageBtnBtn = () => {
+  const postLoginActionBtnElem = document.querySelector(".postLoginActionBtn");
+
+  const resetMailPageBtn = document.createElement("button");
+  resetMailPageBtn.textContent = "メールアドレス変更";
+  resetMailPageBtn.classList.add("resetMailBtn");
+
+  postLoginActionBtnElem.appendChild(resetMailPageBtn);
+};
+
 // イベント
 document.addEventListener("DOMContentLoaded", async () => {
   if (redirectToLoginIfNoToken()) return;
+
+  // ログインした時にトークンがあればメールアドレス変更が表示される
+  createResetMailPageBtnBtn();
 
   const listData = await getData();
   renderElem(listData);
@@ -279,6 +292,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       toggleNewsDisplay(changeNewsData);
     }
   });
+
+  const resetMailPageBtn = document.querySelector(".resetMailBtn");
+  resetMailPageBtn.addEventListener("click", () => {
+    window.location.href = "../reset-email/index.html";
+  });
 });
 
 const redirectToLoginIfNoToken = () => {
@@ -293,8 +311,4 @@ const redirectToLoginIfNoToken = () => {
 // ローカルストレージ削除処理
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("loginToken");
-});
-
-resetEmailBtn.addEventListener("click", () => {
-  window.location.href = "../reset-email/index.html";
 });

@@ -8,10 +8,11 @@ a {
   }
 }
 
-.logout {
+.postLoginActionBtn {
   margin-top: 20px;
   text-align: center;
-  .logoutBtn {
+  .logoutBtn,
+  .resetMailBtn {
     border: 1px solid #000;
     padding: 2px 3px;
   }
