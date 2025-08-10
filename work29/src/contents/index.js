@@ -296,5 +296,5 @@ logoutBtn.addEventListener("click", () => {
 });
 
 resetEmailBtn.addEventListener("click", () => {
-  window.location.href = "../contents/index.html";
+  window.location.href = "../reset-email/index.html";
 });
