@@ -14,7 +14,7 @@ import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
 const mailInputElem = document.querySelector('input[name="mail"]');
-mailInputElem.addEventListener("keyup", () => {
+mailInputElem.addEventListener("blur", () => {
   const changeMailValue = mailInputElem.value.trim();
   mailReissueInputValueState.mail = changeMailValue;
   const confirmMail = mailReissueInputValueState.confirmMail;
@@ -52,7 +52,7 @@ mailInputElem.addEventListener("keyup", () => {
 const confirmMaliInputElem = document.querySelector(
   'input[name="confirmMail"]'
 );
-confirmMaliInputElem.addEventListener("keyup", () => {
+confirmMaliInputElem.addEventListener("blur", () => {
   const confirmMailValue = confirmMaliInputElem.value.trim();
   mailReissueInputValueState.confirmMail = confirmMailValue;
   const changeMailValue = mailReissueInputValueState.mail;
@@ -93,7 +93,7 @@ confirmMaliInputElem.addEventListener("keyup", () => {
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
-passwordInputElem.addEventListener("keyup", () => {
+passwordInputElem.addEventListener("blur", () => {
   const passwordValue = passwordInputElem.value.trim();
   mailReissueInputValueState.password = passwordValue;
 

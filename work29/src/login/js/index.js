@@ -18,7 +18,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 const userMailInputElem = document.querySelector('input[name="mail"]');
-userMailInputElem.addEventListener("keyup", () => {
+userMailInputElem.addEventListener("blur", () => {
   const invalidMailElem = document.querySelector(".invalidError.mail");
   const mailValue = userMailInputElem.value.trim();
 
@@ -35,7 +35,7 @@ userMailInputElem.addEventListener("keyup", () => {
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
-passwordInputElem.addEventListener("keyup", () => {
+passwordInputElem.addEventListener("blur", () => {
   const passwordValue = passwordInputElem.value.trim();
   loginInputValueState.password = passwordValue;
   const invalidElem = document.querySelector(".invalidError.password");

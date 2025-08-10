@@ -10,7 +10,7 @@ import { handleForgotPassword } from "./passwordReset";
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
 const mailInputElem = document.querySelector('input[name="mail"]');
-mailInputElem.addEventListener("keyup", () => {
+mailInputElem.addEventListener("blur", () => {
   const mailValue = mailInputElem.value.trim();
   const invalidElem = document.querySelector(".invalidError.mail");
 

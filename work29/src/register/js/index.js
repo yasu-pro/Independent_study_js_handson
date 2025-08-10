@@ -50,7 +50,7 @@ modalContentsElem.addEventListener("scroll", () => {
 });
 
 const mailInputElem = document.querySelector('input[name="mail"]');
-mailInputElem.addEventListener("keyup", () => {
+mailInputElem.addEventListener("blur", () => {
   const mailValue = mailInputElem.value.trim();
   const invalidElem = document.querySelector(".invalidError.mail");
 
@@ -67,7 +67,7 @@ mailInputElem.addEventListener("keyup", () => {
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
-passwordInputElem.addEventListener("keyup", () => {
+passwordInputElem.addEventListener("blur", () => {
   const passwordValue = passwordInputElem.value;
   const invalidElem = document.querySelector(".invalidError.password");
 

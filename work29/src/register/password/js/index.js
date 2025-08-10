@@ -33,7 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 const passwordInputElem = document.querySelector('input[name="password"]');
-passwordInputElem.addEventListener("keyup", () => {
+passwordInputElem.addEventListener("blur", () => {
   const passwordValue = passwordInputElem.value;
   passwordReissueInputValueState.password = passwordValue;
   const confirmPasswordValue = passwordReissueInputValueState.confirmPassword;
@@ -70,7 +70,7 @@ passwordInputElem.addEventListener("keyup", () => {
 const confirmPasswordInputElem = document.querySelector(
   'input[name="confirmPassword"]'
 );
-confirmPasswordInputElem.addEventListener("keyup", () => {
+confirmPasswordInputElem.addEventListener("blur", () => {
   const passwordValue = passwordReissueInputValueState.password;
   const confirmPasswordValue = confirmPasswordInputElem.value;
   passwordReissueInputValueState.confirmPassword = confirmPasswordValue;
