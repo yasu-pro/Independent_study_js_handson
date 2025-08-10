@@ -1,10 +1,3 @@
-type User = {
-  userId: string;
-  name: string;
-  email: string;
-  password: string;
-};
-
 type ResponseUserInfo = {
   name: string;
   userId: string;
