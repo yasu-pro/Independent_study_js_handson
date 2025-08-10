@@ -5,16 +5,27 @@ type User = {
   password: string;
 };
 
-const findMatchingUser = (users, value: { id: string; password: string }) => {
+type ResponseUserInfo = {
+  name: string;
+  userId: string;
+  email: string;
+  password: string;
+  id: string;
+};
+
+const findMatchingUser = (
+  users: ResponseUserInfo[],
+  value: { mail: string; password: string }
+) => {
   return users.find((user) => {
-    return (
-      (user.name === value.id || user.email === value.id) &&
-      user.password === value.password
-    );
+    return user.email === value.mail && user.password === value.password;
   });
 };
 
-export const usersHandler = async (value: { id: string; password: string }) => {
+export const usersHandler = async (value: {
+  mail: string;
+  password: string;
+}) => {
   try {
     const res = await fetch(
       "https://6802e9880a99cb7408eab082.mockapi.io/api/v1/users"
