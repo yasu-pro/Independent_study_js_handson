@@ -1,3 +1,4 @@
+import { setToken } from "../../feature/token-utils/tokenUtils";
 import {
   registerValidState,
   registerInputValueState,
@@ -8,7 +9,7 @@ import {
   validateInputField,
 } from "../../utils/form/validationUtils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
-import { userRegister } from "./RegisterMockServer";
+import { registerUserAndIssueToken } from "./registerUserAndIssueToken";
 
 const registerTextElem = document.querySelector(".registerText");
 const closeBtn = document.querySelector(".closeBtn");
@@ -52,6 +53,7 @@ modalContentsElem.addEventListener("scroll", () => {
 const mailInputElem = document.querySelector('input[name="mail"]');
 mailInputElem.addEventListener("blur", () => {
   const mailValue = mailInputElem.value.trim();
+  registerInputValueState.mail = mailValue;
   const invalidElem = document.querySelector(".invalidError.mail");
 
   validateInputField(
@@ -68,7 +70,8 @@ mailInputElem.addEventListener("blur", () => {
 
 const passwordInputElem = document.querySelector('input[name="password"]');
 passwordInputElem.addEventListener("blur", () => {
-  const passwordValue = passwordInputElem.value;
+  const passwordValue = passwordInputElem.value.trim();
+  registerInputValueState.password = passwordValue;
   const invalidElem = document.querySelector(".invalidError.password");
 
   validateInputField(
@@ -83,8 +86,15 @@ passwordInputElem.addEventListener("blur", () => {
   toggleSubmitBtn(registerValidState, registerSubmitBtn);
 });
 
-registerSubmitBtn.addEventListener("click", () => {
-  if (!userRegister(registerInputValueState)) return;
+registerSubmitBtn.addEventListener("click", async () => {
+  const result = await registerUserAndIssueToken(registerInputValueState);
 
-  window.location.href = "../register-done/index.html";
+  if (!result.ok) {
+    alert(result.message);
+
+    return;
+  }
+
+  setToken("registerToken", result.token);
+  return (window.location.href = `../register-done/index.html?token=${result.token}`);
 });
