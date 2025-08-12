@@ -1,5 +1,9 @@
 import { REGISTER_MAIL_TOKEN } from "../../constants/tokenKeys/token";
-import { getToken, setToken } from "../../feature/token-utils/tokenUtils";
+import {
+  getToken,
+  removeToken,
+  setToken,
+} from "../../feature/token-utils/tokenUtils";
 
 type UserInfoType = {
   mail: string;
@@ -53,6 +57,9 @@ export const requestNewUserInfoAndToken = async (
       mail: requestMail,
     };
     const newUserInfoJson = JSON.stringify(newUserInfo);
+    const newLoginToken = crypto.randomUUID();
+    removeToken("loginToken");
+    setToken("loginToken", newLoginToken);
     setToken("loginUserInfo", newUserInfoJson);
 
     return {
