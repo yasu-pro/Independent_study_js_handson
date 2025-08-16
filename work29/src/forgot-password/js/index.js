@@ -5,13 +5,14 @@ import {
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { validateInputField } from "../../utils/form/validationUtils.ts";
 import { emailRegex } from "../../utils/regex.ts";
-import { handleForgotPassword } from "./passwordReset";
+import { passwordResetToken } from "./passwordResetToken.ts";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
 const mailInputElem = document.querySelector('input[name="mail"]');
 mailInputElem.addEventListener("blur", () => {
   const mailValue = mailInputElem.value.trim();
+  forgotPasswordInputValueState.mail = mailValue;
   const invalidElem = document.querySelector(".invalidError.mail");
 
   validateInputField(
@@ -26,25 +27,21 @@ mailInputElem.addEventListener("blur", () => {
   toggleSubmitBtn(forgotPasswordValidState, registerSubmitBtn);
 });
 
-const isRegisteredEmail = () => {
-  const registerUserInfoServer = localStorage.getItem("registerUser");
+registerSubmitBtn.addEventListener("click", async () => {
+  const isValid = forgotPasswordInputValueState.mail;
 
-  if (!registerUserInfoServer) return false;
+  if (!isValid) {
+    alert("入力内容をもう一度ご確認ください");
+  }
 
-  const registerUserJson = JSON.parse(registerUserInfoServer);
+  const inputMail = forgotPasswordInputValueState.mail;
+  const result = await passwordResetToken(inputMail);
 
-  if (registerUserJson.mail === forgotPasswordInputValueState.mail) return true;
-
-  return false;
-};
-
-registerSubmitBtn.addEventListener("click", () => {
-  if (isRegisteredEmail()) {
-    const forgotPasswordForUrl = handleForgotPassword();
-
-    window.location.href = forgotPasswordForUrl;
+  if (!result.ok) {
+    alert(result.message);
     return;
   }
 
-  alert("一致するアカウントが見つかりませんでした");
+  window.location.href = `../register/password/index.html?token=${result.token}`;
+  return;
 });
