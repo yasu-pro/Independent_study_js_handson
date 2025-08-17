@@ -1,10 +1,4 @@
-type ResponseUserInfo = {
-  name: string;
-  userId: string;
-  email: string;
-  password: string;
-  id: string;
-};
+import { ResponseUserInfo } from "../../types/FetchUserInfoMockApiServer";
 
 const findMatchingUser = (
   users: ResponseUserInfo[],
@@ -15,7 +9,7 @@ const findMatchingUser = (
   });
 };
 
-export const usersHandler = async (value: {
+export const fetchLoginAndUserInfo = async (value: {
   mail: string;
   password: string;
 }) => {

@@ -1,4 +1,4 @@
-import { usersHandler } from "./mockServer";
+import { fetchLoginAndUserInfo } from "./fetchLoginAndUserInfo";
 import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
 import { passwordRegex, emailRegex } from "../../utils/regex";
 import {
@@ -7,14 +7,18 @@ import {
 } from "../../states/loginFormState";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { validateInputField } from "../../utils/form/validationUtils";
+import { fetchCurrentUser } from "./fetchCurrentUser";
 
 const submitBtn = document.querySelector(".submitBtn");
 
-window.addEventListener("DOMContentLoaded", () => {
-  const token = getToken("loginToken");
-  if (token) {
-    window.location.href = "../contents/index.html";
+window.addEventListener("DOMContentLoaded", async () => {
+  const result = await fetchCurrentUser();
+  if (!result.ok) {
+    console.error(result.message);
+
+    return;
   }
+  window.location.href = "../contents/index.html";
 });
 
 const userMailInputElem = document.querySelector('input[name="mail"]');
@@ -53,7 +57,7 @@ passwordInputElem.addEventListener("blur", () => {
 });
 
 submitBtn.addEventListener("click", async () => {
-  const userInfo = await usersHandler(loginInputValueState);
+  const userInfo = await fetchLoginAndUserInfo(loginInputValueState);
 
   if (userInfo && userInfo.ok) {
     setToken("loginToken", userInfo.token);
