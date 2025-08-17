@@ -9,7 +9,7 @@ import {
   toggleErrorDisplay,
   updateValidState,
 } from "../../utils/form/validationUtils.ts";
-import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
+import { setToken } from "../../feature/token-utils/tokenUtils";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 
@@ -143,7 +143,7 @@ registerSubmitBtn.addEventListener("click", async () => {
     mailReissueValidState.password;
 
   if (!isValid) {
-    alert("メールアドレスが一致しません。");
+    alert("入力内容をもう一度ご確認ください");
     return;
   }
 
