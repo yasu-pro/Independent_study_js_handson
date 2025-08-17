@@ -1,5 +1,6 @@
 import { REGISTER_TOKEN } from "../../constants/tokenKeys/token";
 import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
+import { ResponseUserInfo } from "../../types/FetchUserInfoMockApiServer";
 
 type UserInfoType = {
   mail: string;
@@ -7,7 +8,7 @@ type UserInfoType = {
 };
 
 export const registerUserAndIssueToken = async (
-  userInfo: UserInfoType
+  requestUserInfo: UserInfoType
 ): Promise<{
   ok: boolean;
   code: number;
@@ -17,22 +18,31 @@ export const registerUserAndIssueToken = async (
   message?: string;
 }> => {
   try {
-    const tokenStr = getToken("loginUserInfo");
-    let currentUser: Record<string, string> | null = null;
+    const requestUserMail = requestUserInfo.mail;
+    // ローカルストレージから取得
+    const localUserInfoStr = getToken("loginUserInfo");
+    const localUserInfo = localUserInfoStr
+      ? (JSON.parse(localUserInfoStr) as UserInfoType)
+      : null;
+    const localUserMail = localUserInfo ? localUserInfo.mail : null;
 
-    if (tokenStr) {
-      currentUser = JSON.parse(tokenStr) as Record<string, string>;
-    }
+    // APIから取得
+    const mockApiResult = await fetchMockApiServer(requestUserMail);
+    const apiUserMail =
+      mockApiResult.ok && mockApiResult.mail ? mockApiResult.mail : null;
 
-    if (currentUser) {
+    // 優先順位: APIのメール → ローカルのメール
+    const registerMail = apiUserMail ?? localUserMail;
+
+    if (requestUserMail === registerMail) {
       return {
         ok: false,
         code: 409,
-        message: "すでに登録済みです。",
+        message: "すでに登録されているメールアドレスです。",
       };
     }
 
-    const newUserInfoJson = JSON.stringify(userInfo);
+    const newUserInfoJson = JSON.stringify(requestUserInfo);
     const newLoginToken = crypto.randomUUID();
     setToken("loginToken", newLoginToken);
     setToken("loginUserInfo", newUserInfoJson);
@@ -50,3 +60,36 @@ export const registerUserAndIssueToken = async (
     };
   }
 };
+
+function findMatchingUser(users: ResponseUserInfo[], mail: string) {
+  return users.find((user) => user.email === mail);
+}
+
+async function fetchMockApiServer(mail: string) {
+  try {
+    const res = await fetch(
+      "https://6802e9880a99cb7408eab082.mockapi.io/api/v1/users"
+    );
+    const users: ResponseUserInfo[] = await res.json();
+
+    if (users.length === 0) {
+      return { ok: true, code: 200, message: "empty" };
+    }
+
+    const user = findMatchingUser(users, mail);
+
+    if (user) {
+      return {
+        ok: true,
+        code: 200,
+        mail: user.email,
+        password: user.password,
+        token: user.userId,
+      };
+    }
+
+    return { ok: false, code: 401, message: "Not found" };
+  } catch {
+    return { ok: false, code: 500, message: "サーバーエラー" };
+  }
+}
