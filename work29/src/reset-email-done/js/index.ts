@@ -1,5 +1,5 @@
-import { getToken } from "../../feature/token-utils/tokenUtils";
-import { deleteResetMailToken } from "./deleteRegisterMailToken";
+import { getToken } from "../../utils/tokenUtils";
+import { deleteResetMailToken } from "../../server/reset-email-done/deleteRegisterMailToken";
 
 window.addEventListener("DOMContentLoaded", async () => {
   // const loginResult = await isLoginTokenValid();

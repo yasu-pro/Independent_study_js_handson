@@ -1,4 +1,4 @@
-import { getToken } from "../../../feature/token-utils/tokenUtils";
+import { getToken } from "../../../utils/tokenUtils";
 
 export async function registerLoginUserInfoAndToken(
   requestConfirmPasswordMail: string

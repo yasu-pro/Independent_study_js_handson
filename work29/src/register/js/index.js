@@ -1,4 +1,4 @@
-import { setToken } from "../../feature/token-utils/tokenUtils";
+import { setToken } from "../../utils/tokenUtils.ts";
 import {
   registerValidState,
   registerInputValueState,
@@ -9,7 +9,7 @@ import {
   validateInputField,
 } from "../../utils/form/validationUtils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
-import { registerUserAndIssueToken } from "./registerUserAndIssueToken";
+import { registerUserAndIssueToken } from "../../server/register/registerUserAndIssueToken.ts";
 
 const registerTextElem = document.querySelector(".registerText");
 const closeBtn = document.querySelector(".closeBtn");

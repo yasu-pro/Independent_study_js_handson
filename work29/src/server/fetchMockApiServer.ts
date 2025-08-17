@@ -1,5 +1,5 @@
-import { ResponseUserInfo } from "../../types/FetchUserInfoMockApiServer";
-import { findMatchingUser } from "../../utils/findMatchingUser";
+import { ResponseUserInfo } from "../types/FetchUserInfoMockApiServer";
+import { findMatchingUser } from "../utils/findMatchingUser";
 
 export async function fetchMockApiServer(mail: string) {
   try {

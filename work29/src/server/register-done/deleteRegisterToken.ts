@@ -1,14 +1,14 @@
-import { getToken, removeToken } from "../../feature/token-utils/tokenUtils";
+import { getToken, removeToken } from "../../utils/tokenUtils";
 
-export const deleteResetMailToken = async (
-  requestResetMailToken: string
+export const deleteRegisterToken = async (
+  requestRegisterToken: string
 ): Promise<{
   ok: boolean;
   code: number;
   message?: string;
 }> => {
   try {
-    if (!requestResetMailToken) {
+    if (!requestRegisterToken) {
       return {
         ok: false,
         code: 409,
@@ -16,8 +16,8 @@ export const deleteResetMailToken = async (
       };
     }
 
-    const resetMailToken = getToken("resetMailToken"); // サーバー(localStorageの値)
-    if (!resetMailToken) {
+    const registerToken = getToken("registerToken"); // サーバー(localStorageの値)
+    if (!registerToken) {
       return {
         ok: false,
         code: 409,
@@ -25,8 +25,8 @@ export const deleteResetMailToken = async (
       };
     }
 
-    if (requestResetMailToken && resetMailToken) {
-      removeToken("resetMailToken");
+    if (requestRegisterToken && registerToken) {
+      removeToken("registerToken");
     }
 
     return {

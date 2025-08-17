@@ -1,9 +1,5 @@
-import {
-  getToken,
-  removeToken,
-  setToken,
-} from "../../../feature/token-utils/tokenUtils";
-import { registerLoginUserInfoAndToken } from "./registerLoginUserInfoAndToken";
+import { getToken, removeToken, setToken } from "../../../utils/tokenUtils.ts";
+import { registerLoginUserInfoAndToken } from "../../../server/register/password-done/registerLoginUserInfoAndToken.ts";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const extractTokenFromUrl = new URLSearchParams(document.location.search);

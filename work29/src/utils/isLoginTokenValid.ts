@@ -1,4 +1,4 @@
-import { getToken } from "../feature/token-utils/tokenUtils";
+import { getToken } from "../utils/tokenUtils";
 
 export const isLoginTokenValid = async (): Promise<{
   ok: boolean;

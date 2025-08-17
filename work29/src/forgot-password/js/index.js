@@ -5,7 +5,7 @@ import {
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { validateInputField } from "../../utils/form/validationUtils.ts";
 import { emailRegex } from "../../utils/regex.ts";
-import { passwordResetToken } from "./passwordResetToken.ts";
+import { passwordResetToken } from "../../server/forgot-password/passwordResetToken.ts";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 

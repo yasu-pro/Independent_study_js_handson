@@ -1,5 +1,5 @@
-import { fetchLoginAndUserInfo } from "./fetchLoginAndUserInfo";
-import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
+import { fetchLoginAndUserInfo } from "../../server/login/fetchLoginAndUserInfo";
+import { setToken } from "../../utils/tokenUtils.ts";
 import { passwordRegex, emailRegex } from "../../utils/regex";
 import {
   loginInputValueState,
@@ -7,7 +7,7 @@ import {
 } from "../../states/loginFormState";
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { validateInputField } from "../../utils/form/validationUtils";
-import { fetchCurrentUser } from "./fetchCurrentUser";
+import { fetchCurrentUser } from "../../server/login/fetchCurrentUser";
 
 const submitBtn = document.querySelector(".submitBtn");
 

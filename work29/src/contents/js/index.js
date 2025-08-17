@@ -1,4 +1,4 @@
-import { removeToken } from "../../feature/token-utils/tokenUtils.ts";
+import { removeToken } from "../../utils/tokenUtils";
 
 // DOM
 const body = document.querySelector("body");

@@ -1,8 +1,4 @@
-import {
-  getToken,
-  setToken,
-  removeToken,
-} from "../../../feature/token-utils/tokenUtils";
+import { getToken, setToken, removeToken } from "../../../utils/tokenUtils";
 import {
   passwordReissueInputValueState,
   passwordReissueValidState,
@@ -11,11 +7,10 @@ import { toggleSubmitBtn } from "../../../utils/form/formUtils";
 import {
   toggleErrorDisplay,
   updateValidState,
-  validateInputField,
 } from "../../../utils/form/validationUtils";
 import { passwordRegex } from "../../../utils/regex";
-import { requestNewPassword } from "./ReissuePassword";
-import { requestNewToken } from "./ReissuePassword";
+import { requestNewPassword } from "../../../server/register/password/ReissuePassword";
+import { requestNewToken } from "../../../server/register/password/ReissuePassword";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 

@@ -1,6 +1,6 @@
 import { toggleSubmitBtn } from "../../utils/form/formUtils";
 import { emailRegex, passwordRegex } from "../../utils/regex";
-import { requestNewUserInfoAndToken } from "./requestNewUserInfoAndToken.ts";
+import { requestNewUserInfoAndToken } from "../../server/reset-email/requestNewUserInfoAndToken.ts";
 import {
   mailReissueValidState,
   mailReissueInputValueState,

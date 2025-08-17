@@ -1,5 +1,5 @@
 import { REGISTER_PASSWORD_TOKEN } from "../../../constants/tokenKeys/token";
-import { setToken } from "../../../feature/token-utils/tokenUtils";
+import { setToken } from "../../../utils/tokenUtils";
 
 // トークンを発行する
 export const requestNewToken = async (): Promise<{

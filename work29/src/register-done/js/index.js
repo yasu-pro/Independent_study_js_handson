@@ -1,6 +1,6 @@
-import { getToken } from "../../feature/token-utils/tokenUtils";
+import { getToken } from "../../utils/tokenUtils.ts";
 import { isLoginTokenValid } from "../../utils/isLoginTokenValid";
-import { deleteRegisterToken } from "./deleteRegisterToken";
+import { deleteRegisterToken } from "../../server/register-done/deleteRegisterToken";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const loginResult = await isLoginTokenValid();
