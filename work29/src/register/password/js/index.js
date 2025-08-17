@@ -104,29 +104,12 @@ confirmPasswordInputElem.addEventListener("blur", () => {
   toggleSubmitBtn(passwordReissueValidState, registerSubmitBtn);
 });
 
-const updateUserPasswordInStorage = (newPassword) => {
-  try {
-    const currentUserInfoJson = getToken("registerUser");
-    const currentUserInfo = JSON.parse(currentUserInfoJson);
-
-    const newUserInfo = {
-      ...currentUserInfo,
-      password: newPassword,
-    };
-
-    const newUserInfoJson = JSON.stringify(newUserInfo);
-    setToken("registerUser", newUserInfoJson);
-  } catch (error) {
-    alert("パスワードの保存に失敗しました。");
-  }
-};
-
 const redirectToPasswordDonePage = (newToken) => {
   removeToken("passwordResetToken");
   setToken("registerPasswordToken", newToken.token);
 
   newToken = newToken.token;
-  return (window.location.href = `../password-done.html?token=${newToken}`);
+  return (window.location.href = `../password-done/index.html?token=${newToken}`);
 };
 
 registerSubmitBtn.addEventListener("click", async () => {
@@ -147,7 +130,6 @@ registerSubmitBtn.addEventListener("click", async () => {
     alert(reissuePasswordResult.message);
     return;
   }
-  updateUserPasswordInStorage(reissuePasswordResult.password);
 
   const reissueTokenResult = await requestNewToken();
   if (!reissueTokenResult.ok) {

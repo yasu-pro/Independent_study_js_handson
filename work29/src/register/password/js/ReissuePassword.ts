@@ -1,4 +1,5 @@
 import { REGISTER_PASSWORD_TOKEN } from "../../../constants/tokenKeys/token";
+import { setToken } from "../../../feature/token-utils/tokenUtils";
 
 // トークンを発行する
 export const requestNewToken = async (): Promise<{
@@ -28,14 +29,13 @@ export const requestNewPassword = async (
 ): Promise<{
   ok: boolean;
   code: number;
-  password?: string;
   message?: string;
 }> => {
   try {
+    setToken("newPassword", newPassword);
     return {
       ok: true,
       code: 200,
-      password: newPassword,
     };
   } catch (error) {
     return {
