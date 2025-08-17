@@ -1,10 +1,10 @@
 import { REGISTER_MAIL_TOKEN } from "../../constants/tokenKeys/token";
+import { fetchMockApiServer } from "../../feature/action/fetchMockApiServer";
 import {
   getToken,
   removeToken,
   setToken,
 } from "../../feature/token-utils/tokenUtils";
-import { ResponseUserInfo } from "../../types/FetchUserInfoMockApiServer";
 
 type UserInfoType = {
   mail: string;
@@ -86,36 +86,3 @@ export const requestNewUserInfoAndToken = async (
     };
   }
 };
-
-function findMatchingUser(users: ResponseUserInfo[], mail: string) {
-  return users.find((user) => user.email === mail);
-}
-
-async function fetchMockApiServer(mail: string) {
-  try {
-    const res = await fetch(
-      "https://6802e9880a99cb7408eab082.mockapi.io/api/v1/users"
-    );
-    const users: ResponseUserInfo[] = await res.json();
-
-    if (users.length === 0) {
-      return { ok: true, code: 200, message: "empty" };
-    }
-
-    const user = findMatchingUser(users, mail);
-
-    if (user) {
-      return {
-        ok: true,
-        code: 200,
-        mail: user.email,
-        password: user.password,
-        token: user.userId,
-      };
-    }
-
-    return { ok: false, code: 401, message: "Not found" };
-  } catch {
-    return { ok: false, code: 500, message: "サーバーエラー" };
-  }
-}
