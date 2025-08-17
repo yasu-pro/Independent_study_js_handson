@@ -1,5 +1,4 @@
 import { getToken } from "../../feature/token-utils/tokenUtils";
-import { isLoginTokenValid } from "../../utils/isLoginTokenValid";
 import { deleteResetMailToken } from "./deleteRegisterMailToken";
 
 window.addEventListener("DOMContentLoaded", async () => {
