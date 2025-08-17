@@ -9,7 +9,7 @@ import {
   toggleErrorDisplay,
   updateValidState,
 } from "../../utils/form/validationUtils.ts";
-import { setToken } from "../../feature/token-utils/tokenUtils";
+import { setToken } from "../../utils/tokenUtils.ts";
 
 const registerSubmitBtn = document.getElementById("js-submitBtn");
 

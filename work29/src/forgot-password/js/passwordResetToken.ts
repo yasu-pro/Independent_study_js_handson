@@ -1,6 +1,6 @@
 import { PASSWORD_RESET_TOKEN } from "../../constants/tokenKeys/token";
 import { fetchMockApiServer } from "../../feature/action/fetchMockApiServer";
-import { getToken, setToken } from "../../feature/token-utils/tokenUtils";
+import { getToken, setToken } from "../../utils/tokenUtils";
 
 export async function passwordResetToken(requestMail: string): Promise<{
   ok: boolean;

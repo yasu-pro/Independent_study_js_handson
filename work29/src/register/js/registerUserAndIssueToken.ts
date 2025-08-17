@@ -1,6 +1,6 @@
 import { REGISTER_TOKEN } from "../../constants/tokenKeys/token";
 import { fetchMockApiServer } from "../../feature/action/fetchMockApiServer";
-import { setToken, getToken } from "../../feature/token-utils/tokenUtils";
+import { setToken, getToken } from "../../utils/tokenUtils";
 
 type UserInfoType = {
   mail: string;
